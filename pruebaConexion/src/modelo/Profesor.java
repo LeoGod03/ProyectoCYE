@@ -19,7 +19,8 @@ public final class Profesor {
     private String apellidoM;
     private ArrayList<Curso> cursosImpartidos;
     private Usuario usuario;
-	
+
+    
     public Profesor(int id, String nombre, String apellidoP, String apellidoM, ArrayList<Curso> cursosImpartidos, Usuario usuario) {
 	setId(id);
 	setNombre(nombre);
