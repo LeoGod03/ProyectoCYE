@@ -15,17 +15,38 @@ public final class Curso {
     private String ciclo;
     private String colegio;
     private int idProfesor;
+    private int alumnosInscritos;
 
-   
-	
+  
     public Curso(int id, String nombre, int grupo, int idProfesor, String ciclo, String colegio) {
 	setId(id);
 	setNombre(nombre);
 	setGrupo(grupo);
+        setIdProfesor(idProfesor);
 	setColegio(colegio);
 	setCiclo(ciclo);
+        alumnosInscritos = 0;
     }
-	
+    
+    public Curso(int id, String nombre, String ciclo, String colegio){
+        setId(id);
+        setNombre(nombre);
+        setCiclo(ciclo);
+        setColegio(colegio);
+        idProfesor = -1;
+        grupo = -1;
+        alumnosInscritos = 0;
+    }
+    
+    
+    public int getAlumnosInscritos() {
+        return alumnosInscritos;
+    }
+
+    public void setAlumnosInscritos(int almnosInscritos) {
+        this.alumnosInscritos = almnosInscritos;
+    }
+
     public int getId() {
 	return id;
     }

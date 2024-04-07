@@ -56,7 +56,7 @@ public class AlumnoDao{
 
     public Alumno buscar(Alumno alumno){
         Alumno alumnoBuscado = null;
-         Connection conexion = administrador.establecerConexion();
+        Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
         ResultSet resultado;
         String query;

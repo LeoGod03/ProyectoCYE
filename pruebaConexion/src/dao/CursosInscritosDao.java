@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -73,7 +74,46 @@ public class CursosInscritosDao {
      
     }
   
-
+    public Curso buscar(Curso curso){
+        Curso cursoBuscado = null;
+        Connection conexion = administrador.establecerConexion();
+        PreparedStatement comando;
+        ResultSet resultado;
+        String query;
+        try{
+            conexion.setAutoCommit(false);
+            query = "SELECT * FROM Cursos_registrados WHERE id = ?;";
+            
+            comando = conexion.prepareStatement(query);
+            comando.setInt(1, curso.getId());
+            
+            resultado = comando.executeQuery();
+            if(resultado.next()){
+                
+                Curso cursoTemp = new CursosDao().buscar(curso, conexion);
+                
+                cursoBuscado = new Curso(curso.getId(),
+                                         cursoTemp.getNombre(),
+                                         resultado.getInt("grupo"),
+                                         resultado.getInt("id_profesor"),
+                                         cursoTemp.getCiclo(),
+                                         cursoTemp.getColegio());
+            }
+            conexion.commit();
+            comando.close();
+        }catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+            
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        
+        administrador.cerrarConexion();
+        return cursoBuscado;
+    }
     
     public ArrayList<Curso> obtenerCursosInscritos(Alumno alumno){
         ArrayList<Curso> cursosInscritos = new ArrayList<>();

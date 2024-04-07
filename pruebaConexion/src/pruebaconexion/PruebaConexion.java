@@ -30,10 +30,10 @@ public class PruebaConexion {
         Curso curso = new Curso(1,"Algebra lineal",302,12,"CCT","BASICO");
         //new AdministradorDao().insertar(admin);
         //new AdministradorDao().actualizar(admin, admin);
-        new CursosInscritosDao().insertar(curso);
+        //new CursosInscritosDao().insertar(curso);
         //Alumno alumno = new Alumno("20-003-0695", "Leonardo", "Rodriguez", "Rodriguez",23,1,new Usuario("Optimus","wen",2,"Alumno"));
        //dao.insertar(alumno);
-       //System.out.println(new AdministradorDao().buscar(admin));
+       System.out.println(new CursosInscritosDao().buscar(curso));
     }
     
 }
