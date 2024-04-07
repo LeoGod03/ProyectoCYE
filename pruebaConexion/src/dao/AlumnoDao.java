@@ -7,8 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import modelo.Alumno;
 /**
  *
@@ -27,7 +25,7 @@ public class AlumnoDao{
         String query;
         try{
             conexion.setAutoCommit(false);
-            query = "INSERT INTO Alumnos_registrados VALUES (?,?,?,?,?,?,?,?,?,?);"
+            query = "INSERT INTO Alumnos_registrados VALUES (?,?,?,?,?,?,?);"
                   + "INSERT INTO Cursos_inscritos_alumnos (matricula) VALUES(?);";
             
             comando = conexion.prepareStatement(query);
@@ -38,11 +36,7 @@ public class AlumnoDao{
             comando.setInt(5, alumno.getIdCarrera());
             comando.setInt(6, alumno.getEdad());
             comando.setString(7, alumno.getUsuario().getCorreo());
-            Double[] porcentajes = alumno.getPorcentajes();
-            comando.setDouble(8, porcentajes[0]);
-            comando.setDouble(9, porcentajes[1]);
-            comando.setDouble(10, porcentajes[2]);
-            comando.setString(11, alumno.getMatricula());
+            comando.setString(8, alumno.getMatricula());
             comando.executeUpdate();
             new UsuarioDao().insertar(alumno.getUsuario(), conexion);
             conexion.commit();
@@ -81,14 +75,7 @@ public class AlumnoDao{
                                            resultado.getString("apellido_materno"),
                                            resultado.getInt("edad"),
                                            resultado.getInt("id_carrera"),
-                                           new UsuarioDao().buscar(alumno.getUsuario(), conexion),
-                                           null
-                                           );
-                Double[] porcentajes = {resultado.getDouble("porcentaje_tarea"),
-                                        resultado.getDouble("porcentaje_examenes"),
-                                        resultado.getDouble("porcentaje_proyecto")};
-                
-                alumnoBuscado.setPorcentajes(porcentajes);
+                                           new UsuarioDao().buscar(alumno.getUsuario(), conexion));
             }
             conexion.commit();
             comando.close();
@@ -120,10 +107,7 @@ public class AlumnoDao{
                     + "apellido_materno = ?,"
                     + "id_carrera = ?,"
                     + "edad = ?,"
-                    + "correo = ?,"
-                    + "porcentaje_tarea = ?,"
-                    + "porcentaje_examenes = ?,"
-                    + "porcentaje_proyecto = ? "
+                    + "correo = ? "
                     + "WHERE matricula = ?;"
                   + "UPDATE Cursos_inscritos_alumnos "
                     + "SET matricula = ? "
@@ -137,13 +121,9 @@ public class AlumnoDao{
             comando.setInt(5, alumno.getIdCarrera());
             comando.setInt(6, alumno.getEdad());
             comando.setString(7, alumno.getUsuario().getCorreo());
-            Double[] porcentajes = alumno.getPorcentajes();
-            comando.setDouble(8, porcentajes[0]);
-            comando.setDouble(9, porcentajes[1]);
-            comando.setDouble(10, porcentajes[2]);
-            comando.setString(11, oldAlumno.getMatricula());
-            comando.setString(12, alumno.getMatricula());
-            comando.setString(13, oldAlumno.getMatricula());
+            comando.setString(8, oldAlumno.getMatricula());
+            comando.setString(9, alumno.getMatricula());
+            comando.setString(10, oldAlumno.getMatricula());
             comando.executeUpdate();
             new UsuarioDao().actualizar(alumno.getUsuario(), oldAlumno.getUsuario(), conexion);
             conexion.commit();
