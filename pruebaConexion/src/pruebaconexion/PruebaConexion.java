@@ -43,8 +43,8 @@ public class PruebaConexion {
       //System.out.println(new CursosInscritosDao().buscar(grupo));
       
       // pedimos y mostramos todos los cursos impartidos por el profesor 12
-      /*
-      ArrayList<Curso> cursos = new CursosInscritosDao().obtenerCursosInscritos(new Profesor(12));
+      
+      /*ArrayList<Curso> cursos = new CursosInscritosDao().obtenerCursos(new Profesor(12));
       for(Curso curso: cursos){
           System.out.println(curso);
       }*/  

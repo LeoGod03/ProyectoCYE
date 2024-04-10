@@ -115,13 +115,13 @@ public class CursosInscritosDao {
         return cursoBuscado;
     }
     
-    public ArrayList<Curso> obtenerCursosInscritos(Alumno alumno){
+    public ArrayList<Curso> obtenerCursos(Alumno alumno){
         ArrayList<Curso> cursosInscritos = new ArrayList<>();
         
         return cursosInscritos;
     }
     
-    public ArrayList<Curso> obtenerCursosInscritos(Profesor profesor){
+    public ArrayList<Curso> obtenerCursos(Profesor profesor){
         ArrayList<Curso> cursosInscritos = new ArrayList<>();
         Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
