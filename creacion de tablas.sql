@@ -46,12 +46,13 @@ create table Administradores(
 
 );
 
+--drop table Cursos_registrados
 create table Cursos_registrados(
-	id int primary key,
+	id int not null,
 	grupo int not null,
 	alumnos_registrados int not null,
 	id_profesor int not null
-
+	Primary key(id,grupo)
 );
 
 create table Lista_cursos(

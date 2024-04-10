@@ -34,7 +34,6 @@ public class CursosInscritosDao {
             comando.setInt(3,0);
             comando.setInt(4,curso.getIdProfesor());
             comando.executeUpdate();
-            new CursosDao().insertar(curso, conexion);
             conexion.commit();
             comando.close();
         }catch(SQLException sqle){
@@ -54,11 +53,11 @@ public class CursosInscritosDao {
         String query;
         try{
             conexion.setAutoCommit(false);
-            query = "DELETE FROM Cursos_registrados WHERE id like ?;";
+            query = "DELETE FROM Cursos_registrados WHERE id = ? && grupo = ?;";
             comando = conexion.prepareStatement(query);
             comando.setInt(1, curso.getId());
+            comando.setInt(2, curso.getGrupo());
             comando.executeUpdate();
-            new CursosDao().eliminar(curso, conexion);
             conexion.commit();
             comando.close();
         }catch(SQLException sqle){
@@ -101,7 +100,8 @@ public class CursosInscritosDao {
             }
             conexion.commit();
             comando.close();
-        }catch(SQLException sqle){
+        }
+        catch(SQLException sqle){
             System.out.println(sqle.getMessage());
             
             try {
@@ -123,8 +123,46 @@ public class CursosInscritosDao {
     
     public ArrayList<Curso> obtenerCursosInscritos(Profesor profesor){
         ArrayList<Curso> cursosInscritos = new ArrayList<>();
+        Connection conexion = administrador.establecerConexion();
+        PreparedStatement comando;
+        ResultSet resultado;
+        String query = "SELECT * FROM Cursos_registrados WHERE id_profesor = ?;";
+        try{
+            conexion.setAutoCommit(false);
+            comando = conexion.prepareStatement(query);
+            comando.setInt(1, profesor.getId());
+            
+            resultado = comando.executeQuery();
+            while(resultado.next()){
+                int id = resultado.getInt("id");
+                Curso cursoTemp = new CursosDao().buscar( new Curso(id), conexion);
+                
+                Curso curso = new Curso(id,
+                                         cursoTemp.getNombre(),
+                                         resultado.getInt("grupo"),
+                                         resultado.getInt("id_profesor"),
+                                         cursoTemp.getCiclo(),
+                                         cursoTemp.getColegio());
+                cursosInscritos.add(curso);
+            }
+            conexion.commit();
+            comando.close();
+        }catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+            
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
         
+        administrador.cerrarConexion();
         return cursosInscritos;
     }
     
+    
+    public void inscribir(Curso curso, Alumno alumno){
+        
+    }
 }

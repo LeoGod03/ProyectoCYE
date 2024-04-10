@@ -29,7 +29,11 @@ public final class Profesor {
         setCursosImpartidos(cursosImpartidos);
         setUsuario(usuario);
     }
-
+    
+    public Profesor(int id){
+        setId(id);
+    }
+    
     public int getId() {
 	return id;
     }
