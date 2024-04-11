@@ -52,8 +52,14 @@ public class PruebaConexion {
       // creamos un nuevo alumno
       Alumno alumno = new Alumno("20-003-0699", "Leonardo", "Rodriguez", "Rodriguez",23, 1, 0, new Usuario("Leopa", "12345", 2, "Alumno"));
       //new AlumnoDao().insertar(alumno);
-      new AlumnoDao().inscribirCurso(new Curso(2,302,21), new AlumnoDao().buscar(alumno));
+      //new AlumnoDao().inscribirCurso(new Curso(2,302,21), new AlumnoDao().buscar(alumno));
       
+      // pedimos y mostramos todos los cursos impartidos por el profesor 20-003-0699
+      
+      ArrayList<Curso> cursos = new CursosInscritosDao().obtenerCursos(new AlumnoDao().buscar(alumno));
+      for(Curso curso: cursos){
+          System.out.println(curso);
+      }  
     }
     
 }
