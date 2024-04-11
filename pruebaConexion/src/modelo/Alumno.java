@@ -11,21 +11,30 @@ import java.util.Arrays;
  *
  * @author leopa
  */
-public class Alumno extends Persona{
+public final class Alumno extends Persona{
     private String matricula;
     private int idCarrera;
     private Usuario usuario;
     private ArrayList<Curso> cursosInscritos;
     private Double[] porcentajes;
+    private int numeroCursos;
 	
     public Alumno(String matricula,String nombre, String apellidoP, String apellidoM,int edad,
-        int idCarrera,Usuario usuario) {
+        int idCarrera,int numeroCursos,Usuario usuario) {
         super(nombre, apellidoP, apellidoM, edad);
-        this.matricula = matricula;
-	this.idCarrera = idCarrera;
-        this.usuario = usuario;
+        setMatricula(matricula);
+	setIdCarrera(idCarrera);
+        setUsuario(usuario);
+        setNumeroCursos(numeroCursos);
     }
-
+    
+    public Alumno(String matricula){
+        super("","","",0);
+        setMatricula(matricula);
+        setIdCarrera(0);
+        setUsuario(null);
+        setNumeroCursos(0);
+    }
     public void setCursosInscritos(ArrayList<Curso> cursosInscritos) {
         this.cursosInscritos = cursosInscritos;
     }
@@ -73,7 +82,14 @@ public class Alumno extends Persona{
     public Usuario getUsuario() {
         return usuario;
     }
-
+    
+    public int getNumeroCursos(){
+        return numeroCursos;
+    }
+    
+    public void setNumeroCursos(int numeroCursos){
+        this.numeroCursos = numeroCursos;
+    }
 	@Override
     public String toString() {
 	return "Alumno [matricula=" + matricula + ", nombre=" + super.getNombre() + ", apellidoP=" + super.getApellidoPaterno() + ", apellidoM="

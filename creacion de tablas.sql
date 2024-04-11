@@ -5,10 +5,11 @@ Create table Alumnos_registrados(
 	apellido_materno varchar(50) not null,
 	id_carrera int not null,
 	edad int not null,
-	correo varchar(50) not null
+	correo varchar(50) not null,
+	cursos_inscritos int not null
 );
 
---drop table Cursos_registros
+--drop table Administradores
 Create table Cursos_inscritos_alumnos(
 	matricula varchar(12),
 	id_curso1 int,

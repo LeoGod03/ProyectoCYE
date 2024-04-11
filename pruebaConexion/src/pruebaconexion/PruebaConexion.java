@@ -48,6 +48,12 @@ public class PruebaConexion {
       for(Curso curso: cursos){
           System.out.println(curso);
       }*/  
+      
+      // creamos un nuevo alumno
+      Alumno alumno = new Alumno("20-003-0699", "Leonardo", "Rodriguez", "Rodriguez",23, 1, 0, new Usuario("Leopa", "12345", 2, "Alumno"));
+      //new AlumnoDao().insertar(alumno);
+      new AlumnoDao().inscribirCurso(new Curso(2,302,21), new AlumnoDao().buscar(alumno));
+      
     }
     
 }
