@@ -4,25 +4,50 @@
  */
 package modelo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  *
  * @author leopa
  */
-public class Alumno extends Persona{
+public final class Alumno extends Persona{
     private String matricula;
     private int idCarrera;
     private Usuario usuario;
+    private ArrayList<Curso> cursosInscritos;
     private Double[] porcentajes;
+    private int numeroCursos;
 	
     public Alumno(String matricula,String nombre, String apellidoP, String apellidoM,int edad,
-        int idCarrera,Usuario usuario, Double[] porcentajes) {
+        int idCarrera,int numeroCursos,Usuario usuario) {
         super(nombre, apellidoP, apellidoM, edad);
+        setMatricula(matricula);
+	setIdCarrera(idCarrera);
+        setUsuario(usuario);
+        setNumeroCursos(numeroCursos);
+    }
+    
+    public Alumno(String matricula){
+        super("","","",0);
+        setMatricula(matricula);
+        setIdCarrera(0);
+        setUsuario(null);
+        setNumeroCursos(0);
+    }
+    public void setCursosInscritos(ArrayList<Curso> cursosInscritos) {
+        this.cursosInscritos = cursosInscritos;
+    }
+
+    public ArrayList<Curso> getCursosInscritos() {
+        return cursosInscritos;
+    }
+    
+    public Alumno(String matricula, String correo){
+        super("","","",0);
         this.matricula = matricula;
-	this.idCarrera = idCarrera;
-	this.porcentajes = porcentajes;
-        this.usuario = usuario;
+        usuario = new Usuario(correo,"",0,"");
+        
     }
 	
     public String getMatricula() {
@@ -57,12 +82,18 @@ public class Alumno extends Persona{
     public Usuario getUsuario() {
         return usuario;
     }
-
+    
+    public int getNumeroCursos(){
+        return numeroCursos;
+    }
+    
+    public void setNumeroCursos(int numeroCursos){
+        this.numeroCursos = numeroCursos;
+    }
 	@Override
     public String toString() {
 	return "Alumno [matricula=" + matricula + ", nombre=" + super.getNombre() + ", apellidoP=" + super.getApellidoPaterno() + ", apellidoM="
-				+ super.getApellidoMaterno() + ", carrera=" + idCarrera + "Usuario = "+ usuario +", porcentajes="
-				+ Arrays.toString(porcentajes) + "]";
+				+ super.getApellidoMaterno() + ", carrera=" + idCarrera + "Usuario = "+ usuario;
     }
 
 	

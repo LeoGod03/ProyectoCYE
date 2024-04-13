@@ -15,17 +15,51 @@ public final class Curso {
     private String ciclo;
     private String colegio;
     private int idProfesor;
+    private int alumnosInscritos;
 
-   
-	
-    public Curso(int id, String nombre, int grupo, int idProfesor, String ciclo, String colegio) {
+  
+    public Curso(int id, int grupo, int idProfesor) {
 	setId(id);
-	setNombre(nombre);
 	setGrupo(grupo);
-	setColegio(colegio);
-	setCiclo(ciclo);
+        setIdProfesor(idProfesor);
+        alumnosInscritos = 0;
     }
-	
+    
+    public Curso(int id, String nombre, String ciclo, String colegio){
+        setId(id);
+        setNombre(nombre);
+        setCiclo(ciclo);
+        setColegio(colegio);
+    }
+    
+    public Curso(int id, String nombre, int grupo, int idProfesor, String ciclo, String colegio){
+        setId(id);
+        setNombre(nombre);
+        setCiclo(ciclo);
+        setColegio(colegio);
+        setGrupo(grupo);
+        setIdProfesor(idProfesor);
+        alumnosInscritos = 0;
+    }
+    
+    public Curso(int id){
+        setId(id);
+        nombre = "";
+        ciclo = "";
+        colegio = "";
+        idProfesor = -1;
+        grupo = -1;
+        alumnosInscritos = 0;
+    }
+    
+    public int getAlumnosInscritos() {
+        return alumnosInscritos;
+    }
+
+    public void setAlumnosInscritos(int almnosInscritos) {
+        this.alumnosInscritos = almnosInscritos;
+    }
+
     public int getId() {
 	return id;
     }
@@ -76,7 +110,7 @@ public final class Curso {
 	
     @Override
     public String toString() {
-	return "Curso [id=" + id + ", nombre=" + nombre + "id profesor = "+ idProfesor+  ", grupo=" + grupo + ", ciclo=" + ciclo + ", colegio="
+	return "Curso [id=" + id + ", nombre=" + nombre + " id profesor = "+ idProfesor+  ", grupo=" + grupo + ", ciclo=" + ciclo + ", colegio="
 			+ colegio + "]";
     }
 }

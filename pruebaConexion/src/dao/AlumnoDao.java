@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import modelo.Alumno;
+import modelo.Curso;
 /**
  *
  * @author leopa
@@ -25,7 +26,7 @@ public class AlumnoDao{
         String query;
         try{
             conexion.setAutoCommit(false);
-            query = "INSERT INTO Alumnos_registrados VALUES (?,?,?,?,?,?,?,?,?,?);"
+            query = "INSERT INTO Alumnos_registrados VALUES (?,?,?,?,?,?,?,?);"
                   + "INSERT INTO Cursos_inscritos_alumnos (matricula) VALUES(?);";
             
             comando = conexion.prepareStatement(query);
@@ -36,11 +37,8 @@ public class AlumnoDao{
             comando.setInt(5, alumno.getIdCarrera());
             comando.setInt(6, alumno.getEdad());
             comando.setString(7, alumno.getUsuario().getCorreo());
-            Double[] porcentajes = alumno.getPorcentajes();
-            comando.setDouble(8, porcentajes[0]);
-            comando.setDouble(9, porcentajes[1]);
-            comando.setDouble(10, porcentajes[2]);
-            comando.setString(11, alumno.getMatricula());
+            comando.setInt(8, 0);
+            comando.setString(9, alumno.getMatricula());
             comando.executeUpdate();
             new UsuarioDao().insertar(alumno.getUsuario(), conexion);
             conexion.commit();
@@ -60,7 +58,7 @@ public class AlumnoDao{
 
     public Alumno buscar(Alumno alumno){
         Alumno alumnoBuscado = null;
-         Connection conexion = administrador.establecerConexion();
+        Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
         ResultSet resultado;
         String query;
@@ -79,14 +77,8 @@ public class AlumnoDao{
                                            resultado.getString("apellido_materno"),
                                            resultado.getInt("edad"),
                                            resultado.getInt("id_carrera"),
-                                           new UsuarioDao().buscar(alumno.getUsuario(), conexion),
-                                           null
-                                           );
-                Double[] porcentajes = {resultado.getDouble("porcentaje_tarea"),
-                                        resultado.getDouble("porcentaje_examenes"),
-                                        resultado.getDouble("porcentaje_proyecto")};
-                
-                alumnoBuscado.setPorcentajes(porcentajes);
+                                           resultado.getInt("cursos_inscritos"),
+                                           new UsuarioDao().buscar(alumno.getUsuario(), conexion));
             }
             conexion.commit();
             comando.close();
@@ -119,9 +111,7 @@ public class AlumnoDao{
                     + "id_carrera = ?,"
                     + "edad = ?,"
                     + "correo = ?,"
-                    + "porcentaje_tarea = ?,"
-                    + "porcentaje_examenes = ?,"
-                    + "porcentaje_proyecto = ? "
+                    + "cursos_inscritos = ?"
                     + "WHERE matricula = ?;"
                   + "UPDATE Cursos_inscritos_alumnos "
                     + "SET matricula = ? "
@@ -135,13 +125,10 @@ public class AlumnoDao{
             comando.setInt(5, alumno.getIdCarrera());
             comando.setInt(6, alumno.getEdad());
             comando.setString(7, alumno.getUsuario().getCorreo());
-            Double[] porcentajes = alumno.getPorcentajes();
-            comando.setDouble(8, porcentajes[0]);
-            comando.setDouble(9, porcentajes[1]);
-            comando.setDouble(10, porcentajes[2]);
+            comando.setInt(8, alumno.getNumeroCursos());
+            comando.setString(9, oldAlumno.getMatricula());
+            comando.setString(10, alumno.getMatricula());
             comando.setString(11, oldAlumno.getMatricula());
-            comando.setString(12, alumno.getMatricula());
-            comando.setString(13, oldAlumno.getMatricula());
             comando.executeUpdate();
             new UsuarioDao().actualizar(alumno.getUsuario(), oldAlumno.getUsuario(), conexion);
             conexion.commit();
@@ -185,6 +172,41 @@ public class AlumnoDao{
         
         administrador.cerrarConexion();
     }
-
+    
+    public void inscribirCurso(Curso curso, Alumno alumno){
+        Connection conexion = administrador.establecerConexion();
+        PreparedStatement comando;
+        String query = "UPDATE Cursos_inscritos_alumnos "
+                    +"SET id_curso" + (alumno.getNumeroCursos() + 1) + " = ?,"
+                    + "grupo"+ (alumno.getNumeroCursos() + 1) +" = ? "
+                    + "WHERE matricula like ?;"
+                    + "UPDATE Alumnos_registrados "
+                    + "SET cursos_inscritos = ? "
+                    + "WHERE matricula like ?;";
+        try{
+            conexion.setAutoCommit(false);  
+            comando = conexion.prepareStatement(query);
+            comando.setInt(1, curso.getId());
+            comando.setInt(2, curso.getGrupo());
+            comando.setString(3, alumno.getMatricula());
+            comando.setInt(4, alumno.getNumeroCursos() + 1);
+            comando.setString(5, alumno.getMatricula());
+            comando.executeUpdate();
+            conexion.commit();
+            comando.close();
+            alumno.setNumeroCursos(alumno.getNumeroCursos() + 1);
+        }catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        
+        administrador.cerrarConexion();
+    }
+    
+    
     
 }

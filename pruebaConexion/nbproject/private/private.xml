@@ -3,15 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/HP/Documents/GitHub/ProyectoCYE/pruebaConexion/src/dao/AdministradorDao.java</file>
-            <file>file:/C:/Users/HP/Documents/GitHub/ProyectoCYE/pruebaConexion/src/dao/ProfesorDao.java</file>
-            <file>file:/C:/Users/HP/Documents/GitHub/ProyectoCYE/pruebaConexion/src/modelo/Alumno.java</file>
-            <file>file:/C:/Users/HP/Documents/GitHub/ProyectoCYE/pruebaConexion/src/modelo/Administrador.java</file>
-            <file>file:/C:/Users/HP/Documents/GitHub/ProyectoCYE/pruebaConexion/src/modelo/Usuario.java</file>
-            <file>file:/C:/Users/HP/Documents/GitHub/ProyectoCYE/pruebaConexion/src/modelo/Profesor.java</file>
-            <file>file:/C:/Users/HP/Documents/GitHub/ProyectoCYE/pruebaConexion/src/modelo/Curso.java</file>
-            <file>file:/C:/Users/HP/Documents/GitHub/ProyectoCYE/pruebaConexion/src/modelo/Persona.java</file>
-            <file>file:/C:/Users/HP/Documents/GitHub/ProyectoCYE/pruebaConexion/src/dao/AlumnoDao.java</file>
+            <file>file:/C:/Users/leopa/OneDrive/Documentos/ProyectoCYE/pruebaConexion/src/modelo/Curso.java</file>
+            <file>file:/C:/Users/leopa/OneDrive/Documentos/ProyectoCYE/pruebaConexion/src/modelo/Alumno.java</file>
+            <file>file:/C:/Users/leopa/OneDrive/Documentos/ProyectoCYE/pruebaConexion/src/dao/AlumnoDao.java</file>
+            <file>file:/C:/Users/leopa/OneDrive/Documentos/ProyectoCYE/pruebaConexion/src/dao/UsuarioDao.java</file>
+            <file>file:/C:/Users/leopa/OneDrive/Documentos/ProyectoCYE/pruebaConexion/src/pruebaconexion/PruebaConexion.java</file>
+            <file>file:/C:/Users/leopa/OneDrive/Documentos/ProyectoCYE/pruebaConexion/src/dao/CursosInscritosDao.java</file>
         </group>
     </open-files>
 </project-private>

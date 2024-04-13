@@ -7,8 +7,13 @@ package pruebaconexion;
 import dao.AdministradorDao;
 import dao.AlumnoDao;
 import dao.Conexion;
+import dao.CursosDao;
+import dao.CursosInscritosDao;
+import java.util.ArrayList;
 import modelo.Administrador;
 import modelo.Alumno;
+import modelo.Curso;
+import modelo.Profesor;
 import modelo.Usuario;
 
 /**
@@ -22,13 +27,39 @@ public class PruebaConexion {
      */
     public static void main(String[] args) {
        
-        //AlumnoDao dao = new AlumnoDao();
-        //Double[] porcentajes = {0.0,0.0,0.0};
-        Administrador admin = new Administrador(1,"Wen","Medina","Chavez",21,new Usuario("wen","12345677",12,"Administrador"));
-        new AdministradorDao().insertar(admin);
-       //Alumno alumno = new Alumno("20-003-0695", "Leonardo", "Rodriguez", "Rodriguez",23,1,new Usuario("Optimus","wen",2,"Alumno"),porcentajes);
-       //dao.eliminar(alumno);
-        //System.out.println(dao.buscar(alumno));
+      // creamos dos cursos
+      //Curso curso = new Curso(1,"Algebra lineal","CCT","BASICO");
+      //Curso curso = new Curso(2,"Introducción a la programacion","CCT","BASICO");
+        
+      // creamos dos grupos para algebra lineal
+      //Curso grupo = new Curso(1,302,12);
+      //Curso grupo = new Curso(1,402,17);
+      
+      // creamos dos grupos para IP
+      //Curso grupo = new Curso(2,201,12);
+      //Curso grupo = new Curso(2,302,21);
+      
+      //new CursosInscritosDao().insertar(grupo);
+      //System.out.println(new CursosInscritosDao().buscar(grupo));
+      
+      // pedimos y mostramos todos los cursos impartidos por el profesor 12
+      
+      /*ArrayList<Curso> cursos = new CursosInscritosDao().obtenerCursos(new Profesor(12));
+      for(Curso curso: cursos){
+          System.out.println(curso);
+      }*/  
+      
+      // creamos un nuevo alumno
+      Alumno alumno = new Alumno("20-003-0699", "Leonardo", "Rodriguez", "Rodriguez",23, 1, 0, new Usuario("Leopa", "12345", 2, "Alumno"));
+      //new AlumnoDao().insertar(alumno);
+      //new AlumnoDao().inscribirCurso(new Curso(2,302,21), new AlumnoDao().buscar(alumno));
+      
+      // pedimos y mostramos todos los cursos impartidos por el profesor 20-003-0699
+      
+      ArrayList<Curso> cursos = new CursosInscritosDao().obtenerCursos(new AlumnoDao().buscar(alumno));
+      for(Curso curso: cursos){
+          System.out.println(curso);
+      }  
     }
     
 }
