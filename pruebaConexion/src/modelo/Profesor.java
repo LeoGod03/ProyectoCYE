@@ -18,6 +18,7 @@ public final class Profesor {
     private String apellidoP;
     private String apellidoM;
     private ArrayList<Curso> cursosImpartidos;
+    private int cubiculo;
     private Usuario usuario;
 
     
@@ -69,6 +70,15 @@ public final class Profesor {
     public void setCursosImpartidos(ArrayList<Curso> cursosImpartidos) {
         this.cursosImpartidos = cursosImpartidos;
     }
+
+    public int getCubiculo() {
+        return cubiculo;
+    }
+
+    public void setCubiculo(int cubiculo) {
+        this.cubiculo = cubiculo;
+    }
+    
     
     public Usuario getUsuario() {
         return usuario;
