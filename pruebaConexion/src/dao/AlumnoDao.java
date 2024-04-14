@@ -43,10 +43,10 @@ public class AlumnoDao{
             new UsuarioDao().insertar(alumno.getUsuario(), conexion);
             conexion.commit();
             comando.close();
-        catch(SQLException sqle){
+        }catch(SQLException sqle){
             System.out.println(sqle.getMessage());
             try {
-                con}exion.rollback();
+                conexion.rollback();
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }

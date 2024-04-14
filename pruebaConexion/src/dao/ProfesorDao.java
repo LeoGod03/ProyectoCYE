@@ -7,6 +7,8 @@ package dao;
 import java.sql.PreparedStatement;
 import modelo.Profesor;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -26,9 +28,8 @@ public class ProfesorDao {
         String query;
         try{
             conexion.setAutoCommit(false);
-            query= "INSERT INTO Administradores VALUES (?,?,?,?,?,?);";
-                   +"INSERT INTO Cursos_impartidos_profesor (id_curso) VALUES(?);";
-                   
+            query= "INSERT INTO Profesores_registrados VALUES (?,?,?,?,?,?);";
+                        
             comando = conexion.prepareStatement(query);
             comando.setInt(1, profesor.getId());
             comando.setString(2, profesor.getNombre());
@@ -36,9 +37,102 @@ public class ProfesorDao {
             comando.setString(4, profesor.getApellidoM());
             comando.setInt(5, profesor.getCubiculo());
             comando.setString(6, profesor.getUsuario().getCorreo());
-            
-            
-            
-        }catch
+            comando.executeUpdate();
+            new UsuarioDao().insertar(profesor.getUsuario(), conexion);
+            conexion.commit();
+            comando.close();
+        }catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        
+        administrador.cerrarConexion();
+        
     }
+    
+    public Profesor buscar(Profesor profesor){
+        Profesor profesorbuscado=null;
+        Connection conexion = administrador.establecerConexion();
+        PreparedStatement comando;
+        ResultSet resultado;
+        String query;
+        try{
+            conexion.setAutoCommit(false);
+            query = "SELECT * FROM Profesores_registrados WHERE id like ?;";
+            
+            comando = conexion.prepareStatement(query);
+            comando.setInt(1, profesor.getId());
+            
+            resultado = comando.executeQuery();
+            if(resultado.next()){
+                profesorBuscado = new Profesor(resultado.getInt("id"),
+                                           resultado.getString("nombre"),
+                                           resultado.getString("apellido_paterno"),
+                                           resultado.getString("apellido_materno"),
+                                           resultado.getInt("cubiculo"),
+                                           new UsuarioDao().buscar(profesor.getUsuario(), conexion));
+                                           }
+            conexion.commit();
+            comando.close();
+        }catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+            
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        
+        administrador.cerrarConexion();
+        
+        return profesorBuscado;
+    }
+    
+    public void actualizar(Profesor profesor, Profesor oldProfesor) {
+        Connection conexion = administrador.establecerConexion();
+        PreparedStatement comando;
+        String query;
+        try{
+            conexion.setAutoCommit(false);
+            query = "UPDATE Profesores_registrados "
+                    + "SET id = ?,"
+                    + "nombre = ?,"
+                    + "apellido_paterno = ?,"
+                    + "apellido_materno = ?,"
+                    + "WHERE id= ?;";
+            comando = conexion.prepareStatement(query);
+            comando.setInt(1, profesor.getId());
+            comando.setString(2, profesor.getNombre());
+            comando.setString(3, profesor.getApellidoP());
+            comando.setString(4, profesor.getApellidoM());
+            comando.setInt(5, profesor.getCubiculo());
+            comando.setString(6, profesor.getUsuario().getCorreo());
+            comando.setInt(7, oldProfesor.getId());
+            comando.setInt(8, profesor.getId());
+            comando.setInt(9, oldProfesor.getId());
+            comando.executeUpdate();
+            new UsuarioDao().actualizar(profesor.getUsuario(), oldProfesor.getUsuario(), conexion);
+            conexion.commit();
+            comando.close();
+            }catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        
+        administrador.cerrarConexion();
+    }
+    
+    
+
+
+      
 }
