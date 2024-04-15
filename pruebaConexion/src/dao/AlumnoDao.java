@@ -16,7 +16,6 @@ import modelo.Curso;
 public class AlumnoDao{
     
     private final Conexion administrador;
-    
     public AlumnoDao(){
         administrador = new Conexion();
     }
@@ -146,7 +145,7 @@ public class AlumnoDao{
     }
 
     public void eliminar(Alumno alumno) {
-         Connection conexion = administrador.establecerConexion();
+        Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
         String query;
         try{
@@ -179,9 +178,6 @@ public class AlumnoDao{
         String query = "UPDATE Cursos_inscritos_alumnos "
                     +"SET id_curso" + (alumno.getNumeroCursos() + 1) + " = ?,"
                     + "grupo"+ (alumno.getNumeroCursos() + 1) +" = ? "
-                    + "WHERE matricula like ?;"
-                    + "UPDATE Alumnos_registrados "
-                    + "SET cursos_inscritos = ? "
                     + "WHERE matricula like ?;";
         try{
             conexion.setAutoCommit(false);  
@@ -189,9 +185,8 @@ public class AlumnoDao{
             comando.setInt(1, curso.getId());
             comando.setInt(2, curso.getGrupo());
             comando.setString(3, alumno.getMatricula());
-            comando.setInt(4, alumno.getNumeroCursos() + 1);
-            comando.setString(5, alumno.getMatricula());
             comando.executeUpdate();
+            actualizarCursosInscritos(alumno, 1, conexion);
             conexion.commit();
             comando.close();
             alumno.setNumeroCursos(alumno.getNumeroCursos() + 1);
@@ -207,6 +202,75 @@ public class AlumnoDao{
         administrador.cerrarConexion();
     }
     
+    public void darBajaCurso(Curso curso, Alumno alumno){
+         Connection conexion = administrador.establecerConexion();
+        PreparedStatement comando;
+        ResultSet resultado;
+        String query = "SELECT * FROM Cursos_inscritos_alumnos WHERE matricula like ?;";
+        try{
+            conexion.setAutoCommit(false);
+            comando = conexion.prepareStatement(query);
+            comando.setString(1, alumno.getMatricula());
+            resultado = comando.executeQuery();
+            int indice = 0;
+            if(resultado.next()){
+                System.out.println("entre");
+                for(int i = 1; i <= alumno.getNumeroCursos(); i++){
+                    int id = resultado.getInt("id_curso" + i);
+                    int grupo = resultado.getInt("grupo"+i);
+                    if(id == curso.getId() && grupo == curso.getGrupo()){
+                       indice = i;
+                       break;
+                    }
+                }
+                if(indice > 0){
+                    recorrerCursos(alumno, indice, conexion);
+                    actualizarCursosInscritos(alumno, -1, conexion);
+                    alumno.setNumeroCursos(alumno.getNumeroCursos() -1);
+                }
+            }
+            
+            conexion.commit();
+            comando.close();
+        }catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+            
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        
+        administrador.cerrarConexion();
+    }
     
+    private void recorrerCursos(Alumno alumno, int indice, Connection conexion)throws SQLException{
+        PreparedStatement comando;
+        String query;
+        for(int i = indice; i < 7; i++ ){
+            query = "UPDATE Cursos_inscritos_alumnos "
+                   +"SET id_curso" + i + " = " + "id_curso" + (i+1) + ","
+                  + "grupo" + i + " = " + "grupo" + (i+1) + " "
+                  + "WHERE matricula like ?;";
+
+            comando = conexion.prepareStatement(query);
+            comando.setString(1, alumno.getMatricula());
+            comando.executeUpdate();
+            comando.close();
+        }
+    }
+    
+    private void actualizarCursosInscritos(Alumno alumno, int factor, Connection conexion) throws SQLException{
+        PreparedStatement comando;
+        String query = "UPDATE Alumnos_registrados "
+                     + "SET cursos_inscritos = cursos_inscritos + " + factor + " "
+                     + "WHERE matricula like ?;";
+        
+        comando = conexion.prepareStatement(query);
+        comando.setString(1, alumno.getMatricula());
+        comando.executeUpdate();
+        comando.close();
+    }
     
 }
