@@ -24,7 +24,7 @@ public class Conexion {
         base = "PruebaSistema";
         usuario = "Leo";
         contrasenia = "12345";
-        ipConexion = "61520";
+        ipConexion = "55010";
     }
     
     public Connection establecerConexion(){
