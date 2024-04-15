@@ -12,6 +12,10 @@ public class Administrador extends Persona {
     private int id_administrador;
     private Usuario usuarioA;
     
+    public Administrador(){
+    
+    }
+    
      public Administrador(int id_administrador, String nombre, String apellidoPaterno, String apellidoMaterno, int edad, Usuario usuarioA) {
         super(nombre, apellidoPaterno, apellidoMaterno, edad);
         this.id_administrador = id_administrador;
