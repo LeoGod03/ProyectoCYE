@@ -7,8 +7,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import modelo.Alumno;
 import modelo.Curso;
+import modelo.Usuario;
 /**
  *
  * @author leopa
@@ -16,6 +18,12 @@ import modelo.Curso;
 public class AlumnoDao{
     
     private final Conexion administrador;
+    
+    public static enum BUSQUEDA{
+        MATRICULA,
+        NOMBREAPELLIDO
+    }
+    
     public AlumnoDao(){
         administrador = new Conexion();
     }
@@ -77,7 +85,7 @@ public class AlumnoDao{
                                            resultado.getInt("edad"),
                                            resultado.getInt("id_carrera"),
                                            resultado.getInt("cursos_inscritos"),
-                                           new UsuarioDao().buscar(alumno.getUsuario(), conexion));
+                                           new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
             }
             conexion.commit();
             comando.close();
@@ -95,7 +103,63 @@ public class AlumnoDao{
         
         return alumnoBuscado;
     }
-
+    
+     public ArrayList<Alumno> buscar(Alumno alumno, BUSQUEDA busqueda){
+        ArrayList<Alumno> alumnosBuscados = new ArrayList<>();
+        Connection conexion = administrador.establecerConexion();
+        PreparedStatement comando;
+        ResultSet resultado;
+        String query;
+        try{
+            conexion.setAutoCommit(false);
+            query = "SELECT * FROM Alumnos_registrados WHERE ";
+            if(busqueda == BUSQUEDA.MATRICULA)
+                query += "matricula like '%' + ? + '%';";
+            else
+                query += "nombre like '%(?)%' OR apellido_paterno like '%?%' OR apellido_materno like '%(?)%'";
+            
+            
+            comando = conexion.prepareStatement(query);
+            
+            if(busqueda == BUSQUEDA.MATRICULA)
+                comando.setString(1, alumno.getMatricula());
+            else{
+                comando.setString(1, alumno.getNombre());
+                comando.setString(2, alumno.getApellidoPaterno());
+                comando.setString(3, alumno.getApellidoMaterno());
+            }
+            
+            resultado = comando.executeQuery();
+            Alumno alumnoIteracion;
+            while(resultado.next()){
+                alumnoIteracion = new Alumno(resultado.getString("matricula"),
+                                           resultado.getString("nombre"),
+                                           resultado.getString("apellido_paterno"),
+                                           resultado.getString("apellido_materno"),
+                                           resultado.getInt("edad"),
+                                           resultado.getInt("id_carrera"),
+                                           resultado.getInt("cursos_inscritos"),
+                                           new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
+                
+                alumnosBuscados.add(alumnoIteracion);
+            }
+            conexion.commit();
+            comando.close();
+        }catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+            
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        
+        administrador.cerrarConexion();
+        
+        return alumnosBuscados;
+    }
+    
     public void actualizar(Alumno alumno, Alumno oldAlumno) {
         Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
