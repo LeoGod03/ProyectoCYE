@@ -131,7 +131,33 @@ public class ProfesorDao {
         administrador.cerrarConexion();
     }
     
-    
+    public void eliminar (Profesor profesor){
+        Connection conexion = administrador.establecerConexion();
+        PreparedStatement comando;
+        String query;
+        try{
+            conexion.setAutoCommit(false);
+            query = "DELETE FROM Profesores_registrados WHERE matricula like ?;";
+                  
+            
+            comando = conexion.prepareStatement(query);
+            comando.setInt(1, profesor.getId());
+            comando.setInt(2, profesor.getId());
+            comando.executeUpdate();
+            new UsuarioDao().eliminar(profesor.getUsuario(), conexion);
+            conexion.commit();
+            comando.close();
+        }catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        
+        administrador.cerrarConexion();
+    }
 
 
       
