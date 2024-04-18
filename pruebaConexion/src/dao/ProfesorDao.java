@@ -9,6 +9,12 @@ import modelo.Profesor;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+<<<<<<< Updated upstream
+=======
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import modelo.Profesor;
+>>>>>>> Stashed changes
 
 /**
  *
@@ -33,9 +39,15 @@ public class ProfesorDao {
             comando = conexion.prepareStatement(query);
             comando.setInt(1, profesor.getId());
             comando.setString(2, profesor.getNombre());
+<<<<<<< Updated upstream
             comando.setString(3, profesor.getApellidoP());
             comando.setString(4, profesor.getApellidoM());
             comando.setInt(5, profesor.getCubiculo());
+=======
+            comando.setString(3, profesor.getApellidoPaterno());
+            comando.setString(4, profesor.getApellidoMaterno());
+            comando.setString(5, profesor.getCubiculo());
+>>>>>>> Stashed changes
             comando.setString(6, profesor.getUsuario().getCorreo());
             comando.executeUpdate();
             new UsuarioDao().insertar(profesor.getUsuario(), conexion);
@@ -73,7 +85,11 @@ public class ProfesorDao {
                                            resultado.getString("nombre"),
                                            resultado.getString("apellido_paterno"),
                                            resultado.getString("apellido_materno"),
+<<<<<<< Updated upstream
                                            resultado.getInt("cubiculo"),
+=======
+                                           resultado.getString("cubiculo"),
+>>>>>>> Stashed changes
                                            new UsuarioDao().buscar(profesor.getUsuario(), conexion));
                                            }
             conexion.commit();
