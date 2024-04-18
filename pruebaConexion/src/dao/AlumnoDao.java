@@ -132,6 +132,8 @@ public class AlumnoDao{
             resultado = comando.executeQuery();
             Alumno alumnoIteracion;
             while(resultado.next()){
+                
+                // creamos un alumno con todos los datos que obtuvimos
                 alumnoIteracion = new Alumno(resultado.getString("matricula"),
                                            resultado.getString("nombre"),
                                            resultado.getString("apellido_paterno"),
