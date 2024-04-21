@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import modelo.Alumno;
 import modelo.Curso;
+import modelo.EnumBusquedas;
 import modelo.Usuario;
 /**
  *
@@ -19,11 +20,7 @@ public class AlumnoDao{
     
     private final Conexion administrador;
     
-    public static enum BUSQUEDA{
-        MATRICULA,
-        NOMBREAPELLIDO
-    }
-    
+  
     public AlumnoDao(){
         administrador = new Conexion();
     }
@@ -104,7 +101,7 @@ public class AlumnoDao{
         return alumnoBuscado;
     }
     
-     public ArrayList<Alumno> buscar(Alumno alumno, BUSQUEDA busqueda){
+     public ArrayList<Alumno> buscar(Alumno alumno, EnumBusquedas.BUSQUEDA busqueda){
         ArrayList<Alumno> alumnosBuscados = new ArrayList<>();
         Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
@@ -113,20 +110,20 @@ public class AlumnoDao{
         try{
             conexion.setAutoCommit(false);
             query = "SELECT * FROM Alumnos_registrados WHERE ";
-            if(busqueda == BUSQUEDA.MATRICULA)
+            if(busqueda == EnumBusquedas.BUSQUEDA.MATRICULA)
                 query += "matricula like '%' + ? + '%';";
             else
-                query += "nombre like '%(?)%' OR apellido_paterno like '%?%' OR apellido_materno like '%(?)%'";
+                query += "nombre like '%' + ? + '%' OR apellido_paterno like '%' + ? + '%' OR apellido_materno like '%' + ? + '%';";
             
             
             comando = conexion.prepareStatement(query);
             
-            if(busqueda == BUSQUEDA.MATRICULA)
+            if(busqueda == EnumBusquedas.BUSQUEDA.MATRICULA)
                 comando.setString(1, alumno.getMatricula());
             else{
                 comando.setString(1, alumno.getNombre());
-                comando.setString(2, alumno.getApellidoPaterno());
-                comando.setString(3, alumno.getApellidoMaterno());
+                comando.setString(2, alumno.getNombre());
+                comando.setString(3, alumno.getNombre());
             }
             
             resultado = comando.executeQuery();

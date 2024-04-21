@@ -79,9 +79,9 @@ create table Profesores_registrados(
 	nombre varchar(50) not null,
 	apellido_paterno varchar(50) not null,
 	apellido_materno varchar(50) not null,
+	edad int,
 	cubiculo varchar(50)not null,
-	correo varchar(50) not null,
-	contraseña varchar(50) not null,
+	correo varchar(50) not null
  
 );
 
