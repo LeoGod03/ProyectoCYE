@@ -77,7 +77,12 @@ public class ProfesorDao {
                                            resultado.getString("apellido_materno"),
                                            resultado.getInt("edad"),
                                            resultado.getString("cubiculo"),
+
                                            new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
+
+                                          // new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
+                                           //new UsuarioDao().buscar(profesor.getUsuario(), conexion));
+
                                           
             }
             conexion.commit();

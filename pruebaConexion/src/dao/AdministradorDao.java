@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Administrador;
 import java.sql.ResultSet;
+import modelo.Usuario;
 
 /**
  *
@@ -77,7 +78,9 @@ public class AdministradorDao {
                                            resultado.getString("apellido_paterno"),
                                            resultado.getString("apellido_materno"),
                                            resultado.getInt("edad"),
-                                           new UsuarioDao().buscar(admi.getUsuario(), conexion));
+                                           new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
+
+                                            // new UsuarioDao().buscar(admi.getUsuario(), conexion));
             }
             conexion.commit();
             comando.close();
