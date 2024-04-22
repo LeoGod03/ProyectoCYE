@@ -4,86 +4,46 @@
  */
 package modelo;
 
-import modelo.Usuario;
-import modelo.Curso;
-import java.util.ArrayList;
+
 
 /**
  *
  * @author leopa
  */
-public final class Profesor {
+public final class Profesor extends Persona {
     private int id;
-    private String nombre;
-    private String apellidoP;
-    private String apellidoM;
-    private ArrayList<Curso> cursosImpartidos;
-    private int cubiculo;
+    private String cubiculo;
     private Usuario usuario;
-
-    
-    public Profesor(int id, String nombre, String apellidoP, String apellidoM, ArrayList<Curso> cursosImpartidos, Usuario usuario) {
-	setId(id);
-	setNombre(nombre);
-	setApellidoP(apellidoP);
-	setApellidoM(apellidoM);
-        setCursosImpartidos(cursosImpartidos);
-        setUsuario(usuario);
-    }
-    
-    public Profesor(int id){
+    public Profesor(int id) {
+        super("","","",0);
         setId(id);
+        setUsuario(null);
+        setCubiculo("");
     }
     
+     public Profesor(int id,String nombre, String apellidoPaterno, String apellidoMaterno, int edad, String cubiculo, Usuario usuario) {
+        super(nombre, apellidoPaterno, apellidoMaterno, edad);
+        setId(id);
+        setUsuario(usuario);
+        setCubiculo(cubiculo);
+    }
+   
     public int getId() {
-	return id;
+        return id;
     }
-	
+
     public void setId(int id) {
-	this.id = id;
+        this.id = id;
     }
 
-    public String getNombre() {
-	return nombre;
-    }
-
-    public void setNombre(String nombre) {
-	this.nombre = nombre;
-    }
-
-    public String getApellidoP() {
-	return apellidoP;
-    }
-
-    public void setApellidoP(String apellidoP) {
-        this.apellidoP = apellidoP;
-    }
-
-    public String getApellidoM() {
-	return apellidoM;
-    }
-
-    public void setApellidoM(String apellidoM) {
-	this.apellidoM = apellidoM;
-    }
-    
-    public ArrayList<Curso> getCursosImpartidos() {
-        return cursosImpartidos;
-    }
-    
-    public void setCursosImpartidos(ArrayList<Curso> cursosImpartidos) {
-        this.cursosImpartidos = cursosImpartidos;
-    }
-
-    public int getCubiculo() {
+    public String getCubiculo() {
         return cubiculo;
     }
 
-    public void setCubiculo(int cubiculo) {
+    public void setCubiculo(String cubiculo) {
         this.cubiculo = cubiculo;
     }
-    
-    
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -91,11 +51,13 @@ public final class Profesor {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-        
+   
     @Override
     public String toString() {
-	return "Profesor [id=" + id + ", nombre=" + nombre + ", apellidoP=" + apellidoP + ", apellidoM=" + apellidoM
-				+ "]";
+        String cadena = "Profesor:" + super.getNombre()+  " " + super.getApellidoPaterno() + " " + super.getApellidoMaterno() + " Edad: " + super.getEdad() + " Correo: "+ usuario.getCorreo();
+        cadena+= " Cubiculo: " + cubiculo;
+        return cadena;
     }
-
+     
+   
 }

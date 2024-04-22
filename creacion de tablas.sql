@@ -5,11 +5,12 @@ Create table Alumnos_registrados(
 	apellido_materno varchar(50) not null,
 	id_carrera int not null,
 	edad int not null,
-	correo varchar(50) not null,
-	cursos_inscritos int not null
+	correo varchar(50) not null
 );
+drop table Alumnos_registrados
+select *from Alumnos_registrados 
 
---drop table Administradores
+
 Create table Cursos_inscritos_alumnos(
 	matricula varchar(12),
 	id_curso1 int,
@@ -28,6 +29,9 @@ Create table Cursos_inscritos_alumnos(
 	grupo7 int,
 
 );
+drop table Cursos_inscritos_alumnos
+select *from Cursos_inscritos_alumnos
+
 
 create table Usuarios(
 	correo varchar(50) primary key,
@@ -35,7 +39,8 @@ create table Usuarios(
 	llave int not null,
 	rol varchar(50) not null
 );
-
+drop table Usuarios
+select *from Usuarios
 
 create table Administradores(
 	id int primary key,
@@ -46,15 +51,18 @@ create table Administradores(
 	correo varchar(50) not null
 
 );
+drop table Administradores
+select *from Administradres
 
---drop table Cursos_registrados
 create table Cursos_registrados(
-	id int not null,
+	id int primary key,
 	grupo int not null,
 	alumnos_registrados int not null,
 	id_profesor int not null
-	Primary key(id,grupo)
+
 );
+drop table Cursos_registrados
+select *from Cursos_registrados
 
 create table Lista_cursos(
 	id int primary key,
@@ -62,3 +70,20 @@ create table Lista_cursos(
 	colegio varchar(10) not null,
 	ciclo varchar(20) not null
 );
+drop table Lista_cursos
+select *from Lista_cursos
+
+
+create table Profesores_registrados(
+	id int primary key,
+	nombre varchar(50) not null,
+	apellido_paterno varchar(50) not null,
+	apellido_materno varchar(50) not null,
+	edad int,
+	cubiculo varchar(50)not null,
+	correo varchar(50) not null
+ 
+);
+
+select *from Profesores_registrados
+drop table Profesores_registrados

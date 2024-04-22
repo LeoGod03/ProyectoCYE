@@ -239,7 +239,5 @@ public class CursosInscritosDao {
     
     
     
-    public void inscribir(Curso curso, Alumno alumno){
-        
-    }
+   
 }

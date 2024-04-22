@@ -22,6 +22,13 @@ public final class Usuario {
         this.llave = llave;
         this.rol = rol;
     }
+    
+    public Usuario(String correo){
+        this.correo = correo;
+        this.contrasenia = "";
+        this.llave = 0;
+        this.rol = "";
+    }
 
     public void setRol(String rol) {
         this.rol = rol;

@@ -7,8 +7,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import modelo.Alumno;
 import modelo.Curso;
+import modelo.EnumBusquedas;
+import modelo.Usuario;
 /**
  *
  * @author leopa
@@ -17,6 +20,7 @@ public class AlumnoDao{
     
     private final Conexion administrador;
     
+  
     public AlumnoDao(){
         administrador = new Conexion();
     }
@@ -78,7 +82,7 @@ public class AlumnoDao{
                                            resultado.getInt("edad"),
                                            resultado.getInt("id_carrera"),
                                            resultado.getInt("cursos_inscritos"),
-                                           new UsuarioDao().buscar(alumno.getUsuario(), conexion));
+                                           new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
             }
             conexion.commit();
             comando.close();
@@ -96,7 +100,65 @@ public class AlumnoDao{
         
         return alumnoBuscado;
     }
-
+    
+     public ArrayList<Alumno> buscar(Alumno alumno, EnumBusquedas.BUSQUEDA busqueda){
+        ArrayList<Alumno> alumnosBuscados = new ArrayList<>();
+        Connection conexion = administrador.establecerConexion();
+        PreparedStatement comando;
+        ResultSet resultado;
+        String query;
+        try{
+            conexion.setAutoCommit(false);
+            query = "SELECT * FROM Alumnos_registrados WHERE ";
+            if(busqueda == EnumBusquedas.BUSQUEDA.MATRICULA)
+                query += "matricula like '%' + ? + '%';";
+            else
+                query += "nombre like '%' + ? + '%' OR apellido_paterno like '%' + ? + '%' OR apellido_materno like '%' + ? + '%';";
+            
+            
+            comando = conexion.prepareStatement(query);
+            
+            if(busqueda == EnumBusquedas.BUSQUEDA.MATRICULA)
+                comando.setString(1, alumno.getMatricula());
+            else{
+                comando.setString(1, alumno.getNombre());
+                comando.setString(2, alumno.getNombre());
+                comando.setString(3, alumno.getNombre());
+            }
+            
+            resultado = comando.executeQuery();
+            Alumno alumnoIteracion;
+            while(resultado.next()){
+                
+                // creamos un alumno con todos los datos que obtuvimos
+                alumnoIteracion = new Alumno(resultado.getString("matricula"),
+                                           resultado.getString("nombre"),
+                                           resultado.getString("apellido_paterno"),
+                                           resultado.getString("apellido_materno"),
+                                           resultado.getInt("edad"),
+                                           resultado.getInt("id_carrera"),
+                                           resultado.getInt("cursos_inscritos"),
+                                           new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
+                
+                alumnosBuscados.add(alumnoIteracion);
+            }
+            conexion.commit();
+            comando.close();
+        }catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+            
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        
+        administrador.cerrarConexion();
+        
+        return alumnosBuscados;
+    }
+    
     public void actualizar(Alumno alumno, Alumno oldAlumno) {
         Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
@@ -146,7 +208,7 @@ public class AlumnoDao{
     }
 
     public void eliminar(Alumno alumno) {
-         Connection conexion = administrador.establecerConexion();
+        Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
         String query;
         try{
@@ -179,9 +241,6 @@ public class AlumnoDao{
         String query = "UPDATE Cursos_inscritos_alumnos "
                     +"SET id_curso" + (alumno.getNumeroCursos() + 1) + " = ?,"
                     + "grupo"+ (alumno.getNumeroCursos() + 1) +" = ? "
-                    + "WHERE matricula like ?;"
-                    + "UPDATE Alumnos_registrados "
-                    + "SET cursos_inscritos = ? "
                     + "WHERE matricula like ?;";
         try{
             conexion.setAutoCommit(false);  
@@ -189,9 +248,8 @@ public class AlumnoDao{
             comando.setInt(1, curso.getId());
             comando.setInt(2, curso.getGrupo());
             comando.setString(3, alumno.getMatricula());
-            comando.setInt(4, alumno.getNumeroCursos() + 1);
-            comando.setString(5, alumno.getMatricula());
             comando.executeUpdate();
+            actualizarCursosInscritos(alumno, 1, conexion);
             conexion.commit();
             comando.close();
             alumno.setNumeroCursos(alumno.getNumeroCursos() + 1);
@@ -207,6 +265,75 @@ public class AlumnoDao{
         administrador.cerrarConexion();
     }
     
+    public void darBajaCurso(Curso curso, Alumno alumno){
+         Connection conexion = administrador.establecerConexion();
+        PreparedStatement comando;
+        ResultSet resultado;
+        String query = "SELECT * FROM Cursos_inscritos_alumnos WHERE matricula like ?;";
+        try{
+            conexion.setAutoCommit(false);
+            comando = conexion.prepareStatement(query);
+            comando.setString(1, alumno.getMatricula());
+            resultado = comando.executeQuery();
+            int indice = 0;
+            if(resultado.next()){
+                System.out.println("entre");
+                for(int i = 1; i <= alumno.getNumeroCursos(); i++){
+                    int id = resultado.getInt("id_curso" + i);
+                    int grupo = resultado.getInt("grupo"+i);
+                    if(id == curso.getId() && grupo == curso.getGrupo()){
+                       indice = i;
+                       break;
+                    }
+                }
+                if(indice > 0){
+                    recorrerCursos(alumno, indice, conexion);
+                    actualizarCursosInscritos(alumno, -1, conexion);
+                    alumno.setNumeroCursos(alumno.getNumeroCursos() -1);
+                }
+            }
+            
+            conexion.commit();
+            comando.close();
+        }catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+            
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        
+        administrador.cerrarConexion();
+    }
     
+    private void recorrerCursos(Alumno alumno, int indice, Connection conexion)throws SQLException{
+        PreparedStatement comando;
+        String query;
+        for(int i = indice; i < 7; i++ ){
+            query = "UPDATE Cursos_inscritos_alumnos "
+                   +"SET id_curso" + i + " = " + "id_curso" + (i+1) + ","
+                  + "grupo" + i + " = " + "grupo" + (i+1) + " "
+                  + "WHERE matricula like ?;";
+
+            comando = conexion.prepareStatement(query);
+            comando.setString(1, alumno.getMatricula());
+            comando.executeUpdate();
+            comando.close();
+        }
+    }
+    
+    private void actualizarCursosInscritos(Alumno alumno, int factor, Connection conexion) throws SQLException{
+        PreparedStatement comando;
+        String query = "UPDATE Alumnos_registrados "
+                     + "SET cursos_inscritos = cursos_inscritos + " + factor + " "
+                     + "WHERE matricula like ?;";
+        
+        comando = conexion.prepareStatement(query);
+        comando.setString(1, alumno.getMatricula());
+        comando.executeUpdate();
+        comando.close();
+    }
     
 }
