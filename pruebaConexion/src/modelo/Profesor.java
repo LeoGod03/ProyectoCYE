@@ -14,13 +14,18 @@ public final class Profesor extends Persona {
     private int id;
     private String cubiculo;
     private Usuario usuario;
-
-    public Profesor() {
+    public Profesor(int id) {
         super("","","",0);
+        setId(id);
+        setUsuario(null);
+        setCubiculo("");
     }
     
      public Profesor(int id,String nombre, String apellidoPaterno, String apellidoMaterno, int edad, String cubiculo, Usuario usuario) {
         super(nombre, apellidoPaterno, apellidoMaterno, edad);
+        setId(id);
+        setUsuario(usuario);
+        setCubiculo(cubiculo);
     }
    
     public int getId() {
@@ -46,10 +51,12 @@ public final class Profesor extends Persona {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-
+   
     @Override
     public String toString() {
-        return "Profesor{" + "id=" + id + ", cubiculo=" + cubiculo + ", usuario=" + usuario + '}';
+        String cadena = "Profesor:" + super.getNombre()+  " " + super.getApellidoPaterno() + " " + super.getApellidoMaterno() + " Edad: " + super.getEdad() + " Correo: "+ usuario.getCorreo();
+        cadena+= " Cubiculo: " + cubiculo;
+        return cadena;
     }
      
    
