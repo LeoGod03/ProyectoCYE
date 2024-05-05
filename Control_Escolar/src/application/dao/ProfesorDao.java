@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package dao;
+package application.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,9 +11,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import modelo.EnumBusquedas;
-import modelo.Profesor;
-import modelo.Usuario;
+import application.modelo.EnumBusquedas;
+import application.modelo.Profesor;
+import application.modelo.Usuario;
 
 /**
  *
@@ -77,12 +77,7 @@ public class ProfesorDao {
                                            resultado.getString("apellido_materno"),
                                            resultado.getInt("edad"),
                                            resultado.getString("cubiculo"),
-
                                            new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
-
-                                          // new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
-                                           //new UsuarioDao().buscar(profesor.getUsuario(), conexion));
-
                                           
             }
             conexion.commit();
