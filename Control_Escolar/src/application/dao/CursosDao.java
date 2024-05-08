@@ -60,26 +60,7 @@ public class CursosDao {
         }
         administrador.cerrarConexion();
     }
-    // metodo para buscar desde otro metodo con conexión compartida
-    public Curso buscar(Curso curso, Connection conexion) throws SQLException{
-        Curso cursoBusqueda = null;
-        PreparedStatement comando;
-        ResultSet resultado;
-        String query = "SELECT * FROM Lista_cursos WHERE id = ?;";
-            
-        comando = conexion.prepareStatement(query);
-        comando.setInt(1, curso.getId());
-        resultado = comando.executeQuery();
-        if(resultado.next()){
-            cursoBusqueda = new Curso(curso.getId(),
-                                      resultado.getString("nombre"),
-                                      resultado.getString("ciclo"),
-                                      resultado.getString("colegio"));
-        }
-        comando.close();
-         
-        return cursoBusqueda;
-    }
+    
     // metodo para buscar desde el sistema
     public Curso buscar(Curso curso){
         Connection conexion = administrador.establecerConexion();

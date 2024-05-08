@@ -3,6 +3,7 @@ package application.controlador;
 import java.io.IOException;
 import java.util.Optional;
 import application.modelo.Curso;
+import application.modelo.Grupo;
 import application.dao.AlumnoDao;
 import application.modelo.Alumno;
 import javafx.collections.ObservableList;
@@ -43,7 +44,7 @@ public class VentanaPrincipalAlumnoController {
     private Label lbUsuario;
 
     @FXML
-    private ListView<?> lvCursos;
+    private ListView<String> lvCursos;
     
     private Alumno alumno;
     
@@ -70,8 +71,8 @@ public class VentanaPrincipalAlumnoController {
         Optional<ButtonType> result = alert.showAndWait();
         
         if (result.isPresent() && result.get() == ButtonType.OK) {
-        	new AlumnoDao().darBajaCurso(new Curso(Integer.parseInt(partesCurso[1]),
-        								 Integer.parseInt(partesCurso[3]), 0), alumno);
+        	new AlumnoDao().darBajaGrupo(new Grupo(Integer.parseInt(partesCurso[1]),
+        								 Integer.parseInt(partesCurso[3])), alumno);
         	
         	lvCursos.getItems().remove(lvCursos.getSelectionModel().getSelectedIndex());
         	Alert confirmation = new Alert(AlertType.CONFIRMATION, "Dado de baja del grupo Id: " + partesCurso[1] + " grupo: " + partesCurso[3], ButtonType.OK);
@@ -109,8 +110,8 @@ public class VentanaPrincipalAlumnoController {
     	lbUsuario.setText("Usuario: " + alumno.getUsuario().getCorreo());
     	ObservableList<String> items = (ObservableList<String>) lvCursos.getItems();
     	
-    	for(Curso curso: alumno.getCursosInscritos())
-    		items.add("Id: " + curso.getId() + " Grupo: " + curso.getGrupo() + " Nombre: " + curso.getNombre() + "]");
+    	for(Grupo curso: alumno.getGruposInscritos())
+    		items.add("Id: " + curso.getId() + " Grupo: " + curso.getGrupo() + "]");
     
     	lvCursos.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
     		opcion = (String) newValue;

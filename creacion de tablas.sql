@@ -24,7 +24,7 @@ CREATE TABLE Alumnos_registrados(
 	apellido_materno VARCHAR(50) NOT NULL,
 	id_carrera INT NOT NULL,
 	correo VARCHAR(150) NOT NULL,
-	cursos_inscritos INT NOT NULL,
+	grupos_inscritos INT NOT NULL,
 
 	FOREIGN KEY (id_carrera) REFERENCES Licenciaturas(id),
 	FOREIGN KEY (correo) REFERENCES Usuarios(correo)
@@ -32,7 +32,7 @@ CREATE TABLE Alumnos_registrados(
 
 );
 
-CREATE TABLE Cursos_inscritos_alumnos(
+CREATE TABLE Grupos_inscritos_alumnos(
 	matricula VARCHAR(12),
 	id_curso1 INT,
 	grupo1 INT,
@@ -64,7 +64,7 @@ CREATE TABLE Administradores(
 
 
 
-CREATE TABLE Cursos_registrados(
+CREATE TABLE Grupos_registrados(
 	id INT,
 	grupo INT NOT NULL,
 	alumnos_registrados INT NOT NULL,
@@ -87,9 +87,9 @@ CREATE TABLE Profesores_registrados(
 );
 /*
 drop table Profesores_registrados
-drop table Cursos_registrados
+drop table Grupos_registrados
 drop table Administradores
-drop table Cursos_inscritos_alumnos
+drop table Grupos_inscritos_alumnos
 drop table Alumnos_registrados
 drop table Usuarios
 drop table Lista_cursos

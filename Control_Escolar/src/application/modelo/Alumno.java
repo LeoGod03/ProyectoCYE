@@ -16,9 +16,9 @@ public final class Alumno extends Persona{
     private String matricula;
     private int idCarrera;
     private Usuario usuario;
-    private ArrayList<Curso> cursosInscritos;
+    private ArrayList<Grupo> gruposInscritos;
     private Double[] porcentajes;
-    private int numeroCursos;
+    private int numeroGrupos;
 	
     public Alumno(String matricula,String nombre, String apellidoP, String apellidoM,
         int idCarrera,int numeroCursos,Usuario usuario) {
@@ -26,7 +26,7 @@ public final class Alumno extends Persona{
         setMatricula(matricula);
         setIdCarrera(idCarrera);
         setUsuario(usuario);
-        setNumeroCursos(numeroCursos);
+        setNumeroGrupos(numeroCursos);
     }
     
     public Alumno(String matricula){
@@ -34,7 +34,7 @@ public final class Alumno extends Persona{
         setMatricula(matricula);
         setIdCarrera(0);
         setUsuario(null);
-        setNumeroCursos(0);
+        setNumeroGrupos(0);
     }
    
     
@@ -49,12 +49,12 @@ public final class Alumno extends Persona{
     	return matricula;
     }
     
-    public void setCursosInscritos(ArrayList<Curso> cursosInscritos) {
-        this.cursosInscritos = cursosInscritos;
+    public void setGruposInscritos(ArrayList<Grupo> cursosInscritos) {
+        this.gruposInscritos = cursosInscritos;
     }
 
-    public ArrayList<Curso> getCursosInscritos() {
-        return cursosInscritos;
+    public ArrayList<Grupo> getGruposInscritos() {
+        return gruposInscritos;
     }
     
     public void setMatricula(String matricula) {
@@ -86,12 +86,12 @@ public final class Alumno extends Persona{
         return usuario;
     }
     
-    public int getNumeroCursos(){
-        return numeroCursos;
+    public int getNumeroGrupos(){
+        return numeroGrupos;
     }
     
-    public void setNumeroCursos(int numeroCursos){
-        this.numeroCursos = numeroCursos;
+    public void setNumeroGrupos(int numeroCursos){
+        this.numeroGrupos = numeroCursos;
     }
     
     
