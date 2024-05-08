@@ -30,7 +30,7 @@ public class AlumnoDao{
         String query;
         try{
             conexion.setAutoCommit(false);
-            query = "INSERT INTO Alumnos_registrados VALUES (?,?,?,?,?,?,?,?);"
+            query = "INSERT INTO Alumnos_registrados VALUES (?,?,?,?,?,?,?);"
                   + "INSERT INTO Cursos_inscritos_alumnos (matricula) VALUES(?);";
             
             comando = conexion.prepareStatement(query);
@@ -39,12 +39,11 @@ public class AlumnoDao{
             comando.setString(3, alumno.getApellidoPaterno());
             comando.setString(4, alumno.getApellidoMaterno());
             comando.setInt(5, alumno.getIdCarrera());
-            comando.setInt(6, alumno.getEdad());
-            comando.setString(7, alumno.getUsuario().getCorreo());
-            comando.setInt(8, 0);
-            comando.setString(9, alumno.getMatricula());
-            comando.executeUpdate();
+            comando.setString(6, alumno.getUsuario().getCorreo());
+            comando.setInt(7, 0);
+            comando.setString(8, alumno.getMatricula());
             new UsuarioDao().insertar(alumno.getUsuario(), conexion);
+            comando.executeUpdate();
             conexion.commit();
             comando.close();
         }catch(SQLException sqle){
@@ -79,10 +78,11 @@ public class AlumnoDao{
                                            resultado.getString("nombre"),
                                            resultado.getString("apellido_paterno"),
                                            resultado.getString("apellido_materno"),
-                                           resultado.getInt("edad"),
                                            resultado.getInt("id_carrera"),
                                            resultado.getInt("cursos_inscritos"),
                                            new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
+                
+                alumnoBuscado.setCursosInscritos(new CursosInscritosDao().obtenerCursos(alumnoBuscado));
             }
             conexion.commit();
             comando.close();
@@ -101,8 +101,50 @@ public class AlumnoDao{
         return alumnoBuscado;
     }
     
-     public ArrayList<Alumno> buscar(Alumno alumno, EnumBusquedas.BUSQUEDA busqueda){
-        ArrayList<Alumno> alumnosBuscados = new ArrayList<>();
+    public Alumno buscar(Usuario usuario){
+        Alumno alumnoBuscado = null;
+        Connection conexion = administrador.establecerConexion();
+        PreparedStatement comando;
+        ResultSet resultado;
+        String query;
+        try{
+            conexion.setAutoCommit(false);
+            query = "SELECT * FROM Alumnos_registrados WHERE correo like ?;";
+            
+            comando = conexion.prepareStatement(query);
+            comando.setString(1, usuario.getCorreo());
+            
+            resultado = comando.executeQuery();
+            if(resultado.next()){
+                alumnoBuscado = new Alumno(resultado.getString("matricula"),
+                                           resultado.getString("nombre"),
+                                           resultado.getString("apellido_paterno"),
+                                           resultado.getString("apellido_materno"),
+                                           resultado.getInt("id_carrera"),
+                                           resultado.getInt("cursos_inscritos"),
+                                           usuario);
+                alumnoBuscado.setCursosInscritos(new CursosInscritosDao().obtenerCursos(alumnoBuscado));
+            }
+            conexion.commit();
+            comando.close();
+        }catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+            
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        
+        administrador.cerrarConexion();
+        
+        return alumnoBuscado;
+    }
+
+    
+    public ArrayList<Alumno> buscar(Alumno alumno, EnumBusquedas.BUSQUEDA busqueda){
+    	ArrayList<Alumno> alumnosBuscados = new ArrayList<>();
         Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
         ResultSet resultado;
@@ -135,11 +177,11 @@ public class AlumnoDao{
                                            resultado.getString("nombre"),
                                            resultado.getString("apellido_paterno"),
                                            resultado.getString("apellido_materno"),
-                                           resultado.getInt("edad"),
                                            resultado.getInt("id_carrera"),
                                            resultado.getInt("cursos_inscritos"),
                                            new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
                 
+                alumnoIteracion.setCursosInscritos(new CursosInscritosDao().obtenerCursos(alumnoIteracion));
                 alumnosBuscados.add(alumnoIteracion);
             }
             conexion.commit();
@@ -171,7 +213,6 @@ public class AlumnoDao{
                     + "apellido_paterno = ?,"
                     + "apellido_materno = ?,"
                     + "id_carrera = ?,"
-                    + "edad = ?,"
                     + "correo = ?,"
                     + "cursos_inscritos = ?"
                     + "WHERE matricula = ?;"
@@ -185,14 +226,13 @@ public class AlumnoDao{
             comando.setString(3, alumno.getApellidoPaterno());
             comando.setString(4, alumno.getApellidoMaterno());
             comando.setInt(5, alumno.getIdCarrera());
-            comando.setInt(6, alumno.getEdad());
-            comando.setString(7, alumno.getUsuario().getCorreo());
-            comando.setInt(8, alumno.getNumeroCursos());
-            comando.setString(9, oldAlumno.getMatricula());
-            comando.setString(10, alumno.getMatricula());
-            comando.setString(11, oldAlumno.getMatricula());
-            comando.executeUpdate();
+            comando.setString(6, alumno.getUsuario().getCorreo());
+            comando.setInt(7, alumno.getNumeroCursos());
+            comando.setString(8, oldAlumno.getMatricula());
+            comando.setString(9, alumno.getMatricula());
+            comando.setString(10, oldAlumno.getMatricula());
             new UsuarioDao().actualizar(alumno.getUsuario(), oldAlumno.getUsuario(), conexion);
+            comando.executeUpdate();
             conexion.commit();
             comando.close();
         }catch(SQLException sqle){
@@ -213,8 +253,8 @@ public class AlumnoDao{
         String query;
         try{
             conexion.setAutoCommit(false);
-            query = "DELETE FROM Alumnos_registrados WHERE matricula like ?;"
-                  + "DELETE FROM Cursos_inscritos_alumnos WHERE matricula like ?";
+            query = "DELETE FROM Cursos_inscritos_alumnos WHERE matricula like ?" +
+            		"DELETE FROM Alumnos_registrados WHERE matricula like ?;";
             
             comando = conexion.prepareStatement(query);
             comando.setString(1, alumno.getMatricula());

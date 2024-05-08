@@ -32,17 +32,16 @@ public class ProfesorDao {
         String query;
         try{
             conexion.setAutoCommit(false);
-            query = "INSERT INTO Profesores_registrados VALUES (?,?,?,?,?,?,?);";
+            query = "INSERT INTO Profesores_registrados VALUES (?,?,?,?,?,?);";
             comando = conexion.prepareStatement(query);
             comando.setInt(1, profesor.getId());
             comando.setString(2, profesor.getNombre());
             comando.setString(3, profesor.getApellidoPaterno());
             comando.setString(4, profesor.getApellidoMaterno());
-            comando.setInt(5,profesor.getEdad());
-            comando.setString(6, profesor.getCubiculo());
-            comando.setString(7, profesor.getUsuario().getCorreo());
-            comando.executeUpdate();
+            comando.setString(5, profesor.getCubiculo());
+            comando.setString(6, profesor.getUsuario().getCorreo());
             new UsuarioDao().insertar(profesor.getUsuario(), conexion);
+            comando.executeUpdate();
             conexion.commit();
             comando.close();
         }catch(SQLException sqle){
@@ -75,7 +74,6 @@ public class ProfesorDao {
                                            resultado.getString("nombre"),
                                            resultado.getString("apellido_paterno"),
                                            resultado.getString("apellido_materno"),
-                                           resultado.getInt("edad"),
                                            resultado.getString("cubiculo"),
                                            new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
                                           
@@ -128,7 +126,6 @@ public class ProfesorDao {
                                            resultado.getString("nombre"),
                                            resultado.getString("apellido_paterno"),
                                            resultado.getString("apellido_materno"),
-                                           resultado.getInt("edad"),
                                            resultado.getString("cubiculo"),
                                            new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
                 
@@ -152,8 +149,7 @@ public class ProfesorDao {
         return profesorBuscados;
         
     }
-    
-    
+     
     public void actualizar(Profesor profesor, Profesor oldprofesor) {
         Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
@@ -166,7 +162,6 @@ public class ProfesorDao {
                     + "apellido_paterno = ?,"
                     + "apellido_materno = ?,"
                     + "cubiculo = ?,"
-                    + "edad = ?,"
                     + "correo = ? "
                     + "WHERE id = ?";
          
@@ -176,11 +171,10 @@ public class ProfesorDao {
             comando.setString(3, profesor.getApellidoPaterno());
             comando.setString(4, profesor.getApellidoMaterno());
             comando.setString(5, profesor.getCubiculo());
-            comando.setInt(6, profesor.getEdad());
             comando.setString(6, profesor.getUsuario().getCorreo());
             comando.setInt(7, oldprofesor.getId());
-            comando.executeUpdate();
             new UsuarioDao().actualizar(profesor.getUsuario(), oldprofesor.getUsuario(), conexion);
+            comando.executeUpdate();
             conexion.commit();
             comando.close();
         }catch(SQLException sqle){

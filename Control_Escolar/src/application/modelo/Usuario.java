@@ -4,6 +4,8 @@
  */
 package application.modelo;
 
+import java.util.Random;
+
 /**
  *
  * @author leopa
@@ -64,10 +66,41 @@ public final class Usuario {
 
   
     
-    public static void cifrado (String contrasenia, String llave){
+    public static void cifrar (Usuario usuario){
         
     }
-
+    
+    public static void descifrar(Usuario usuario) {
+    	
+    }
+    
+    public static Usuario generaUsuario(Persona persona) {
+    	Usuario usuarioGenerado;
+    	String[] partesNombre = persona.getNombre().split(" ");
+    	String password = persona.getApellidoMaterno();
+    	String correo = partesNombre[0];
+    	correo += "." + persona.getApellidoPaterno();
+    	
+    	
+    	
+    	if(persona instanceof Alumno) {
+    		Alumno alumnoTemp = (Alumno)persona;
+    		String[] partesMatricula = alumnoTemp.getMatricula().split("-");
+    		for(String parte: partesMatricula) {
+    			correo += parte;
+    			password += parte;
+    		}
+    		correo +=  "@alumnos.uacm.edu.mx";
+    		
+    	}else {
+    		Profesor profesorTemp = (Profesor)persona;
+    		password += profesorTemp.getId();
+    		correo += profesorTemp.getId() + "@profesor.uacm.edu.mx";
+    	}
+    	usuarioGenerado = new Usuario(correo, password, new Random().nextInt(100),(persona instanceof Alumno)? "alumno": "profesor");
+    	return usuarioGenerado;
+    }
+    
    
     @Override
     

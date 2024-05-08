@@ -4,7 +4,8 @@
  */
 package application.modelo;
 
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -15,14 +16,14 @@ public final class Profesor extends Persona {
     private String cubiculo;
     private Usuario usuario;
     public Profesor(int id) {
-        super("","","",0);
+        super("","","");
         setId(id);
         setUsuario(null);
         setCubiculo("");
     }
     
-     public Profesor(int id,String nombre, String apellidoPaterno, String apellidoMaterno, int edad, String cubiculo, Usuario usuario) {
-        super(nombre, apellidoPaterno, apellidoMaterno, edad);
+     public Profesor(int id,String nombre, String apellidoPaterno, String apellidoMaterno, String cubiculo, Usuario usuario) {
+        super(nombre, apellidoPaterno, apellidoMaterno);
         setId(id);
         setUsuario(usuario);
         setCubiculo(cubiculo);
@@ -51,10 +52,20 @@ public final class Profesor extends Persona {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-   
+    
+    public static boolean esCubiculoValido(String cubiculo) {
+    	 String pattern = "[A-Z]-\\d{3}";
+
+         Pattern r = Pattern.compile(pattern);
+         Matcher m = r.matcher(cubiculo);
+         
+         return m.matches();
+    }
+    
+    
     @Override
     public String toString() {
-        String cadena = "Profesor:" + super.getNombre()+  " " + super.getApellidoPaterno() + " " + super.getApellidoMaterno() + " Edad: " + super.getEdad() + " Correo: "+ usuario.getCorreo();
+        String cadena = "Profesor:" + super.getNombre()+  " " + super.getApellidoPaterno() + " " + super.getApellidoMaterno() + " Correo: "+ usuario.getCorreo();
         cadena+= " Cubiculo: " + cubiculo;
         return cadena;
     }

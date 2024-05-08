@@ -35,13 +35,10 @@ public class AdministradorDao {
             comando.setInt(1, admin.getId_administrador());
             comando.setString(2, admin.getNombre());
             comando.setString(3, admin.getApellidoPaterno());
-            
-            
             comando.setString(4, admin.getApellidoMaterno());
-            comando.setInt(5, admin.getEdad());
-            //comando.setString(6, admin.getUsuario().getCorreo());
-            comando.executeUpdate();
+            comando.setString(5, admin.getUsuario().getCorreo());
             new UsuarioDao().insertar(admin.getUsuario(), conexion);
+            comando.executeUpdate();
             conexion.commit();
             comando.close();
         }catch(SQLException sqle){
@@ -56,7 +53,7 @@ public class AdministradorDao {
     
     }
     
-     public Administrador buscar(Administrador admi){
+    public Administrador buscar(Administrador admi){
         Administrador adminBuscado = null;
         Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
@@ -75,7 +72,6 @@ public class AdministradorDao {
                                            resultado.getString("nombre"),
                                            resultado.getString("apellido_paterno"),
                                            resultado.getString("apellido_materno"),
-                                           resultado.getInt("edad"),
                                            new UsuarioDao().buscar(admi.getUsuario(), conexion));
             }
             conexion.commit();
@@ -96,8 +92,6 @@ public class AdministradorDao {
     }
     
     
-    
-    
     public void actualizar(Administrador admin, Administrador oldadmin) {
         Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
@@ -109,7 +103,6 @@ public class AdministradorDao {
                     + "nombre = ?,"
                     + "apellido_paterno = ?,"
                     + "apellido_materno = ?,"
-                    + "edad = ?,"
                     + "correo = ? "
                     + "WHERE id = ?";
               
@@ -120,12 +113,11 @@ public class AdministradorDao {
             comando.setString(2, admin.getNombre());
             comando.setString(3, admin.getApellidoPaterno());
             comando.setString(4, admin.getApellidoMaterno());
-            comando.setInt(5, admin.getEdad());
-            comando.setString(6, admin.getUsuario().getCorreo());
-            comando.setInt(7, oldadmin.getId_administrador());
+            comando.setString(5, admin.getUsuario().getCorreo());
+            comando.setInt(6, oldadmin.getId_administrador());
 
-            comando.setInt(8, admin.getId_administrador());
-            comando.setInt(9, oldadmin.getId_administrador());
+            comando.setInt(7, admin.getId_administrador());
+            comando.setInt(8, oldadmin.getId_administrador());
 
             comando.executeUpdate();
             new UsuarioDao().actualizar(admin.getUsuario(), oldadmin.getUsuario(), conexion);

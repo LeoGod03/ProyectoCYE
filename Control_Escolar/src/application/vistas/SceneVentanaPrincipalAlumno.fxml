@@ -4,16 +4,15 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controlador.VentanaPrincipalAlumnoController">
    <children>
       <SplitPane dividerPositions="0.29797979797979796" layoutX="7.0" layoutY="14.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -23,7 +22,10 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <ImageView fitHeight="190.0" fitWidth="180.0" layoutX="-4.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="190.0" fitWidth="180.0" layoutX="-4.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/logo.jpg" />
+                                 </image></ImageView>
                            </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -72,21 +74,19 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <MenuButton fx:id="cboxMenuCuenta" mnemonicParsing="false" text="Cuenta">
-                                            <items>
-                                              <MenuItem mnemonicParsing="false" text="Action 1" />
-                                              <MenuItem mnemonicParsing="false" text="Action 2" />
-                                            </items>
-                                          </MenuButton>
+                                          <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#btnSalir_OnClick" text="Salir" />
                                           <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                                              <HBox.margin>
                                                 <Insets left="10.0" />
                                              </HBox.margin>
+                                             <image>
+                                                <Image url="@../images/estudiante.png" />
+                                             </image>
                                           </ImageView>
                                        </children>
                                     </HBox>
-                                    <Button fx:id="btnInscribir" mnemonicParsing="false" text="Inscribir curso" />
-                                    <Button fx:id="btnEliminar" mnemonicParsing="false" text="Dar de baja curso" />
+                                    <Button fx:id="btnInscribir" mnemonicParsing="false" onAction="#btnInscribir_OnClick" text="Inscribir curso" />
+                                    <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#btnEliminar_OnClick" text="Dar de baja curso" />
                                  </children>
                               </VBox>
                            </children>
