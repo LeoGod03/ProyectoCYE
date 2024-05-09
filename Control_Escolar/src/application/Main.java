@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import application.dao.AlumnoDao;
 import application.modelo.Alumno;
 import application.modelo.EnumBusquedas;
+import application.modelo.Usuario;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 
@@ -40,9 +41,9 @@ public class Main extends Application {
 		      for(Curso curso: cursos){
 		          System.out.println(curso);
 		      }*/  
-		      
+		      Alumno alumno = new Alumno("21-003-1605","Brian Miguel","Escalona","Maldonado",21,12,0,new Usuario("Escolanoa","1234",12,"estudiante"));
 		      // creamos un nuevo alumno
-		      //new AlumnoDao().insertar(alumno);
+		      new AlumnoDao().insertar(alumno);
 		      //new AlumnoDao().darBajaCurso(new Curso(2,302,21), new AlumnoDao().buscar(alumno));
 		      
 		      //Profesor profesor = new Profesor(12, "Jorge Enrique", "Wals", "Selvas", 34, "D-004", new Usuario("WalsSelvas", "12345", 12, "Profesor"));
@@ -61,11 +62,11 @@ public class Main extends Application {
 		      for(Curso curso: cursos){
 		          System.out.println(curso);
 		      }
-		      */
-		      ArrayList<Alumno> lista = new AlumnoDao().buscar(new Alumno("20","","","",0,0,0,null), EnumBusquedas.BUSQUEDA.NOMBREAPELLIDO);
+		      
+		      ArrayList<Alumno> lista = new AlumnoDao().buscar(new Alumno("20-003-1234","","","",0,0,0,null), EnumBusquedas.BUSQUEDA.MATRICULA);
 		      for(Alumno alumnoI: lista){
 		          System.out.println(alumnoI);
-		      }
+		      }*/
 
 		} catch(Exception e) {
 			e.printStackTrace();
