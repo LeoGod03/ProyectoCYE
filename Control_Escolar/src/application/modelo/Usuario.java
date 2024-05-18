@@ -18,6 +18,8 @@ public final class Usuario {
     private int llave;
     private String rol;
     
+    
+    
     public Usuario(String correo, String contrasenia, int llave, String rol){
         this.correo = correo;
         this.contrasenia = contrasenia;
@@ -64,22 +66,15 @@ public final class Usuario {
         this.llave = llave;
     }
 
-  
+     
     
-    public static void cifrar (Usuario usuario){
-        
-    }
-    
-    public static void descifrar(Usuario usuario) {
-    	
-    }
     
     public static Usuario generaUsuario(Persona persona) {
     	Usuario usuarioGenerado;
     	String[] partesNombre = persona.getNombre().split(" ");
-    	String password = persona.getApellidoMaterno();
-    	String correo = partesNombre[0];
-    	correo += "." + persona.getApellidoPaterno();
+    	String password = persona.getApellidoMaterno().toLowerCase();
+    	String correo = partesNombre[0].toLowerCase();
+    	correo += "." + persona.getApellidoPaterno().toLowerCase();
     	
     	
     	

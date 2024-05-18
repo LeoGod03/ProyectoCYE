@@ -7,4 +7,5 @@ module Control_Escolar {
 	
 	opens application to javafx.graphics, javafx.fxml;
 	opens application.controlador to javafx.fxml;
+	opens application.modelo to javafx.base;
 }

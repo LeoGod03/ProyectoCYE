@@ -2,13 +2,12 @@ package application.controlador;
 
 import java.io.IOException;
 import java.util.Optional;
-import application.modelo.Curso;
 import application.modelo.Grupo;
-import application.dao.AlumnoDao;
+import application.dao.GruposDao;
 import application.modelo.Alumno;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -27,6 +26,7 @@ public class VentanaPrincipalAlumnoController {
     
     @FXML
     private Button btnSalir;
+    
 
     @FXML
     private Label lbApellidoM;
@@ -44,11 +44,11 @@ public class VentanaPrincipalAlumnoController {
     private Label lbUsuario;
 
     @FXML
-    private ListView<String> lvCursos;
+    private ListView<Grupo> lvGrupos;
     
     private Alumno alumno;
     
-    private String opcion;
+    private Grupo opcion;
     
     public void setAlumno(Alumno alumno) {
     	this.alumno = alumno;
@@ -56,37 +56,48 @@ public class VentanaPrincipalAlumnoController {
     
     @FXML
     void btnEliminar_OnClick(ActionEvent event) {
-    	String[] partesCurso = opcion.split(" ");
     	
     	// creamos la alerta
-    	Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    	alert.setWidth(350.0);
-    	alert.setHeight(250.0);
-        alert.setTitle("Confirmación");
-        alert.setHeaderText("Eliminar elemento");
-        alert.setContentText("¿Estás seguro que deseas eliminar el elemento seleccionado: "
-        					+ "Id: " + partesCurso[1] + " Grupo: " + partesCurso[3] + "?");
-        
-        // para obtener el resultado
-        Optional<ButtonType> result = alert.showAndWait();
-        
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-        	new AlumnoDao().darBajaGrupo(new Grupo(Integer.parseInt(partesCurso[1]),
-        								 Integer.parseInt(partesCurso[3])), alumno);
-        	
-        	lvCursos.getItems().remove(lvCursos.getSelectionModel().getSelectedIndex());
-        	Alert confirmation = new Alert(AlertType.CONFIRMATION, "Dado de baja del grupo Id: " + partesCurso[1] + " grupo: " + partesCurso[3], ButtonType.OK);
+	    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+	    alert.setWidth(350.0);
+	    alert.setHeight(250.0);
+	    alert.setTitle("Confirmación");
+	    alert.setHeaderText("Eliminar elemento");
+	    alert.setContentText("¿Estás seguro que deseas eliminar el elemento seleccionado: "
+	        					+ "Id: "+ opcion.getId() + " Grupo: " + opcion.getGrupo() + "?");
+	        
+	      // para obtener el resultado
+	    Optional<ButtonType> result = alert.showAndWait();
+	        
+	    if (result.isPresent() && result.get() == ButtonType.OK) {
+	        new GruposDao().darBajaGrupo(opcion, alumno);
+	        Alert confirmation = new Alert(AlertType.CONFIRMATION, "Dado de baja del grupo Id: " + opcion.getId() + " grupo: " + opcion.getGrupo(), ButtonType.OK);
 			confirmation.show();
-        	
-        } else {
-        	Alert confirmation = new Alert(AlertType.CONFIRMATION, "¡Acción cancelada!", ButtonType.OK);
+			lvGrupos.getItems().remove(opcion);
+	        	
+	    } else {
+	       Alert confirmation = new Alert(AlertType.CONFIRMATION, "¡Acción cancelada!", ButtonType.OK);
 			confirmation.show();
-        }
+	    }
+    	
     }
 
     @FXML
     void btnInscribir_OnClick(ActionEvent event) {
-
+    	try {
+    		Double[] bounds = {650.0, 450.0};
+    		FXMLLoader loader = VentanaController.crearVentana("Inscribir curso", bounds, "/application/vistas/SceneInscribirGrupo.fxml");
+    		InscribirGrupoController controlador = loader.getController();
+    		controlador.setAlumno(alumno);
+    		controlador.inicializar();
+    		
+    		Stage stage = (Stage) btnInscribir.getScene().getWindow();
+    		stage.close();
+    	}catch(IOException e) {
+    		
+    		e.printStackTrace();
+    	}
+    	
     }
     
 
@@ -103,27 +114,43 @@ public class VentanaPrincipalAlumnoController {
     }
     
     public void loadVentana() {
+    	
+    	System.out.println(alumno.getNumeroGrupos());
+    	
+    	btnInscribir.setDisable(alumno.getNumeroGrupos() > 7);
+    	btnEliminar.setDisable(alumno.getNumeroGrupos() <= 0);
+    	
     	lbMatricula.setText("Matricula: " + alumno.getMatricula());
     	lbNombre.setText("Nombre: " + alumno.getNombre());
     	lbApellidoP.setText("Apellido paterno: " + alumno.getApellidoPaterno());
     	lbApellidoM.setText("Apellido materno: " + alumno.getApellidoMaterno());
     	lbUsuario.setText("Usuario: " + alumno.getUsuario().getCorreo());
-    	ObservableList<String> items = (ObservableList<String>) lvCursos.getItems();
     	
-    	for(Grupo curso: alumno.getGruposInscritos())
-    		items.add("Id: " + curso.getId() + " Grupo: " + curso.getGrupo() + "]");
+    	for(Grupo grupo: alumno.getGruposInscritos())
+    		lvGrupos.getItems().add(grupo);
     
-    	lvCursos.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-    		opcion = (String) newValue;
+    	lvGrupos.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+    		opcion = (Grupo) newValue;
     		//System.out.println(opcion);
         });
     	
-    	lvCursos.setOnMouseClicked(event -> {
+    	lvGrupos.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
-           
-                System.out.println(opcion);
+            	try {
+            		Double [] bounds = {750.0, 400.0};
+            		FXMLLoader loader =  VentanaController.crearVentana("Grupo", bounds, "/application/vistas/SceneGrupoAlumno.fxml");
+            		GrupoAlumnoController controlador = loader.getController();
+            		controlador.setGrupo(opcion);
+            		controlador.inicialiar();
+            		Stage stage = (Stage) btnSalir.getScene().getWindow();
+            		stage.close();
+            	}catch(IOException e) {
+            		e.printStackTrace();
+            	}
             }
         });
 
     }
+
+    
 }
