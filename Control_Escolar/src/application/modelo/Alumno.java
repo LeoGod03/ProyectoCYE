@@ -21,12 +21,15 @@ public final class Alumno extends Persona{
     private int numeroGrupos;
 	
     public Alumno(String matricula,String nombre, String apellidoP, String apellidoM,
-        int idCarrera,int numeroCursos,Usuario usuario) {
+        int idCarrera,int numeroGrupos,Usuario usuario) {
         super(nombre, apellidoP, apellidoM);
         setMatricula(matricula);
         setIdCarrera(idCarrera);
         setUsuario(usuario);
-        setNumeroGrupos(numeroCursos);
+        setNumeroGrupos(numeroGrupos);
+        porcentajes = new Double[3];
+        for(int i = 0; i < 3; i++)
+        	porcentajes[i] = 0.0;
     }
     
     public Alumno(String matricula){
@@ -35,6 +38,9 @@ public final class Alumno extends Persona{
         setIdCarrera(0);
         setUsuario(null);
         setNumeroGrupos(0);
+        porcentajes = new Double[3];
+        for(int i = 0; i < 3; i++)
+        	porcentajes[i] = 0.0;
     }
    
     
@@ -42,7 +48,9 @@ public final class Alumno extends Persona{
         super("","","");
         this.matricula = matricula;
         usuario = new Usuario(correo,"",0,"");
-        
+        porcentajes = new Double[3];
+        for(int i = 0; i < 3; i++)
+        	porcentajes[i] = 0.0;
     }
 	
     public String getMatricula() {
@@ -60,7 +68,11 @@ public final class Alumno extends Persona{
     public void setMatricula(String matricula) {
     	this.matricula = matricula;
     }
-
+    
+    public double getPorcentaje(int index) {
+    	return porcentajes[index];
+    	
+    }
 
     public int getIdCarrera() {
     	return idCarrera;

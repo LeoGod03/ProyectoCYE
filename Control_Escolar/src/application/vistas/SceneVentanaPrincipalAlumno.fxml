@@ -59,7 +59,7 @@
                                           <Font name="Times New Roman" size="16.0" />
                                        </font>
                                     </Label>
-                                    <ListView fx:id="lvCursos" prefHeight="377.0" prefWidth="248.0">
+                                    <ListView fx:id="lvGrupos" prefHeight="377.0" prefWidth="248.0">
                                        <VBox.margin>
                                           <Insets bottom="40.0" top="20.0" />
                                        </VBox.margin>

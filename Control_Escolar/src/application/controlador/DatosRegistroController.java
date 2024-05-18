@@ -3,12 +3,14 @@ package application.controlador;
 import java.io.IOException;
 
 import application.modelo.Alumno;
+import application.modelo.Cifrar;
 import application.modelo.Persona;
 import application.modelo.Profesor;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class DatosRegistroController {
@@ -28,13 +30,15 @@ public class DatosRegistroController {
     private Label lbNombre;
 
     @FXML
-    private Label lbPassword;
+    private TextField tfPassword;
+
+    @FXML
+    private TextField tfUsuario;
+
 
     @FXML
     private Label lbRol;
 
-    @FXML
-    private Label lbUsuario;
     
     private Persona persona;
     
@@ -61,14 +65,17 @@ public class DatosRegistroController {
     	if(persona instanceof Alumno) {
     		Alumno alumnoTemp = (Alumno) persona;
     		lbId.setText("Matricula: " + alumnoTemp.getMatricula());
-    		lbUsuario.setText(lbUsuario.getText() + " " + alumnoTemp.getUsuario().getCorreo());
-    		lbPassword.setText(lbPassword.getText() + " " + alumnoTemp.getUsuario().getContrasenia());
-    		lbRol.setText(lbRol.getText()+ " " + alumnoTemp.getUsuario().getRol());
+    		tfUsuario.setText(alumnoTemp.getUsuario().getCorreo());
+    		tfPassword.setText(Cifrar.cifrar(alumnoTemp.getUsuario().getContrasenia().toCharArray(),
+    														  alumnoTemp.getUsuario().getLlave()));
+    		lbRol.setText("Rol: " + alumnoTemp.getUsuario().getRol());
     	}else {
     		Profesor profesorTemp = (Profesor) persona;
-    		lbId.setText("Matricula: " + profesorTemp.getId());
-    		lbUsuario.setText(lbUsuario.getText() + " " + profesorTemp.getUsuario().getCorreo());
-    		lbPassword.setText(lbPassword.getText() + " " + profesorTemp.getUsuario().getContrasenia());
+    		lbId.setText("Id: " + profesorTemp.getId());
+    		tfUsuario.setText(profesorTemp.getUsuario().getCorreo());
+    		tfPassword.setText(Cifrar.cifrar(profesorTemp.getUsuario().getContrasenia().toCharArray(),
+    														  profesorTemp.getUsuario().getLlave()));
+    		
     		lbRol.setText(lbRol.getText()+ " " + profesorTemp.getUsuario().getRol());
     	}
     	lbNombre.setText(lbNombre.getText() + " " + persona.getNombre());

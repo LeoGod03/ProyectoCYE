@@ -14,6 +14,7 @@ import application.modelo.Usuario;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
+import application.modelo.Cifrar;
 //import javafx.scene.layout.BorderPane;
 
 public class Main extends Application {
@@ -25,6 +26,9 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			System.out.println(Cifrar.cifrar("rodriguez200030699".toCharArray(), 10));
+			//new AlumnoDao().eliminar(new Alumno("20-003-0699","","","",0,0,new Usuario("leonardo.rodriguez200030699@alumnos.uacm.edu.mx")));
+			
 			// creamos dos cursos
 		      //Curso curso = new Curso(1,"Algebra lineal","CCT","BASICO");
 		      //Curso curso = new Curso(2,"Introducción a la programacion","CCT","BASICO");

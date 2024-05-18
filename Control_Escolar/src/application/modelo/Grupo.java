@@ -26,7 +26,6 @@ public class Grupo {
 	}
 	
 	
-	
 	public int getId() {
 		return id;
 	}
@@ -58,4 +57,12 @@ public class Grupo {
 		this.alumnos = alumnos;
 	}
 	
+	@Override
+	
+	public String toString() {
+		String cadena = "Id: " + id + " Grupo: " + grupo + " Id profesor: " + idProfesor 
+				+ " #Alumnos: " + alumnosInscritos;
+		
+		return cadena;
+	}
 }

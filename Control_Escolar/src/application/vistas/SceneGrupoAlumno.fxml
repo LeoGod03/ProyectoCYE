@@ -4,14 +4,14 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controlador.GrupoAlumnoController">
    <children>
       <SplitPane dividerPositions="0.33557046979865773" layoutX="69.0" layoutY="32.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -55,7 +55,20 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <TableView fx:id="tbvAlumnos" layoutX="6.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <TableView fx:id="tbvAlumnos" layoutX="6.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <columns>
+                        <TableColumn fx:id="colMatricula" editable="false" prefWidth="75.0" text="Matricula" />
+                        <TableColumn fx:id="colNombre" editable="false" prefWidth="75.0" text="Nombre" />
+                        <TableColumn fx:id="colApellidoP" prefWidth="114.66664123535156" text="Apellido_paterno" />
+                        <TableColumn fx:id="colApellidoM" prefWidth="79.33331298828125" text="Apellido_materno" />
+                        <TableColumn fx:id="colProyecto" onEditCommit="#colProyecto_EditFinish" onEditStart="#colProyecto_EditStart" prefWidth="76.0" text="Proyecto" />
+                        <TableColumn fx:id="colTareas" onEditCommit="#colTareas_EditFinish" onEditStart="#colTareas_EditStart" prefWidth="48.0" text="Tareas" />
+                        <TableColumn fx:id="colExamenes" onEditCommit="#colExamenes_EditFinish" onEditStart="#colExamenes_EditStart" prefWidth="75.0" text="Examenes" />
+                        <TableColumn fx:id="colPromedio" prefWidth="75.0" text="Promedio" />
+                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy></TableView>
                </children>
             </AnchorPane>
         </items>

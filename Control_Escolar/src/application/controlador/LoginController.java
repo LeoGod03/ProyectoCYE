@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import application.dao.Conexion;
+import application.modelo.Cifrar;
 import application.modelo.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,6 +28,10 @@ public class LoginController {
 
     @FXML
     private Button btnSalir;
+    
+    @FXML
+    private Button btnVer;
+    
 
     @FXML
     private TextField tfCorreo;
@@ -46,23 +51,33 @@ public class LoginController {
     	try {
 			Usuario usuario = new UsuarioDao().buscar(new Usuario(tfCorreo.getText()), new Conexion().establecerConexion());
 			if(usuario != null) {
-				if(tfpPassword.getText().equals(usuario.getContrasenia())) {
-					//alerta = new Alert(AlertType.CONFIRMATION, "¡Has iniciado Sesión! " + resourceUrl, ButtonType.OK);
-					//alerta.show();
+				if(tfpPassword.getText().equals(Cifrar.cifrar(usuario.getContrasenia().toCharArray(),usuario.getLlave()))) {
+					alerta = new Alert(AlertType.CONFIRMATION, "¡Has iniciado sesión!", ButtonType.OK);
+					
+					Double[] bounds = {650.0, 450.0};
+					FXMLLoader loader;
 					try {
-						String resource = (usuario.getRol().equals("alumno"))? "SceneVentanaPrincipalAlumno.fxml" : "Scene.fxml";
-						Double[] bounds = {650.0, 450.0};
-						FXMLLoader loader = VentanaController.crearVentana("Ventana principal", bounds, "/application/vistas/" + resource);
-					    VentanaPrincipalAlumnoController controlador = loader.getController();
-					    controlador.setAlumno(new AlumnoDao().buscar(usuario));
-					    controlador.loadVentana();
+						switch(usuario.getRol()){
+							case "alumno" : 
+								loader = VentanaController.crearVentana("Ventana principal", bounds, "/application/vistas/SceneVentanaPrincipalAlumno.fxml");
+							    VentanaPrincipalAlumnoController controlador = loader.getController();
+							    controlador.setAlumno(new AlumnoDao().buscar(usuario));
+							    controlador.loadVentana();
+								break;
+								
+							case "profesor":
+											break;
+							default: 
+									
+									break;
+						}
 					   
 					    Stage stage = (Stage) btnIngresar.getScene().getWindow();
 					    stage.close();
+					    alerta.show();
 			        } catch (Exception e) {
 			            e.printStackTrace();
 			        }
-					
 					
 				}else {
 					alerta = new Alert(AlertType.ERROR, "¡Contraseña incorrecta!", ButtonType.OK);
@@ -96,6 +111,11 @@ public class LoginController {
 		}
 		
 	    
+    }
+    
+    @FXML
+    void btnVer_OnClick(ActionEvent event) {
+    	//if(tfpPassword.ge)
     }
     
 }

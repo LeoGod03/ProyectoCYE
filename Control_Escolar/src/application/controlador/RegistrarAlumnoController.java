@@ -105,7 +105,7 @@ public class RegistrarAlumnoController {
 
     @FXML
     void btnCancelar_OnClick(ActionEvent event) {
-    	Double[] bounds = {650.0, 450.0};
+    	Double[] bounds = {650.0, 500.0};
     	try {
 			VentanaController.crearVentana("Opción de registro", bounds, "/application/vistas/SceneOpcionRegistro.fxml");
 			Stage stage = (Stage) btnCancelar.getScene().getWindow();
