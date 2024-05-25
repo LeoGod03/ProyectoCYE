@@ -1,25 +1,34 @@
 package application;
 	
+import java.net.URL;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
-import java.util.ArrayList;
-
+//import java.util.ArrayList;
 import application.dao.AlumnoDao;
 import application.modelo.Alumno;
-import application.modelo.EnumBusquedas;
+
+//import application.modelo.EnumBusquedas;
 import application.modelo.Usuario;
+
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.Parent;
+import application.modelo.Cifrar;
+//import javafx.scene.layout.BorderPane;
 
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,400);
+			Parent root = FXMLLoader.load(getClass().getResource("vistas/SceneLogin.fxml"));
+			Scene scene = new Scene(root,500,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			System.out.println(Cifrar.cifrar("rodriguez200030699".toCharArray(), 10));
+			//new AlumnoDao().eliminar(new Alumno("20-003-0699","","","",0,0,new Usuario("leonardo.rodriguez200030699@alumnos.uacm.edu.mx")));
+			
 			// creamos dos cursos
 		      //Curso curso = new Curso(1,"Algebra lineal","CCT","BASICO");
 		      //Curso curso = new Curso(2,"Introducción a la programacion","CCT","BASICO");
@@ -40,7 +49,7 @@ public class Main extends Application {
 		      /*ArrayList<Curso> cursos = new CursosInscritosDao().obtenerCursos(new Profesor(12));
 		      for(Curso curso: cursos){
 		          System.out.println(curso);
-		      }*/  
+		        
 		      Alumno alumno = new Alumno("21-003-1605","Brian Miguel","Escalona","Maldonado",21,12,0,new Usuario("Escolanoa","1234",12,"estudiante"));
 		      // creamos un nuevo alumno
 		      new AlumnoDao().insertar(alumno);
@@ -67,7 +76,9 @@ public class Main extends Application {
 		      for(Alumno alumnoI: lista){
 		          System.out.println(alumnoI);
 		      }*/
-
+			
+				
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

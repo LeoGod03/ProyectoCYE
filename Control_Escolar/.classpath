@@ -11,12 +11,17 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/leopa/Downloads/sqljdbc_12.6/enu/jars/mssql-jdbc-12.6.1.jre8.jar">
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFx22">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Java FX 22">
+	<classpathentry kind="lib" path="C:/Users/leopa/OneDrive/Documentos/ProyectoCYE/sqljdbc_12.6/enu/jars/mssql-jdbc-12.6.1.jre8.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JAVAFX-23">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

@@ -7,9 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="510.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -17,31 +15,28 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <HBox layoutX="32.0" layoutY="31.0" prefHeight="100.0" prefWidth="200.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox prefHeight="222.0" prefWidth="267.0" spacing="20.0">
                      <children>
-                        <VBox prefHeight="195.0" prefWidth="230.0" spacing="20.0">
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                           <children>
-                              <Label text="ID:">
-                                 <VBox.margin>
-                                    <Insets top="30.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label text="Nombres:" />
-                              <Label text="Apellido Paterno:" />
-                              <Label text="Apellido Materno:" />
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="195.0" prefWidth="225.0">
-                           <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                              <Button mnemonicParsing="false" text="Cerrar" />
-                           </children>
-                        </VBox>
+                        <Label text="ID:" translateX="85.0">
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Nombres:" translateX="50.0" />
+                        <Label text="Apellido Paterno:" translateX="13.0" />
+                        <Label text="Apellido Materno:" translateX="10.0" />
                      </children>
-                  </HBox>
+                  </VBox>
+                  <VBox layoutX="272.0" layoutY="1.0" prefHeight="222.0" prefWidth="237.0">
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" />
+                        <Button mnemonicParsing="false" text="Cerrar" translateX="100.0">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                  </VBox>
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">

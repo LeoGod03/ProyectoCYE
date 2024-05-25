@@ -5,6 +5,8 @@
 package application.modelo;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -14,52 +16,66 @@ public final class Alumno extends Persona{
     private String matricula;
     private int idCarrera;
     private Usuario usuario;
-    private ArrayList<Curso> cursosInscritos;
+    private ArrayList<Grupo> gruposInscritos;
     private Double[] porcentajes;
-    private int numeroCursos;
+    private int numeroGrupos;
 	
-    public Alumno(String matricula,String nombre, String apellidoP, String apellidoM,int edad,
-        int idCarrera,int numeroCursos,Usuario usuario) {
-        super(nombre, apellidoP, apellidoM, edad);
+    public Alumno(String matricula,String nombre, String apellidoP, String apellidoM,
+        int idCarrera,int numeroGrupos,Usuario usuario) {
+        super(nombre, apellidoP, apellidoM);
         setMatricula(matricula);
-	setIdCarrera(idCarrera);
+        setIdCarrera(idCarrera);
         setUsuario(usuario);
-        setNumeroCursos(numeroCursos);
+        setNumeroGrupos(numeroGrupos);
+        porcentajes = new Double[3];
+        for(int i = 0; i < 3; i++)
+        	porcentajes[i] = 0.0;
     }
     
     public Alumno(String matricula){
-        super("","","",0);
+        super("","","");
         setMatricula(matricula);
         setIdCarrera(0);
         setUsuario(null);
-        setNumeroCursos(0);
+        setNumeroGrupos(0);
+        porcentajes = new Double[3];
+        for(int i = 0; i < 3; i++)
+        	porcentajes[i] = 0.0;
     }
-    public void setCursosInscritos(ArrayList<Curso> cursosInscritos) {
-        this.cursosInscritos = cursosInscritos;
-    }
-
-    public ArrayList<Curso> getCursosInscritos() {
-        return cursosInscritos;
-    }
+   
     
     public Alumno(String matricula, String correo){
-        super("","","",0);
+        super("","","");
         this.matricula = matricula;
         usuario = new Usuario(correo,"",0,"");
-        
+        porcentajes = new Double[3];
+        for(int i = 0; i < 3; i++)
+        	porcentajes[i] = 0.0;
     }
 	
     public String getMatricula() {
-	return matricula;
+    	return matricula;
+    }
+    
+    public void setGruposInscritos(ArrayList<Grupo> cursosInscritos) {
+        this.gruposInscritos = cursosInscritos;
     }
 
+    public ArrayList<Grupo> getGruposInscritos() {
+        return gruposInscritos;
+    }
+    
     public void setMatricula(String matricula) {
-	this.matricula = matricula;
+    	this.matricula = matricula;
     }
-
+    
+    public double getPorcentaje(int index) {
+    	return porcentajes[index];
+    	
+    }
 
     public int getIdCarrera() {
-	return idCarrera;
+    	return idCarrera;
     }
 
     public void setIdCarrera(int idCarrera) {
@@ -67,7 +83,7 @@ public final class Alumno extends Persona{
     }
 
     public Double[] getPorcentajes() {
-	return porcentajes;
+    	return porcentajes;
     }
 
     public void setPorcentajes(Double[] porcentajes) {
@@ -82,16 +98,28 @@ public final class Alumno extends Persona{
         return usuario;
     }
     
-    public int getNumeroCursos(){
-        return numeroCursos;
+    public int getNumeroGrupos(){
+        return numeroGrupos;
     }
     
-    public void setNumeroCursos(int numeroCursos){
-        this.numeroCursos = numeroCursos;
+    public void setNumeroGrupos(int numeroCursos){
+        this.numeroGrupos = numeroCursos;
     }
+    
+    
+    public static boolean esMatriculaValida(String matricula) {
+    	
+        String pattern = "\\d{2}-\\d{3}-\\d{4}"; // El patrón que estás buscando
+
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(matricula);
+        return m.matches();
+   
+    }
+    
 	@Override
     public String toString() {
-	return "Alumno [matricula=" + matricula + ", nombre=" + super.getNombre() + ", apellidoP=" + super.getApellidoPaterno() + ", apellidoM="
+		return "Alumno [matricula=" + matricula + ", nombre=" + super.getNombre() + ", apellidoP=" + super.getApellidoPaterno() + ", apellidoM="
 				+ super.getApellidoMaterno() + ", carrera=" + idCarrera + "Usuario = "+ usuario;
     }
 

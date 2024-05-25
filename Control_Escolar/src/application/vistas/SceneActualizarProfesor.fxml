@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="262.0" prefWidth="521.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -26,7 +25,7 @@
                                     <Insets left="10.0" top="25.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField>
+                              <TextField prefHeight="17.0" prefWidth="121.0" translateX="50.0">
                                  <HBox.margin>
                                     <Insets left="5.0" top="25.0" />
                                  </HBox.margin>
@@ -37,12 +36,12 @@
                            <children>
                               <Label text="Apellido Paterno:">
                                  <HBox.margin>
-                                    <Insets left="10.0" />
+                                    <Insets left="10.0" top="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField prefHeight="17.0" prefWidth="121.0">
+                              <TextField prefHeight="17.0" prefWidth="121.0" translateX="10.0">
                                  <HBox.margin>
-                                    <Insets left="5.0" />
+                                    <Insets left="5.0" top="10.0" />
                                  </HBox.margin>
                               </TextField>
                            </children>
@@ -51,12 +50,12 @@
                            <children>
                               <Label text="Apellido Materno:">
                                  <HBox.margin>
-                                    <Insets left="10.0" />
+                                    <Insets left="10.0" top="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField prefHeight="20.0" prefWidth="132.0">
+                              <TextField prefHeight="17.0" prefWidth="121.0" translateX="5.0">
                                  <HBox.margin>
-                                    <Insets left="5.0" />
+                                    <Insets left="5.0" top="10.0" />
                                  </HBox.margin>
                               </TextField>
                            </children>

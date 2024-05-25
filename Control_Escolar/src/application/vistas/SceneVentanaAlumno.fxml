@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
@@ -27,24 +26,15 @@
                                  </HBox.margin>
                               </Label>
                               <TextField fx:id="tfBuscar" />
-                              <ComboBox fx:id="cboxBusqueda" prefHeight="25.0" prefWidth="96.0" promptText="Matricula" />
-                              <Label text="Filtro:">
-                                 <HBox.margin>
-                                    <Insets left="60.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <ComboBox fx:id="cboxFiltroCarrera" prefHeight="25.0" prefWidth="95.0" promptText="TODAS" />
+                              <ComboBox fx:id="cboxBusqueda" prefHeight="25.0" prefWidth="96.0" promptText="Matricula" translateX="50.0" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
-                              <Button fx:id="btnEliminar" mnemonicParsing="false" text="Dar de baja alumno">
-                                 <HBox.margin>
-                                    <Insets left="20.0" />
-                                 </HBox.margin>
-                              </Button>
-                              <Button fx:id="btnActualizar" mnemonicParsing="false" text="Actualizar datos alumno" />
-                              <Button fx:id="btnDetalles" mnemonicParsing="false" text="Detalles alumno" />
+                              <Label text="grupo: " translateX="70.0" />
+                              <Label text="ID Profesor:" translateX="-10.0" translateY="20.0" />
+                              <Label text="Nombre: " translateX="-80.0" translateY="-15.0" />
+                              <Label text="ID Curso:" translateX="-150.0" translateY="-30.0" />
                            </children>
                         </HBox>
                      </children>

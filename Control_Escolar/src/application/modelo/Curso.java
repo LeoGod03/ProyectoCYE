@@ -11,20 +11,10 @@ package application.modelo;
 public final class Curso {
     private int id;
     private String nombre;
-    private int grupo;
     private String ciclo;
     private String colegio;
-    private int idProfesor;
-    private int alumnosInscritos;
 
   
-    public Curso(int id, int grupo, int idProfesor) {
-	setId(id);
-	setGrupo(grupo);
-        setIdProfesor(idProfesor);
-        alumnosInscritos = 0;
-    }
-    
     public Curso(int id, String nombre, String ciclo, String colegio){
         setId(id);
         setNombre(nombre);
@@ -37,9 +27,6 @@ public final class Curso {
         setNombre(nombre);
         setCiclo(ciclo);
         setColegio(colegio);
-        setGrupo(grupo);
-        setIdProfesor(idProfesor);
-        alumnosInscritos = 0;
     }
     
     public Curso(int id){
@@ -47,18 +34,9 @@ public final class Curso {
         nombre = "";
         ciclo = "";
         colegio = "";
-        idProfesor = -1;
-        grupo = -1;
-        alumnosInscritos = 0;
     }
     
-    public int getAlumnosInscritos() {
-        return alumnosInscritos;
-    }
-
-    public void setAlumnosInscritos(int almnosInscritos) {
-        this.alumnosInscritos = almnosInscritos;
-    }
+  
 
     public int getId() {
 	return id;
@@ -76,41 +54,26 @@ public final class Curso {
         this.nombre = nombre;
     }
 
-    public int getGrupo() {
-	return grupo;
-    }
-
-    public void setGrupo(int grupo) {
-        this.grupo = grupo;
-    }
 
     public String getCiclo() {
-	return ciclo;
+    	return ciclo;
     }
 
     public void setCiclo(String ciclo) {
-	this.ciclo = ciclo;
+    	this.ciclo = ciclo;
     }
 
     public String getColegio() {
-	return colegio;
+    	return colegio;
     }
 
     public void setColegio(String colegio) {
-	this.colegio = colegio;
+    	this.colegio = colegio;
     }
     
-     public int getIdProfesor() {
-        return idProfesor;
-    }
-
-    public void setIdProfesor(int idProfesor) {
-        this.idProfesor = idProfesor;
-    }
-	
     @Override
     public String toString() {
-	return "Curso [id=" + id + ", nombre=" + nombre + " id profesor = "+ idProfesor+  ", grupo=" + grupo + ", ciclo=" + ciclo + ", colegio="
+	return "Curso [id=" + id + ", nombre=" + nombre + ", ciclo=" + ciclo + ", colegio="
 			+ colegio + "]";
     }
 }

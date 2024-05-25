@@ -14,7 +14,9 @@ import application.modelo.Usuario;
  * @author leopa
  */
 public class UsuarioDao {
-    
+	
+	
+	
     public void insertar(Usuario usuario, Connection conexion) throws SQLException{
         PreparedStatement comando;
         String query;
@@ -31,6 +33,7 @@ public class UsuarioDao {
        
         
     }
+    
     
     public Usuario buscar (Usuario usuario, Connection conexion) throws SQLException{
         Usuario usuarioBusqueda = null;
