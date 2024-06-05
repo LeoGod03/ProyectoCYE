@@ -3,21 +3,21 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="311.0" prefWidth="584.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controlador.AgregarGrupoController">
    <children>
       <SplitPane dividerPositions="0.5597098214285715" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -27,28 +27,33 @@
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
                               <Label prefHeight="0.0" prefWidth="47.0" text="ID curso:" />
-                              <TextField fx:id="tfNombre" prefHeight="25.0" prefWidth="158.0">
+                              <Spinner fx:id="spnIdCurso" editable="true" styleClass="text-field" stylesheets="@../styles/textField.css">
                                  <HBox.margin>
-                                    <Insets left="15.0" />
-                                 </HBox.margin></TextField>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </Spinner>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
                               <Label alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="18.0" prefWidth="38.0" text="Grupo:" />
-                              <TextField fx:id="tfApellidoP" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="158.0">
+                              <Spinner fx:id="spnGrupo" editable="true" styleClass="text-field" stylesheets="@../styles/textField.css">
                                  <HBox.margin>
-                                    <Insets left="25.0" />
-                                 </HBox.margin></TextField>
+                                    <Insets left="30.0" />
+                                 </HBox.margin>
+                              </Spinner>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
                               <Label text="Id profesor: " />
-                              <TextField fx:id="tfApellidoM" prefHeight="25.0" prefWidth="158.0" />
+                              <Spinner fx:id="spnIdProfesor" editable="true" styleClass="text-field" stylesheets="@../styles/textField.css" />
                            </children>
                         </HBox>
                      </children>
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
                   </VBox>
                </children>
             </AnchorPane>
@@ -60,50 +65,55 @@
                           <items>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
-                                    <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <Label text="Nombre: ">
+                                          <Label text="Datos curso" />
+                                          <Label fx:id="lbNombreCurso" text="Nombre: ">
                                              <VBox.margin>
-                                                <Insets left="10.0" />
-                                             </VBox.margin>
-                                             <padding>
-                                                <Insets top="10.0" />
-                                             </padding>
-                                          </Label>
-                                          <Label text="Colegio:">
-                                             <VBox.margin>
-                                                <Insets left="10.0" />
+                                                <Insets />
                                              </VBox.margin>
                                           </Label>
-                                          <Label text="Ciclo: ">
+                                          <Label fx:id="lbColegio" text="Colegio:">
                                              <VBox.margin>
-                                                <Insets left="10.0" />
+                                                <Insets />
+                                             </VBox.margin>
+                                          </Label>
+                                          <Label fx:id="lbCiclo" text="Ciclo: ">
+                                             <VBox.margin>
+                                                <Insets />
                                              </VBox.margin>
                                           </Label>
                                        </children>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
                                     </VBox>
                                  </children>
                               </AnchorPane>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
-                                    <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <Label text="Nombre: ">
+                                          <Label text="Datos profesor" />
+                                          <Label fx:id="lbNombreProfesor" text="Nombre: ">
                                              <VBox.margin>
-                                                <Insets left="10.0" top="10.0" />
+                                                <Insets />
                                              </VBox.margin>
                                           </Label>
-                                          <Label text="Apelldio Paterno:">
+                                          <Label fx:id="lbApellidoP" text="Apelldio paterno:">
                                              <VBox.margin>
-                                                <Insets left="10.0" />
+                                                <Insets />
                                              </VBox.margin>
                                           </Label>
-                                          <Label text="Apellido Materno: ">
+                                          <Label fx:id="lbApellidoM" text="Apellido materno: ">
                                              <VBox.margin>
-                                                <Insets left="10.0" />
+                                                <Insets />
                                              </VBox.margin>
                                           </Label>
                                        </children>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
                                     </VBox>
                                  </children>
                               </AnchorPane>
@@ -111,8 +121,8 @@
                         </SplitPane>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Agregar" />
-                              <Button mnemonicParsing="false" text="Cancelar" />
+                              <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#btnAgregar_OnClick" styleClass="btn-agregar" stylesheets="@../styles/buttons.css" text="Agregar" />
+                              <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#btnCancelar_OnClick" styleClass="btn-eliminar" stylesheets="@../styles/buttons.css" text="Cancelar" />
                            </children>
                         </HBox>
                      </children>

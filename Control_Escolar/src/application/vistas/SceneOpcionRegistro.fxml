@@ -3,58 +3,51 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controlador.OpcionRegistroController">
    <children>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label text="Elige quien se desea registrar" textAlignment="CENTER">
-               <VBox.margin>
-                  <Insets top="30.0" />
-               </VBox.margin>
                <font>
                   <Font name="Times New Roman" size="25.0" />
                </font>
             </Label>
-            <SplitPane dividerPositions="0.48437500000000006" prefHeight="387.0" prefWidth="600.0">
-              <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
                      <children>
-                        <VBox alignment="CENTER" layoutX="87.0" layoutY="37.0" prefHeight="200.0" prefWidth="100.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/estudiante.png" />
-                                 </image>
-                              </ImageView>
-                              <Button fx:id="btnAlumno" mnemonicParsing="false" onAction="#btnAlumno_OnClick" text="Alumno" />
-                           </children>
-                        </VBox>
+                        <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/maestro.png" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="btnProfesor" mnemonicParsing="false" onAction="#btnProfesor_OnClcik" styleClass="btn-cerrar" stylesheets="@../styles/buttons.css" text="Profesor" />
                      </children>
-                  </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
                      <children>
-                        <VBox alignment="CENTER" layoutX="102.0" layoutY="53.0" prefHeight="200.0" prefWidth="100.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/maestro.png" />
-                                 </image>
-                              </ImageView>
-                              <Button fx:id="btnProfesor" mnemonicParsing="false" onAction="#btnProfesor_OnClcik" text="Profesor" />
-                           </children>
-                        </VBox>
+                        <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/estudiante.png" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="btnAlumno" mnemonicParsing="false" onAction="#btnAlumno_OnClick" styleClass="btn-cerrar" stylesheets="@../styles/buttons.css" text="Alumno" />
                      </children>
-                  </AnchorPane>
-              </items>
-            </SplitPane>
+                  </VBox>
+               </children>
+            </HBox>
+            <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#btnCancelar_OnClick" styleClass="btn-eliminar" stylesheets="@../styles/buttons.css" text="Cancelar" />
          </children>
+         <padding>
+            <Insets bottom="10.0" />
+         </padding>
       </VBox>
    </children>
 </AnchorPane>

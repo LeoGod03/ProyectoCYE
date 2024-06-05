@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="617.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controlador.GrupoProfesorController">
+   <children>
+      <SplitPane dividerPositions="0.4523099850968703" layoutX="88.0" layoutY="59.0" orientation="VERTICAL" prefHeight="440.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <VBox alignment="CENTER" layoutX="47.0" layoutY="-19.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <HBox prefHeight="103.0" prefWidth="251.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="132.0" text="Búsqueda por matrícula:">
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <TextField fx:id="tfBusqueda" prefHeight="25.0" prefWidth="91.0" promptText="XX-XXX-XXXX" styleClass="text-field" stylesheets="@../styles/textField.css" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets top="20.0" />
+                                 </HBox.margin>
+                              </HBox>
+                              <VBox prefHeight="85.0" prefWidth="140.0" spacing="5.0">
+                                 <children>
+                                    <Label fx:id="lbIdCurso" text="Id Curso:" />
+                                    <Label fx:id="lbGrupo" text="Grupo: " />
+                                    <Label fx:id="lbNombre" text="Nombre: " />
+                                    <Label fx:id="lbIdProfesor" text="Id Profesor:" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets top="10.0" />
+                                 </HBox.margin>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                 <children>
+                                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/logo.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <Button fx:id="btnCerrar" mnemonicParsing="false" onAction="#btnCerrar_OnClick" styleClass="btn-cerrar" stylesheets="@../styles/buttons.css" text="Cerrar" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="60.0" />
+                                 </HBox.margin>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#btnAgregar_OnClick" styleClass="btn-agregar" stylesheets="@../styles/buttons.css" text="Dar de alta alumno">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#btnEliminar_OnClick" styleClass="btn-eliminar" stylesheets="@../styles/buttons.css" text="Dar de baja alumno" />
+                              <Label text="Filtro:">
+                                 <HBox.margin>
+                                    <Insets left="60.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <ComboBox fx:id="cboxFiltro" prefHeight="25.0" prefWidth="95.0" promptText="Filtro" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="155.0" prefWidth="647.0">
+               <children>
+                  <TableView fx:id="tbvAlumnos" layoutX="83.0" layoutY="17.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/tables.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

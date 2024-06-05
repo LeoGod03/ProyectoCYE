@@ -1,6 +1,5 @@
 package application.modelo;
 
-import java.util.ArrayList;
 
 public class Grupo {
 	
@@ -8,7 +7,6 @@ public class Grupo {
 	private int grupo;
 	private int idProfesor;
 	private int alumnosInscritos;
-	private ArrayList<Alumno> alumnos;
 	
 	
 	public Grupo(int id, int grupo, int idProfesor, int alumnosInscritos) {
@@ -50,13 +48,6 @@ public class Grupo {
 	public void setAlumnosInscritos(int alumnosInscritos) {
 		this.alumnosInscritos = alumnosInscritos;
 	}
-	public ArrayList<Alumno> getAlumnos() {
-		return alumnos;
-	}
-	public void setAlumnos(ArrayList<Alumno> alumnos) {
-		this.alumnos = alumnos;
-	}
-	
 	@Override
 	
 	public String toString() {
@@ -65,4 +56,15 @@ public class Grupo {
 		
 		return cadena;
 	}
+	 @Override
+	    public boolean equals(Object obj) {
+	    	boolean resultado = false;
+	    	if(obj instanceof Grupo) {
+	    		Grupo grupo = (Grupo) obj;
+	    		resultado = (grupo.getGrupo() == this.grupo && grupo.getId() == id);
+	    				
+	    	}
+	    	
+	    	return resultado;
+	    }
 }

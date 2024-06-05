@@ -1,6 +1,5 @@
 package application.controlador;
 
-import java.io.IOException;
 import java.util.Optional;
 import application.modelo.Grupo;
 import application.dao.GruposDao;
@@ -62,62 +61,48 @@ public class VentanaPrincipalAlumnoController {
 	    alert.setWidth(350.0);
 	    alert.setHeight(250.0);
 	    alert.setTitle("Confirmación");
-	    alert.setHeaderText("Eliminar elemento");
-	    alert.setContentText("¿Estás seguro que deseas eliminar el elemento seleccionado: "
+	    alert.setHeaderText("Eliminar grupo");
+	    alert.setContentText("¿Estás seguro que deseas darte de baja de el grupo seleccionado: "
 	        					+ "Id: "+ opcion.getId() + " Grupo: " + opcion.getGrupo() + "?");
 	        
 	      // para obtener el resultado
 	    Optional<ButtonType> result = alert.showAndWait();
-	        
+	    Alert confirmation;  
 	    if (result.isPresent() && result.get() == ButtonType.OK) {
 	        new GruposDao().darBajaGrupo(opcion, alumno);
-	        Alert confirmation = new Alert(AlertType.CONFIRMATION, "Dado de baja del grupo Id: " + opcion.getId() + " grupo: " + opcion.getGrupo(), ButtonType.OK);
+	        confirmation = new Alert(AlertType.CONFIRMATION, "Dado de baja del grupo Id: " + opcion.getId() + " grupo: " + opcion.getGrupo(), ButtonType.OK);
 			confirmation.show();
 			lvGrupos.getItems().remove(opcion);
 	        	
 	    } else {
-	       Alert confirmation = new Alert(AlertType.CONFIRMATION, "¡Acción cancelada!", ButtonType.OK);
-			confirmation.show();
+	       confirmation = new Alert(AlertType.CONFIRMATION, "¡Acción cancelada!", ButtonType.OK);
+	       confirmation.show();
 	    }
     	
     }
 
     @FXML
     void btnInscribir_OnClick(ActionEvent event) {
-    	try {
-    		Double[] bounds = {650.0, 450.0};
-    		FXMLLoader loader = VentanaController.crearVentana("Inscribir curso", bounds, "/application/vistas/SceneInscribirGrupo.fxml");
-    		InscribirGrupoController controlador = loader.getController();
-    		controlador.setAlumno(alumno);
-    		controlador.inicializar();
-    		
-    		Stage stage = (Stage) btnInscribir.getScene().getWindow();
-    		stage.close();
-    	}catch(IOException e) {
-    		
-    		e.printStackTrace();
-    	}
+    	Double[] bounds = {650.0, 450.0};
+		FXMLLoader loader = VentanaController.crearVentana("Inscribir curso", bounds, "/application/vistas/SceneInscribirGrupo.fxml");
+		InscribirGrupoController controlador = loader.getController();
+		controlador.setAlumno(alumno);
+		controlador.inicializar();
+		
+		Stage stage = (Stage) btnInscribir.getScene().getWindow();
+		stage.close();
     	
     }
     
 
     @FXML
     void btnSalir_OnClick(ActionEvent event) {
-    	try {
-    		Double [] bounds = {500.0, 400.0};
-    		VentanaController.crearVentana("Login", bounds, "/application/vistas/SceneLogin.fxml");
-    		Stage stage = (Stage) btnSalir.getScene().getWindow();
-    		stage.close();
-    	}catch(IOException e) {
-    		e.printStackTrace();
-    	}
+    	VentanaController.crearVentanaLogin(btnEliminar);
     }
     
     public void loadVentana() {
     	
-    	System.out.println(alumno.getNumeroGrupos());
-    	
-    	btnInscribir.setDisable(alumno.getNumeroGrupos() > 7);
+    	btnInscribir.setDisable(alumno.getNumeroGrupos() >= 7);
     	btnEliminar.setDisable(alumno.getNumeroGrupos() <= 0);
     	
     	lbMatricula.setText("Matricula: " + alumno.getMatricula());
@@ -126,27 +111,24 @@ public class VentanaPrincipalAlumnoController {
     	lbApellidoM.setText("Apellido materno: " + alumno.getApellidoMaterno());
     	lbUsuario.setText("Usuario: " + alumno.getUsuario().getCorreo());
     	
-    	for(Grupo grupo: alumno.getGruposInscritos())
-    		lvGrupos.getItems().add(grupo);
+    	
+    	lvGrupos.getItems().addAll(alumno.getGruposInscritos());
     
-    	lvGrupos.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-    		opcion = (Grupo) newValue;
+    	lvGrupos.getSelectionModel().selectedItemProperty().addListener((observable, viejoValor, nuevoValor) -> {
+    		opcion = (Grupo) nuevoValor;
     		//System.out.println(opcion);
         });
     	
     	lvGrupos.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
-            	try {
-            		Double [] bounds = {750.0, 400.0};
-            		FXMLLoader loader =  VentanaController.crearVentana("Grupo", bounds, "/application/vistas/SceneGrupoAlumno.fxml");
-            		GrupoAlumnoController controlador = loader.getController();
-            		controlador.setGrupo(opcion);
-            		controlador.inicialiar();
-            		Stage stage = (Stage) btnSalir.getScene().getWindow();
-            		stage.close();
-            	}catch(IOException e) {
-            		e.printStackTrace();
-            	}
+            	Double [] bounds = {650.0, 500.0};
+				FXMLLoader loader =  VentanaController.crearVentana("Grupo", bounds, "/application/vistas/SceneGrupoAlumno.fxml");
+				GrupoAlumnoController controlador = loader.getController();
+				controlador.setGrupo(opcion);
+				controlador.setAlumno(alumno);
+				controlador.loadVentana();
+				Stage stage = (Stage) btnSalir.getScene().getWindow();
+				stage.close();
             }
         });
 

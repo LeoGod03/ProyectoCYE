@@ -1,6 +1,5 @@
 package application.controlador;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -67,18 +66,13 @@ public class InscribirGrupoController {
     void btnCancelar_OnClick(ActionEvent event) {
     	Double[] bounds = {650.0, 450.0};
     	FXMLLoader loader;
-		try {
-			loader = VentanaController.crearVentana("Ventana principal", bounds, "/application/vistas/SceneVentanaPrincipalAlumno.fxml");
-			VentanaPrincipalAlumnoController controlador = loader.getController();
-		    controlador.setAlumno(new AlumnoDao().buscar(alumno));
-		    controlador.setAlumno(alumno);
-		    controlador.loadVentana();
-		    Stage stage = (Stage) btnCancelar.getScene().getWindow();
-		    stage.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		loader = VentanaController.crearVentana("Ventana principal", bounds, "/application/vistas/SceneVentanaPrincipalAlumno.fxml");
+		VentanaPrincipalAlumnoController controlador = loader.getController();
+		controlador.setAlumno(new AlumnoDao().buscar(alumno));
+		controlador.setAlumno(alumno);
+		controlador.loadVentana();
+		Stage stage = (Stage) btnCancelar.getScene().getWindow();
+		stage.close();
 	    
     }
 
@@ -86,7 +80,7 @@ public class InscribirGrupoController {
     void btnInscribir_OnClick(ActionEvent event) {
     	Alert mensaje;
     	if(alumno.getGruposInscritos().size() < 7) {
-    		if(lvGrupos.getSelectionModel().getSelectedIndex() != -1) {
+    		if(opcion != null) {
     			
     			// creamos la alerta
     	    	Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -121,11 +115,15 @@ public class InscribirGrupoController {
     
     public void inicializar() {
     	ArrayList<Grupo> listaGrupos = new GruposDao().obtenerGruposDisponibles();
-    	for(Grupo grupo : listaGrupos)
-    		lvGrupos.getItems().add(grupo);
-    	
-    	for(Grupo grupo: new GruposDao().obtenerGrupos(alumno))
-    		lvGrupos.getItems().remove(grupo);
+    	ArrayList<Grupo> gruposRestantes = new ArrayList<>();
+
+    	for (Grupo grupo : listaGrupos) {
+    	    if (!alumno.getGruposInscritos().contains(grupo)) { // si el grupo no esta en la lista de grupos ya inscritos
+    	        gruposRestantes.add(grupo); 
+    	    }
+    	}
+
+    	lvGrupos.getItems().addAll(gruposRestantes);    	
     	
     	lvGrupos.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
     		opcion = (Grupo) newValue;

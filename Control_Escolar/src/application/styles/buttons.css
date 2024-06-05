@@ -1,0 +1,27 @@
+.btn-agregar {
+    -fx-background-color: #28a745; /*color de fondo*/
+    -fx-text-fill: white; /* Color del texto*/
+    -fx-padding: 10px 20px; /* Espaciado interno */
+    -fx-font-size: 10px; /* Tamaño de fuente */
+    -fx-background-radius: 5px; /* Bordes redondeados */
+    -fx-cursor: hand; /* Cambiar el cursor al pasar sobre el botón */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.5, 0, 1); /* Sombra */
+}
+.btn-eliminar{
+	 -fx-background-color: #dc3545; 
+    -fx-text-fill: white; 
+    -fx-padding: 10px 20px;
+    -fx-font-size: 10px; 
+    -fx-background-radius: 5px; 
+    -fx-cursor: hand; 
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.5, 0, 1); 
+}
+.btn-cerrar{
+	-fx-background-color: FFFF00;
+	-fx-text-fill: black;
+	-fx-padding: 10px 20px;
+	-fx-font-size: 10px;
+	-fx-background-radius: 10px;
+	-fx-cursor: hand;
+	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.5, 0, 1); 
+}

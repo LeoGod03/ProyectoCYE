@@ -72,8 +72,8 @@
                                     <Image url="@../images/logo.jpg" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="btnInscribir" mnemonicParsing="false" onAction="#btnInscribir_OnClick" text="Inscribir curso" />
-                              <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#btnCancelar_OnClick" text="Cancelar" />
+                              <Button fx:id="btnInscribir" mnemonicParsing="false" onAction="#btnInscribir_OnClick" styleClass="btn-agregar" stylesheets="@../styles/buttons.css" text="Inscribir curso" />
+                              <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#btnCancelar_OnClick" styleClass="btn-eliminar" stylesheets="@../styles/buttons.css" text="Cancelar" />
                            </children>
                         </VBox>
                      </children>

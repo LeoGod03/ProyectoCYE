@@ -1,0 +1,27 @@
+
+.text-field {
+    -fx-background-color: #f4f4f4; /* Color de fondo */
+    -fx-text-fill: #333; /* Color del texto */
+    -fx-padding: 5px; /* Espaciado interno */
+    -fx-font-size: 12px; /* Tamaño de fuente */
+    -fx-border-color: #cccccc; /* Color del borde */
+    -fx-border-width: 2px; /* Ancho del borde */
+    -fx-border-radius: 5px; /* Bordes redondeados */
+    -fx-background-radius: 5px; /* Fondo redondeado */
+}
+
+.text-field:focused {
+    -fx-border-color: #4CAF50; /* Color del borde al enfocar */
+    -fx-background-color: #ffffff; /* Color de fondo al enfocar */
+    -fx-text-fill: #000000; /* Color del texto al enfocar */
+}
+
+.text-field:hover {
+    -fx-border-color: #999999; /* Color del borde al pasar el cursor */
+}
+
+.text-field:disabled {
+    -fx-background-color: #e0e0e0; /* Color de fondo cuando está deshabilitado */
+    -fx-border-color: #d0d0d0; /* Color del borde cuando está deshabilitado */
+    -fx-text-fill: #a0a0a0; /* Color del texto cuando está deshabilitado */
+}

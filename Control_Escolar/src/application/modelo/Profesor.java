@@ -4,6 +4,7 @@
  */
 package application.modelo;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +16,8 @@ public final class Profesor extends Persona {
     private int id;
     private String cubiculo;
     private Usuario usuario;
+    private ArrayList<Grupo> gruposImpartidos;
+    
     public Profesor(int id) {
         super("","","");
         setId(id);
@@ -62,6 +65,14 @@ public final class Profesor extends Persona {
          return m.matches();
     }
     
+    public ArrayList<Grupo> getGruposImpartidos() {
+		return gruposImpartidos;
+	}
+
+	public void setGruposImpartidos(ArrayList<Grupo> gruposImpartidos) {
+		this.gruposImpartidos = gruposImpartidos;
+	}
+    
     
     @Override
     public String toString() {
@@ -69,6 +80,8 @@ public final class Profesor extends Persona {
         cadena+= " Cubiculo: " + cubiculo;
         return cadena;
     }
+
+	
      
    
 }

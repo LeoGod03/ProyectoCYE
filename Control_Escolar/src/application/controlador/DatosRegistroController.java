@@ -1,6 +1,5 @@
 package application.controlador;
 
-import java.io.IOException;
 
 import application.modelo.Alumno;
 import application.modelo.Cifrar;
@@ -42,17 +41,25 @@ public class DatosRegistroController {
     
     private Persona persona;
     
-
+    private String ventanaResource = "";
+    
+    private String title = "";
+    
+    public void setVentanaResource(String ventanaResource) {
+    	this.ventanaResource = ventanaResource;
+    }
+    
+    public void setTitle(String title) {
+    	this.title = title;
+    }
     @FXML
     void btnAceptar_OnClick(ActionEvent event) {
-    	try {
-    		Double [] bounds = {500.0, 400.0};
-    		VentanaController.crearVentana("Login", bounds, "/application/vistas/SceneLogin.fxml");
-    		Stage stage = (Stage) btnAceptar.getScene().getWindow();
-    		stage.close();
-    	}catch(IOException e) {
-    		
-    		e.printStackTrace();
+    	if(ventanaResource.equals(""))
+    		VentanaController.crearVentanaLogin(btnAceptar);
+    	else {
+    		VentanaController.crearVentana(title, new Double[]{750.0, 400.0}, ventanaResource);
+        	Stage stage = (Stage) btnAceptar.getScene().getWindow();
+        	stage.close();
     	}
     }
     
@@ -60,7 +67,7 @@ public class DatosRegistroController {
     	this.persona = persona;
     }
     
-    public void inicializar() {
+    public void loadVentana() {
     	
     	if(persona instanceof Alumno) {
     		Alumno alumnoTemp = (Alumno) persona;

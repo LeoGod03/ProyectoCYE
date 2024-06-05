@@ -45,38 +45,33 @@
 								</AnchorPane>
 								<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
 									<children>
-										<VBox layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+										<VBox alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 											<children>
-												<Label alignment="CENTER" prefHeight="23.0" prefWidth="300.0" text="Correo:">
+												<Label alignment="CENTER" prefHeight="23.0" prefWidth="73.0" text="Correo:">
 													<font>
 														<Font name="Times New Roman" size="20.0" />
 													</font>
 												</Label>
-												<TextField fx:id="tfCorreo">
+												<TextField fx:id="tfCorreo" styleClass="text-field" stylesheets="@../styles/textField.css">
 													<VBox.margin>
 														<Insets left="30.0" right="30.0" top="10.0" />
 													</VBox.margin>
 												</TextField>
-												<Label alignment="CENTER" prefHeight="17.0" prefWidth="297.0" text="Contraseña:">
+												<Label alignment="CENTER" prefHeight="23.0" prefWidth="101.0" text="Contraseña:">
 													<font>
 														<Font name="Times New Roman" size="20.0" />
 													</font>
 												</Label>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                                       <children>
-      												<PasswordField fx:id="tfpPassword" prefHeight="25.0" prefWidth="180.0">
-                                             <HBox.margin>
-                                                <Insets left="30.0" />
-                                             </HBox.margin>
-      												</PasswordField>
-                                          <Button fx:id="btnVer" mnemonicParsing="false" onAction="#btnVer_OnClick" text="Ver" />
-                                       </children>
-                                    </HBox>
+												<PasswordField fx:id="tfpPassword" prefHeight="25.0" prefWidth="213.0" styleClass="text-field" stylesheets="@../styles/textField.css">
+                                       <VBox.margin>
+                                          <Insets left="30.0" right="30.0" />
+                                       </VBox.margin>
+												</PasswordField>
 												<HBox alignment="CENTER" prefHeight="100.0" prefWidth="290.0" spacing="20.0">
 													<children>
-														<Button fx:id="btnIngresar" mnemonicParsing="false" onAction="#btnIngresar_OnClick" text="Ingresar" />
-														<Button fx:id="btnRegistrarse" mnemonicParsing="false" onAction="#btnRegistrarse_OnClick" text="Registrarse" />
-														<Button fx:id="btnSalir" mnemonicParsing="false" onAction="#Salir_OnClick" text="Salir" />
+														<Button fx:id="btnIngresar" mnemonicParsing="false" onAction="#btnIngresar_OnClick" styleClass="btn-agregar" stylesheets="@../styles/buttons.css" text="Ingresar" />
+														<Button fx:id="btnRegistrarse" mnemonicParsing="false" onAction="#btnRegistrarse_OnClick" styleClass="btn-cerrar" stylesheets="@../styles/buttons.css" text="Registrarse" />
+														<Button fx:id="btnSalir" mnemonicParsing="false" onAction="#Salir_OnClick" styleClass="btn-eliminar" stylesheets="@../styles/buttons.css" text="Salir" />
 													</children>
 												</HBox>
 											</children>
@@ -89,28 +84,16 @@
 				</AnchorPane>
 				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
 					<children>
-						<SplitPane dividerPositions="0.3" prefHeight="129.0" prefWidth="500.0">
-							<items>
-								<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-									<children>
-										<ImageView fitHeight="127.0" fitWidth="145.0" pickOnBounds="true" preserveRatio="true" />
-									</children>
-								</AnchorPane>
-								<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="148.0" prefWidth="346.0">
-									<children>
-										<VBox prefHeight="100.0" prefWidth="346.0">
-											<children>
-												<Label alignment="CENTER" prefHeight="17.0" prefWidth="345.0" text="Azteca Studio:" />
-												<Label alignment="CENTER" prefHeight="17.0" prefWidth="345.0" text="Rodriguez Rodriguez Leonardo" />
-												<Label alignment="CENTER" prefHeight="17.0" prefWidth="345.0" text="Martinez Fabian Osvaldo" />
-												<Label text="Label" />
-												<Label text="Label" />
-											</children>
-										</VBox>
-									</children>
-								</AnchorPane>
-							</items>
-						</SplitPane>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+										<ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/Lion.png" />
+                           </image>
+                        </ImageView>
+												<Label alignment="CENTER" prefHeight="17.0" prefWidth="345.0" text="Lion Studio" />
+                     </children>
+                  </HBox>
 					</children>
 				</AnchorPane>
 			</items>

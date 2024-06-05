@@ -1,6 +1,6 @@
 package application.controlador;
 
-import java.io.IOException;
+
 import java.util.ArrayList;
 
 import application.dao.AlumnoDao;
@@ -41,7 +41,7 @@ public class RegistrarAlumnoController {
     
     private TextField[] campos = new TextField[4];
     
-    public void inicializar() {
+    public void loadVentana() {
     	campos[0] = tfMatricula;
     	campos[1] = tfNombre;
     	campos[2] = tfApellidoP;
@@ -55,8 +55,12 @@ public class RegistrarAlumnoController {
     void btnInsertar_OnClick(ActionEvent event) {
     	Alert alert;
     	boolean lleno = true;
-    	for(TextField campo : campos)
-    		lleno = (!campo.getText().equals(""));
+    	for(int i = 0; i < 4; i++) {
+    		if(campos[i].getText().equals("")) {
+    			lleno = false;
+    			break;
+    		}
+    	}
     	
     	int idLicenciatura = cboxLicenciatura.getSelectionModel().getSelectedIndex(); 
     	lleno = (lleno == true && idLicenciatura != -1);
@@ -74,18 +78,13 @@ public class RegistrarAlumnoController {
 	    			alumno.setUsuario(Usuario.generaUsuario(alumno));
 	    			new AlumnoDao().insertar(alumno);   
 	    	        
-	    			try {
-	    				Double[] bounds = {400.0, 450.0};
-	    				FXMLLoader loader = VentanaController.crearVentana("Datos", bounds, "/application/vistas/SceneDatosRegistro.fxml");
-	    				DatosRegistroController controlador = loader.getController();
-	    				controlador.setPersona(alumno);
-	    				controlador.inicializar();
-	    				Stage stage = (Stage) btnInsertar.getScene().getWindow();
-		    		    stage.close();
-	    			} catch (IOException e) {
-	    				// TODO Auto-generated catch block
-	    				e.printStackTrace();
-	    			}
+	    			Double[] bounds = {400.0, 450.0};
+					FXMLLoader loader = VentanaController.crearVentana("Datos", bounds, "/application/vistas/SceneDatosRegistro.fxml");
+					DatosRegistroController controlador = loader.getController();
+					controlador.setPersona(alumno);
+					controlador.loadVentana();
+					Stage stage = (Stage) btnInsertar.getScene().getWindow();
+					stage.close();
 	    			
 	    	        
 	    		}else {
@@ -105,14 +104,8 @@ public class RegistrarAlumnoController {
 
     @FXML
     void btnCancelar_OnClick(ActionEvent event) {
-    	Double[] bounds = {650.0, 500.0};
-    	try {
-			VentanaController.crearVentana("Opción de registro", bounds, "/application/vistas/SceneOpcionRegistro.fxml");
-			Stage stage = (Stage) btnCancelar.getScene().getWindow();
-		    stage.close();
-    	} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	VentanaController.crearVentana("Opción de registro", new Double[]{500.0, 400.0}, "/application/vistas/SceneOpcionRegistro.fxml");
+		Stage stage = (Stage) btnCancelar.getScene().getWindow();
+		stage.close();
     }
 }

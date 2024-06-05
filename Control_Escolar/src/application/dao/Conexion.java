@@ -4,27 +4,48 @@
  */
 
 package application.dao;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import org.ini4j.Ini;
+
 /**
  *
  * @author leopa
  */
 public class Conexion {
     
-    private final String base;
-    private final String usuario;
-    private final String contrasenia;
-    private final String ipConexion;
-    private Connection conexion;
+    private String base = "";
+    private String usuario = "";
+    private String contrasenia = "";
+    private String ipConexion = "";
+    private Connection conexion = null;
     
     public Conexion(){
-        
-        base = "PruebaSistema";
-        usuario = "Leo";
-        contrasenia = "12345";
-        ipConexion = "61520";
+    	String url = "src/application/files/config.ini";
+    	StringBuilder cadena;
+    	String[] cadenas = new String[4];
+    	String[] cabeceras =  new String[] {"base", "usuario", "contrasenia", "ip"};
+    	try {
+    		Ini ini =  new Ini(new File(url));
+    		for(int i = 0; i < 4; i++) {
+    			cadena =  new StringBuilder(ini.get("BASEDEDATOS", cabeceras[i]));
+        		cadena.deleteCharAt(0);
+        		cadena.deleteCharAt(cadena.length()-1);
+        		cadenas[i] = cadena.toString();
+    		}
+    		
+    	}catch(IOException e){
+    		e.printStackTrace();
+    	}
+    	base = cadenas[0];
+    	usuario = cadenas[1];
+    	contrasenia = cadenas[2];
+    	ipConexion = cadenas[3];
+    	 
+       
     }
     
     public Connection establecerConexion(){
@@ -37,7 +58,6 @@ public class Conexion {
         conexion = null;
         try{
             conexion = DriverManager.getConnection(url);
-            System.out.println("conexion exitosa");
         }catch(SQLException sqle){
             System.out.println(sqle.getMessage());
         }

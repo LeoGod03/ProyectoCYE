@@ -7,13 +7,15 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controlador.GruposSistemaController">
    <children>
-      <SplitPane dividerPositions="0.4035234899328859" layoutX="88.0" layoutY="59.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.33808724832214765" layoutX="88.0" layoutY="59.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
@@ -26,28 +28,24 @@
                                     <Insets left="20.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="tfBuscar" />
-                              <ComboBox fx:id="cboxBusqueda" prefHeight="25.0" prefWidth="96.0" promptText="Matricula" />
-                              <Label text="Filtro:">
-                                 <HBox.margin>
-                                    <Insets left="60.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <ComboBox fx:id="cboxFiltroCarrera" prefHeight="25.0" prefWidth="95.0" promptText="TODAS" />
+                              <TextField fx:id="tfBusqueda" />
+                              <ComboBox fx:id="cboxBusqueda" prefHeight="26.0" prefWidth="100.0" promptText="Busqueda" />
+                              <Button fx:id="btnCerrar" mnemonicParsing="false" onAction="#btnCerrar_OnClick" styleClass="btn-cerrar" stylesheets="@../styles/buttons.css" text="Cerrar" />
+                              <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/logo.jpg" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
-                              <Button fx:id="btnEliminar" mnemonicParsing="false" text="Dar de alta alumno">
+                              <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#btnEliminar_OnClick" styleClass="btn-eliminar" stylesheets="@../styles/buttons.css" text="Cerrar grupo">
                                  <HBox.margin>
                                     <Insets left="20.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button fx:id="btnActualizar" mnemonicParsing="false" text="Dar de baja alumno" />
-                              <Label text="grupo: " />
-                              <Label text="ID Profesor:" translateX="-60.0" translateY="20.0" />
-                              <Label text="Nombre: " translateX="-140.0" translateY="-15.0" />
-                              <Label text="ID Curso:" translateX="-210.0" translateY="-30.0" />
+                              <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#btnAgregar_OnClick" styleClass="btn-agregar" stylesheets="@../styles/buttons.css" text="Agregar grupo" />
                            </children>
                         </HBox>
                      </children>
@@ -56,7 +54,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="155.0" prefWidth="647.0">
                <children>
-                  <TableView fx:id="tbvAlumnos" layoutX="83.0" layoutY="17.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <TableView fx:id="tbvGrupos" layoutX="83.0" layoutY="17.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/tables.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
         </items>
