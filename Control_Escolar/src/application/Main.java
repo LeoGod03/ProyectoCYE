@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 //import java.util.ArrayList;
 import application.dao.AlumnoDao;
+import application.dao.Conexion;
 import application.modelo.Alumno;
 
 //import application.modelo.EnumBusquedas;
@@ -26,7 +27,7 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			System.out.println(Cifrar.cifrar("rodriguez200030699".toCharArray(), 10));
+			//System.out.println(Cifrar.cifrar("rodriguez200030699".toCharArray(), 10));
 			//new AlumnoDao().eliminar(new Alumno("20-003-0699","","","",0,0,new Usuario("leonardo.rodriguez200030699@alumnos.uacm.edu.mx")));
 			
 			// creamos dos cursos
@@ -76,6 +77,7 @@ public class Main extends Application {
 		      for(Alumno alumnoI: lista){
 		          System.out.println(alumnoI);
 		      }*/
+			new Conexion().establecerConexion();
 			
 				
 			

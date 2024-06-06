@@ -21,10 +21,10 @@ public class Conexion {
     
     public Conexion(){
         
-        base = "PruebaSistema";
-        usuario = "Leo";
-        contrasenia = "12345";
-        ipConexion = "61520";
+        base = "BaseDatosCyES";
+        usuario = "Fatima";
+        contrasenia = "Adrifati1.";
+        ipConexion = "58281";
     }
     
     public Connection establecerConexion(){
