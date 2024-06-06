@@ -18,6 +18,7 @@ public final class Alumno extends Persona{
     private Usuario usuario;
     private ArrayList<Grupo> gruposInscritos;
     private Double[] porcentajes;
+    private double promedio;
     private int numeroGrupos;
 	
     public Alumno(String matricula,String nombre, String apellidoP, String apellidoM,
@@ -27,6 +28,7 @@ public final class Alumno extends Persona{
         setIdCarrera(idCarrera);
         setUsuario(usuario);
         setNumeroGrupos(numeroGrupos);
+        setPromedio(0.0);
         porcentajes = new Double[3];
         for(int i = 0; i < 3; i++)
         	porcentajes[i] = 0.0;
@@ -38,6 +40,7 @@ public final class Alumno extends Persona{
         setIdCarrera(0);
         setUsuario(null);
         setNumeroGrupos(0);
+        setPromedio(0.0);
         porcentajes = new Double[3];
         for(int i = 0; i < 3; i++)
         	porcentajes[i] = 0.0;
@@ -46,8 +49,11 @@ public final class Alumno extends Persona{
     
     public Alumno(String matricula, String correo){
         super("","","");
-        this.matricula = matricula;
         usuario = new Usuario(correo,"",0,"");
+        setMatricula(matricula);
+        setIdCarrera(0);
+        setNumeroGrupos(0);
+        setPromedio(0.0);
         porcentajes = new Double[3];
         for(int i = 0; i < 3; i++)
         	porcentajes[i] = 0.0;
@@ -72,6 +78,10 @@ public final class Alumno extends Persona{
     public double getPorcentaje(int index) {
     	return porcentajes[index];
     	
+    }
+    
+    public void setPorcentaje(int index, Double valor) {
+    	this.porcentajes[index] = valor;
     }
 
     public int getIdCarrera() {
@@ -107,6 +117,22 @@ public final class Alumno extends Persona{
     }
     
     
+    public double calcularPromedio() {
+		Double suma = 0.0;
+    	for(int i = 0; i < 3; i++)
+    		suma += porcentajes[i];
+    	promedio = suma / 3;
+    	return  promedio;
+	}
+
+	public void setPromedio(double promedio) {
+		this.promedio = promedio;
+	}
+	
+	public double getPromedio() {
+		return promedio;
+	}
+    
     public static boolean esMatriculaValida(String matricula) {
     	
         String pattern = "\\d{2}-\\d{3}-\\d{4}"; // El patrón que estás buscando
@@ -122,6 +148,8 @@ public final class Alumno extends Persona{
 		return "Alumno [matricula=" + matricula + ", nombre=" + super.getNombre() + ", apellidoP=" + super.getApellidoPaterno() + ", apellidoM="
 				+ super.getApellidoMaterno() + ", carrera=" + idCarrera + "Usuario = "+ usuario;
     }
+
+	
 
 	
 }

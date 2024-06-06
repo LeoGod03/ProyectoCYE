@@ -1,8 +1,8 @@
 package application.controlador;
 import application.dao.UsuarioDao;
 import application.dao.AlumnoDao;
+import application.dao.ProfesorDao;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 import application.dao.Conexion;
@@ -28,10 +28,6 @@ public class LoginController {
 
     @FXML
     private Button btnSalir;
-    
-    @FXML
-    private Button btnVer;
-    
 
     @FXML
     private TextField tfCorreo;
@@ -56,28 +52,30 @@ public class LoginController {
 					
 					Double[] bounds = {650.0, 450.0};
 					FXMLLoader loader;
-					try {
-						switch(usuario.getRol()){
-							case "alumno" : 
-								loader = VentanaController.crearVentana("Ventana principal", bounds, "/application/vistas/SceneVentanaPrincipalAlumno.fxml");
-							    VentanaPrincipalAlumnoController controlador = loader.getController();
-							    controlador.setAlumno(new AlumnoDao().buscar(usuario));
-							    controlador.loadVentana();
-								break;
+					switch(usuario.getRol()){
+						case "alumno" : 
+							loader = VentanaController.crearVentana("Ventana principal", bounds, "/application/vistas/SceneVentanaPrincipalAlumno.fxml");
+							VentanaPrincipalAlumnoController controlador = loader.getController();
+							controlador.setAlumno(new AlumnoDao().buscar(usuario));
+							controlador.loadVentana();
+							break;
 								
-							case "profesor":
-											break;
-							default: 
-									
-									break;
-						}
+						case "profesor":
+							loader = VentanaController.crearVentana("Ventana principal", bounds, "/application/vistas/SceneVentanaPrincipalProfesor.fxml");
+							VentanaPrincipalProfesorController controlador1 = loader.getController();
+							controlador1.setProfesor(new ProfesorDao().buscar(usuario));
+							controlador1.loadVentana();	
+							break;
+						default: 
+								
+							VentanaController.crearVentana("Ventana principal", new Double[] {600.0,300.0}, "/application/vistas/SceneVentanaPrincipalAdministradores.fxml");
+							break;
+					}
 					   
-					    Stage stage = (Stage) btnIngresar.getScene().getWindow();
-					    stage.close();
-					    alerta.show();
-			        } catch (Exception e) {
-			            e.printStackTrace();
-			        }
+					Stage stage = (Stage) btnIngresar.getScene().getWindow();
+					stage.close();
+					alerta.show();
+			        
 					
 				}else {
 					alerta = new Alert(AlertType.ERROR, "¡Contraseña incorrecta!", ButtonType.OK);
@@ -97,25 +95,13 @@ public class LoginController {
 
     @FXML
     void btnRegistrarse_OnClick(ActionEvent event) {
-    	// Obtener el Stage de la ventana actual
-        
-        
-		try {
-			Double[] bounds = {650.0, 450.0};
-			VentanaController.crearVentana("Opción de registro", bounds, "/application/vistas/SceneOpcionRegistro.fxml");
-			Stage stage = (Stage) btnRegistrarse.getScene().getWindow();
-			stage.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	
+		VentanaController.crearVentana("Opción de registro", new Double[]{500.0, 400.0}, "/application/vistas/SceneOpcionRegistro.fxml");
+		Stage stage = (Stage) btnRegistrarse.getScene().getWindow();
+		stage.close();
 		
 	    
     }
     
-    @FXML
-    void btnVer_OnClick(ActionEvent event) {
-    	//if(tfpPassword.ge)
-    }
     
 }

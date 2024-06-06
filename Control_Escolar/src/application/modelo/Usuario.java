@@ -70,6 +70,7 @@ public final class Usuario {
     
     
     public static Usuario generaUsuario(Persona persona) {
+    	// quitar los espacios
     	Usuario usuarioGenerado;
     	String[] partesNombre = persona.getNombre().split(" ");
     	String password = persona.getApellidoMaterno().toLowerCase();

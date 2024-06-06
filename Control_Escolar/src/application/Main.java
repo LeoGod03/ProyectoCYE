@@ -1,19 +1,13 @@
 package application;
 	
-import java.net.URL;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-//import java.util.ArrayList;
-import application.dao.AlumnoDao;
-import application.dao.Conexion;
-import application.modelo.Alumno;
 
-//import application.modelo.EnumBusquedas;
-import application.modelo.Usuario;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.Parent;
 import application.modelo.Cifrar;
 //import javafx.scene.layout.BorderPane;
@@ -26,10 +20,18 @@ public class Main extends Application {
 			Scene scene = new Scene(root,500,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
+			primaryStage.setTitle("Login");
+			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/application/images/Icono.jpg")));
 			primaryStage.show();
-			//System.out.println(Cifrar.cifrar("rodriguez200030699".toCharArray(), 10));
-			//new AlumnoDao().eliminar(new Alumno("20-003-0699","","","",0,0,new Usuario("leonardo.rodriguez200030699@alumnos.uacm.edu.mx")));
+			System.out.println(Cifrar.cifrar("velasco210031234".toCharArray(), 22));
 			
+			/*Alumno alumno = new Alumno("20-003-0699");
+			alumno.setUsuario(new Usuario("leonardo.rodriguez200030699@alumnos.uacm.edu.mx"));
+			alumno.setNumeroGrupos(1);
+			alumno.setGruposInscritos(new GruposDao().obtenerGrupos(alumno));
+			new AlumnoDao().eliminar(alumno);
+				*/	
+		
 			// creamos dos cursos
 		      //Curso curso = new Curso(1,"Algebra lineal","CCT","BASICO");
 		      //Curso curso = new Curso(2,"Introducción a la programacion","CCT","BASICO");
@@ -77,8 +79,6 @@ public class Main extends Application {
 		      for(Alumno alumnoI: lista){
 		          System.out.println(alumnoI);
 		      }*/
-			new Conexion().establecerConexion();
-			
 				
 			
 		} catch(Exception e) {

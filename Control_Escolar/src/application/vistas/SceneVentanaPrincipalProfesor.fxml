@@ -8,11 +8,10 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controlador.VentanaPrincipalAlumnoController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controlador.VentanaPrincipalProfesorController">
    <children>
       <SplitPane dividerPositions="0.29797979797979796" layoutX="7.0" layoutY="14.0" prefHeight="400.0" prefWidth="559.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -33,10 +32,11 @@
                               <VBox layoutX="14.0" prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                                    <Label fx:id="lbMatricula" text="Matricula:" />
+                                    <Label fx:id="lbId" text="Id:" />
                                     <Label fx:id="lbNombre" text="Nombre:" wrapText="true" />
                                     <Label fx:id="lbApellidoP" text="Apellido paterno:" wrapText="true" />
                                     <Label fx:id="lbApellidoM" text="Apellido materno:" />
+                                    <Label fx:id="lbCubiculo" text="Cubículo:" />
                                     <Label fx:id="lbUsuario" text="Usuario:" />
                                  </children>
                               </VBox>
@@ -54,7 +54,7 @@
                            <children>
                               <VBox layoutX="47.0" layoutY="42.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <Label text="Cursos inscritos:">
+                                    <Label text="Cursos impartidos">
                                        <font>
                                           <Font name="Times New Roman" size="16.0" />
                                        </font>
@@ -70,23 +70,14 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                            <children>
-                              <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <VBox alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                                       <children>
-                                          <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#btnSalir_OnClick" text="Salir" />
-                                          <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <image>
-                                                <Image url="@../images/estudiante.png" />
-                                             </image>
-                                          </ImageView>
-                                       </children>
-                                    </HBox>
-                                    <Button fx:id="btnInscribir" mnemonicParsing="false" onAction="#btnInscribir_OnClick" text="Inscribir curso" />
-                                    <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#btnEliminar_OnClick" text="Dar de baja curso" />
+                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/estudiante.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#btnSalir_OnClick" styleClass="btn-cerrar" stylesheets="@../styles/buttons.css" text="Salir" />
                                  </children>
                               </VBox>
                            </children>

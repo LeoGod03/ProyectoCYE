@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import application.modelo.EnumBusquedas;
 import application.modelo.Profesor;
 import application.modelo.Usuario;
 
@@ -24,6 +23,47 @@ public class ProfesorDao {
     
     public ProfesorDao(){
         administrador = new Conexion();
+    }
+    
+    public ArrayList<Profesor> obtenerProfesoresSistema(){
+        ArrayList<Profesor> profesores = new ArrayList<>();
+        Connection conexion = administrador.establecerConexion();
+        PreparedStatement comando;
+        ResultSet resultado;
+        String query;
+        try{
+            conexion.setAutoCommit(false);
+            query = "SELECT * FROM Profesores_registrados;";
+            
+            comando = conexion.prepareStatement(query);
+            resultado = comando.executeQuery();
+            Profesor profesor;
+            while(resultado.next()){
+                profesor = new Profesor(resultado.getInt("id"),
+                                           resultado.getString("nombre"),
+                                           resultado.getString("apellido_paterno"),
+                                           resultado.getString("apellido_materno"),
+                                           resultado.getString("cubiculo"),
+                                           new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
+                                          
+            
+                profesores.add(profesor);
+            }
+            conexion.commit();
+            comando.close();
+        }catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+            
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        
+        administrador.cerrarConexion();
+        
+        return profesores;
     }
     
     public void insertar(Profesor profesor) {
@@ -77,6 +117,8 @@ public class ProfesorDao {
                                            resultado.getString("cubiculo"),
                                            new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
                                           
+            
+                profesorBuscado.setGruposImpartidos(new GruposDao().obtenerGrupos(profesorBuscado));
             }
             conexion.commit();
             comando.close();
@@ -95,41 +137,29 @@ public class ProfesorDao {
         return profesorBuscado;
     }
     
-    public ArrayList<Profesor> buscar(Profesor profesor, EnumBusquedas.BUSQUEDA busqueda){
-        ArrayList<Profesor> profesorBuscados = new ArrayList<>();
+    public Profesor buscar(Usuario usuario){
+        Profesor profesorBuscado = null;
         Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
         ResultSet resultado;
         String query;
         try{
             conexion.setAutoCommit(false);
-            query = "SELECT * FROM Profesores_registrados WHERE ";
-             if(busqueda == EnumBusquedas.BUSQUEDA.IDPROFESOR)
-                query += "id = ?;";
-            else
-                query += "nombre like '%' + ? + '%' OR apellido_paterno like '%' + ? + '%' OR apellido_materno like '%' + ? + '%';";
+            query = "SELECT * FROM Profesores_registrados WHERE correo like ?;";
             
-             comando = conexion.prepareStatement(query);
-             
-             if(busqueda == EnumBusquedas.BUSQUEDA.IDPROFESOR) 
-                comando.setInt(1, profesor.getId());
-             else{
-                 comando.setString(1, profesor.getNombre());
-                 comando.setString(2, profesor.getNombre());
-                 comando.setString(3, profesor.getNombre());
-             }
+            comando = conexion.prepareStatement(query);
+            comando.setString(1, usuario.getCorreo());
             
-           
             resultado = comando.executeQuery();
-            while(resultado.next()){
-                Profesor profesorIteracion = new Profesor(resultado.getInt("id"),
+            if(resultado.next()){
+                profesorBuscado = new Profesor(resultado.getInt("id"),
                                            resultado.getString("nombre"),
                                            resultado.getString("apellido_paterno"),
                                            resultado.getString("apellido_materno"),
                                            resultado.getString("cubiculo"),
-                                           new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
+                                           usuario);
                 
-                profesorBuscados.add(profesorIteracion);
+                profesorBuscado.setGruposImpartidos(new GruposDao().obtenerGrupos(profesorBuscado));
                                           
             }
             conexion.commit();
@@ -146,9 +176,58 @@ public class ProfesorDao {
         
         administrador.cerrarConexion();
         
-        return profesorBuscados;
-        
+        return profesorBuscado;
     }
+    
+    public ArrayList<Profesor> buscarCoincidencia(Profesor profesor){
+    	ArrayList<Profesor> profesoresBuscados = new ArrayList<>();
+        Connection conexion = administrador.establecerConexion();
+        PreparedStatement comando;
+        ResultSet resultado;
+        String query;
+        try{
+            conexion.setAutoCommit(false);
+            query = "SELECT * FROM Profesores_registrados WHERE ";
+            query += "nombre like '%' + ? + '%' OR apellido_paterno like '%' + ? + '%' OR apellido_materno like '%' + ? + '%' ";      
+            query += "ORDER BY apellido_paterno ASC;";
+            comando = conexion.prepareStatement(query);
+                       
+            comando.setString(1, profesor.getNombre());
+            comando.setString(2, profesor.getNombre());
+            comando.setString(3, profesor.getNombre());
+            
+            
+            resultado = comando.executeQuery();
+            Profesor profesorIteracion;
+            while(resultado.next()){
+                
+            	 profesorIteracion = new Profesor(resultado.getInt("id"),
+                         resultado.getString("nombre"),
+                         resultado.getString("apellido_paterno"),
+                         resultado.getString("apellido_materno"),
+                         resultado.getString("cubiculo"),
+                         new UsuarioDao().buscar(new Usuario(resultado.getString("correo")), conexion));
+                        
+
+            	profesoresBuscados.add(profesorIteracion);
+            }
+            conexion.commit();
+            comando.close();
+        }catch(SQLException sqle){
+            System.out.println(sqle.getMessage());
+            
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        
+        administrador.cerrarConexion();
+        
+        return profesoresBuscados;
+    }
+    
      
     public void actualizar(Profesor profesor, Profesor oldprofesor) {
         Connection conexion = administrador.establecerConexion();
@@ -161,8 +240,7 @@ public class ProfesorDao {
                     + "nombre = ?,"
                     + "apellido_paterno = ?,"
                     + "apellido_materno = ?,"
-                    + "cubiculo = ?,"
-                    + "correo = ? "
+                    + "cubiculo = ? "
                     + "WHERE id = ?";
          
             comando = conexion.prepareStatement(query);
@@ -171,8 +249,7 @@ public class ProfesorDao {
             comando.setString(3, profesor.getApellidoPaterno());
             comando.setString(4, profesor.getApellidoMaterno());
             comando.setString(5, profesor.getCubiculo());
-            comando.setString(6, profesor.getUsuario().getCorreo());
-            comando.setInt(7, oldprofesor.getId());
+            comando.setInt(6, oldprofesor.getId());
             new UsuarioDao().actualizar(profesor.getUsuario(), oldprofesor.getUsuario(), conexion);
             comando.executeUpdate();
             conexion.commit();
@@ -189,7 +266,6 @@ public class ProfesorDao {
         administrador.cerrarConexion();
        }
      
-    
     public void eliminar(Profesor profesor) {
          Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;

@@ -1,7 +1,5 @@
 package application.controlador;
 
-import java.io.IOException;
-
 import application.dao.ProfesorDao;
 import application.modelo.Profesor;
 import application.modelo.Usuario;
@@ -43,21 +41,21 @@ public class RegistrarProfesorController {
 
 	    @FXML
 	    void btnCancelar_OnClick(ActionEvent event) {
-	    	Double[] bounds = {650.0, 500.0};
-	    	try {
-				VentanaController.crearVentana("Opción de registro", bounds, "/application/vistas/SceneOpcionRegistro.fxml");
-				Stage stage = (Stage) btnCancelar.getScene().getWindow();
-			    stage.close();
-	    	} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	    	VentanaController.crearVentana("Opción de registro", new Double[]{500.0, 400.0}, "/application/vistas/SceneOpcionRegistro.fxml");
+			Stage stage = (Stage) btnCancelar.getScene().getWindow();
+			stage.close();
 	    }
 
 	    @FXML
 	    void btnInsertar_OnClick(ActionEvent event) {
 	    	Alert alerta;
 	    	boolean lleno = true;
+	    	for(int i = 0; i < 4; i++) {
+	    		if(campos[i].getText().equals("")) {
+	    			lleno = false;
+	    			break;
+	    		}
+	    	}
 	    	if(lleno){
 	    		if(new ProfesorDao().buscar(new Profesor(spnId.getValue())) == null){ 
 	    			if(Profesor.esCubiculoValido(tfCubiculo.getText())) {
@@ -68,18 +66,13 @@ public class RegistrarProfesorController {
 	    				profesor.setUsuario(Usuario.generaUsuario(profesor));
 	    				new ProfesorDao().insertar(profesor);
 	    				
-	    				try {
-		    				Double[] bounds = {400.0, 450.0};
-		    				FXMLLoader loader = VentanaController.crearVentana("Datos", bounds, "/application/vistas/SceneDatosRegistro.fxml");
-		    				DatosRegistroController controlador = loader.getController();
-		    				controlador.setPersona(profesor);
-		    				controlador.inicializar();
-		    				Stage stage = (Stage) btnInsertar.getScene().getWindow();
-			    		    stage.close();
-	    				}catch (IOException e) {
-		    				// TODO Auto-generated catch block
-		    				e.printStackTrace();
-		    			}
+	    				Double[] bounds = {400.0, 450.0};
+						FXMLLoader loader = VentanaController.crearVentana("Datos", bounds, "/application/vistas/SceneDatosRegistro.fxml");
+						DatosRegistroController controlador = loader.getController();
+						controlador.setPersona(profesor);
+						controlador.loadVentana();
+						Stage stage = (Stage) btnInsertar.getScene().getWindow();
+						stage.close();
 	    			}else {
 	    				alerta = new Alert(AlertType.ERROR, "¡Formato de cubículo no valido!", ButtonType.OK);
 						alerta.show();
@@ -97,7 +90,7 @@ public class RegistrarProfesorController {
 	    	
 	    }
 	    
-	    public void inicializar() {
+	    public void loadVentana() {
 	    	
 	    	campos[0] = tfNombre;
 	    	campos[1] = tfApellidoP;

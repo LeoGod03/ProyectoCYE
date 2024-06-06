@@ -6,8 +6,9 @@ public class Cifrar {
 			 'r','s','t','u','v','w','x','y','z','0','1','2','3','4','5','6','7','8','9'};
 	
 	
+	
 	private static int posicion(char caracter) {
-		int resultado = -1;
+		int resultado = 0;
 		for(int i = 0; i < diccionario.length; i++) {
 			if(caracter == diccionario[i]) {
 				resultado = i;
