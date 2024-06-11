@@ -52,7 +52,7 @@ public class VentanaPrincipalAlumnoController {
     public void setAlumno(Alumno alumno) {
     	this.alumno = alumno;
     }
-    
+    // botón para dar de baja un curso
     @FXML
     void btnEliminar_OnClick(ActionEvent event) {
     	
@@ -65,10 +65,10 @@ public class VentanaPrincipalAlumnoController {
 	    alert.setContentText("¿Estás seguro que deseas darte de baja de el grupo seleccionado: "
 	        					+ "Id: "+ opcion.getId() + " Grupo: " + opcion.getGrupo() + "?");
 	        
-	      // para obtener el resultado
+	    // para obtener el resultado
 	    Optional<ButtonType> result = alert.showAndWait();
 	    Alert confirmation;  
-	    if (result.isPresent() && result.get() == ButtonType.OK) {
+	    if (result.isPresent() && result.get() == ButtonType.OK) { // en caso afirmativo damos de baja al alumno del grupo
 	        new GruposDao().darBajaGrupo(opcion, alumno);
 	        confirmation = new Alert(AlertType.CONFIRMATION, "Dado de baja del grupo Id: " + opcion.getId() + " grupo: " + opcion.getGrupo(), ButtonType.OK);
 			confirmation.show();
@@ -80,31 +80,32 @@ public class VentanaPrincipalAlumnoController {
 	    }
     	
     }
-
+    //botón que abre la ventana para inscribir al alumnos a grupo(s)
     @FXML
     void btnInscribir_OnClick(ActionEvent event) {
     	Double[] bounds = {650.0, 450.0};
 		FXMLLoader loader = VentanaController.crearVentana("Inscribir curso", bounds, "/application/vistas/SceneInscribirGrupo.fxml");
 		InscribirGrupoController controlador = loader.getController();
 		controlador.setAlumno(alumno);
-		controlador.inicializar();
+		controlador.loadVentana();
 		
 		Stage stage = (Stage) btnInscribir.getScene().getWindow();
 		stage.close();
     	
     }
     
-
+    // botón que te regresa a la ventana anterior
     @FXML
     void btnSalir_OnClick(ActionEvent event) {
     	VentanaController.crearVentanaLogin(btnEliminar);
     }
-    
+    // metodo para configurar la ventana
     public void loadVentana() {
-    	
+    	// dependiendo de las condiciones del alumno habilitamos o deshabilitamos los botones
     	btnInscribir.setDisable(alumno.getNumeroGrupos() >= 7);
     	btnEliminar.setDisable(alumno.getNumeroGrupos() <= 0);
     	
+    	// llenamos los datos de los labels
     	lbMatricula.setText("Matricula: " + alumno.getMatricula());
     	lbNombre.setText("Nombre: " + alumno.getNombre());
     	lbApellidoP.setText("Apellido paterno: " + alumno.getApellidoPaterno());
@@ -112,13 +113,13 @@ public class VentanaPrincipalAlumnoController {
     	lbUsuario.setText("Usuario: " + alumno.getUsuario().getCorreo());
     	
     	
-    	lvGrupos.getItems().addAll(alumno.getGruposInscritos());
-    
+    	lvGrupos.getItems().addAll(alumno.getGruposInscritos()); // añadimos los grupos a los que esta isncrito el alumno
+    	// listener que obtiene la elección del grupo de la lista mostrada
     	lvGrupos.getSelectionModel().selectedItemProperty().addListener((observable, viejoValor, nuevoValor) -> {
     		opcion = (Grupo) nuevoValor;
     		//System.out.println(opcion);
         });
-    	
+    	// acción del ratón cuando le damos doble clic se muestra la ventana del grupo seleccionado en la vista de alumnos
     	lvGrupos.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
             	Double [] bounds = {650.0, 500.0};

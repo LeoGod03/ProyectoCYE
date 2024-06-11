@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import application.modelo.Alumno;
 import application.modelo.Grupo;
 import application.modelo.Profesor;
@@ -21,7 +19,7 @@ public class GruposDao {
     public GruposDao(){
         administrador = new Conexion();
     }
-    
+    // metodo para insertar un grupo
     public void insertar(Grupo grupo){
     	Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
@@ -37,6 +35,7 @@ public class GruposDao {
             		+ "promedio DECIMAL (10,2) NOT NULL,"
             		+ "FOREIGN KEY(matricula) REFERENCES Alumnos_registrados(matricula) ON UPDATE CASCADE);";
             
+            // llenamos los parametros del comando
             comando = conexion.prepareStatement(query);
             comando.setInt(1,grupo.getId());
             comando.setInt(2, grupo.getGrupo());
@@ -50,12 +49,12 @@ public class GruposDao {
             try {
                 conexion.rollback();
             } catch (SQLException ex) {
-                Logger.getLogger(AdministradorDao.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
         }
-        administrador.cerrarConexion();
+        administrador.cerrarConexion(); // cerramos la conexión
     }
-    
+    // metodo para eliminar un grupo
     public void eliminar(Grupo grupo){
     	Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
@@ -66,9 +65,11 @@ public class GruposDao {
             query = "DELETE FROM Grupos_registrados WHERE id = ? AND grupo = ?;"
             	  + "DROP TABLE G" + grupo.getId() + "_" + grupo.getGrupo()+";";
             comando = conexion.prepareStatement(query);
+            // llenamos los parametros del comando
             comando.setInt(1, grupo.getId());
             comando.setInt(2, grupo.getGrupo());
             
+            // damos de baja a todos los alumnos de ese grupo
             for(Alumno alumno : new AlumnoDao().obtenerAlumnos(grupo))
             	darBajaGrupo(grupo, alumno);
             
@@ -87,7 +88,7 @@ public class GruposDao {
         administrador.cerrarConexion();
      
     }
-  
+    // metodo para buscar un grupo
     public Grupo buscar(Grupo grupo){
         Grupo grupoBuscado = null;
         Connection conexion = administrador.establecerConexion();
@@ -99,11 +100,12 @@ public class GruposDao {
             query = "SELECT * FROM Grupos_registrados WHERE id = ? AND grupo = ?;";
             
             comando = conexion.prepareStatement(query);
+            // llenamos los parametros del comando
             comando.setInt(1, grupo.getId());
             comando.setInt(2, grupo.getGrupo());
             
             resultado = comando.executeQuery();
-            if(resultado.next()){
+            if(resultado.next()){ // en caso de existir creamos un objeto grupo 
                 
                 grupoBuscado = new Grupo(grupo.getId(), resultado.getInt("grupo"),
                 						 resultado.getInt("id_profesor"),
@@ -123,9 +125,9 @@ public class GruposDao {
         }
         
         administrador.cerrarConexion();
-        return grupoBuscado;
+        return grupoBuscado; // regresamos ese objeto creado
     }
-    
+    // metodo que hace exactamente lo mismo que el metdo buscar solo que por parametros exogidos desde el enum
     public ArrayList<Grupo> buscar(Grupo grupo, BUSQUEDA busqueda) {
     	Connection conexion = administrador.establecerConexion();
     	ArrayList<Grupo> gruposBuscados = new ArrayList<>();
@@ -144,26 +146,26 @@ public class GruposDao {
     	ResultSet resultado;
     	try {
 	    	comando = conexion.prepareStatement(query);
+	    	// llenamos los parametros
 	    	comando.setInt(1, grupo.getId());
 	    	resultado = comando.executeQuery();
 	    	Grupo grupoIteracion;
-	    	while(resultado.next()) {
+	    	while(resultado.next()) { // llenamos la lista con todos los grupos encontrados
 	    		grupoIteracion = new Grupo(resultado.getInt("id"), resultado.getInt("grupo"),
 						 resultado.getInt("id_profesor"),
 						 resultado.getInt("alumnos_registrados"));
 	    		gruposBuscados.add(grupoIteracion);
 	    	}
-	    	
+	    	comando.close();
     	}catch(SQLException e) {
     		e.printStackTrace();
     	}
+    	administrador.cerrarConexion();
     	
-    	return gruposBuscados;
+    	return gruposBuscados; // regresamos los grupos encontrados
     }
-
+    // metodo para actualizar un gruo
     public void actualizar(Grupo grupo, Grupo oldGrupo) {
-    	
-    	
 	    Connection conexion = administrador.establecerConexion();
     	String nombreAntiguo = "G" + oldGrupo.getId() + "_" + oldGrupo.getGrupo();
     	String nombreNuevo = "G" + grupo.getId() + "_" + grupo.getGrupo();
@@ -212,10 +214,10 @@ public class GruposDao {
     	   
     	    e.printStackTrace();
     	} 
-    	administrador.cerrarConexion();
+    	administrador.cerrarConexion(); // cerramos la conexión
 
     }
-
+    // metodo que obtiene todos los grupos disponibles del sistema
     public ArrayList<Grupo> obtenerGruposDisponibles(){
     	ArrayList<Grupo> gruposDisponibles = new ArrayList<>();
     	Connection conexion = administrador.establecerConexion();
@@ -225,7 +227,7 @@ public class GruposDao {
         try{
             comando = conexion.prepareStatement(query);
             resultado = comando.executeQuery();
-            while(resultado.next()){              
+            while(resultado.next()){  // llenamos la lista de grupos            
             	Grupo grupoIteracion = new Grupo(resultado.getInt("id"),
                         							  resultado.getInt("grupo"),
                         							  resultado.getInt("id_profesor"),
@@ -243,9 +245,9 @@ public class GruposDao {
         }
         
         administrador.cerrarConexion();
-        return gruposDisponibles;
+        return gruposDisponibles; // regresamos los grupos disponibles
     }
-
+    // metodo que obtiene los grupos a los un alumno esta inscrito
     public ArrayList<Grupo> obtenerGrupos(Alumno alumno){
         ArrayList<Grupo> gruposInscritos = new ArrayList<>();
         Connection conexion = administrador.establecerConexion();
@@ -257,7 +259,7 @@ public class GruposDao {
             comando = conexion.prepareStatement(query);
             comando.setString(1, alumno.getMatricula());
             resultado = comando.executeQuery();
-            if(resultado.next()){
+            if(resultado.next()){ // llenamos la lista medainte la busqueda de los cursos
                 for(int i = 1; i <= alumno.getNumeroGrupos(); i++){
                     int id = resultado.getInt("id_curso" + i);
                     int grupo = resultado.getInt("grupo"+i);
@@ -280,9 +282,9 @@ public class GruposDao {
         }
         
         administrador.cerrarConexion();
-        return gruposInscritos;
+        return gruposInscritos; // regresamos los grupos inscritos del alumno
     }
-    
+    // metodo para obtener los grupos impartidos por un profesor
     public ArrayList<Grupo> obtenerGrupos(Profesor profesor){
         ArrayList<Grupo> gruposInscritos = new ArrayList<>();
         Connection conexion = administrador.establecerConexion();
@@ -291,15 +293,16 @@ public class GruposDao {
         String query = "SELECT * FROM Grupos_registrados WHERE id_profesor = ?;";
         try{
             conexion.setAutoCommit(false);
+            // llenamos el parametro del query
             comando = conexion.prepareStatement(query);
             comando.setInt(1, profesor.getId());
             
             resultado = comando.executeQuery();
-            while(resultado.next()){
+            while(resultado.next()){ // llenamos la lista con los grupos 
                 
                 Grupo grupo = new Grupo(resultado.getInt("id"),
                                         resultado.getInt("grupo"),
-                                        resultado.getInt("id_profesor"),
+                                        profesor.getId(),
                                          resultado.getInt("alumnos_registrados"));
                 gruposInscritos.add(grupo);
             }
@@ -316,9 +319,9 @@ public class GruposDao {
         }
         
         administrador.cerrarConexion();
-        return gruposInscritos;
+        return gruposInscritos; // retornamos los grupos impartidos por ese profesor
     }
-  
+    // metodo para inscribir al alumno a un grupo
     public void inscribirGrupo(Grupo grupo, Alumno alumno){
     	Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
@@ -328,18 +331,20 @@ public class GruposDao {
                     + "WHERE matricula like ?;";
         try{
             conexion.setAutoCommit(false);  
+            // llenamos los parametros necesarios
             comando = conexion.prepareStatement(query);
             comando.setInt(1, grupo.getId());
             comando.setInt(2, grupo.getGrupo());
             comando.setString(3, alumno.getMatricula());
             comando.executeUpdate();
-            actualizarGruposInscritos(alumno, 1, conexion);
-            actualizarNumeroAlumnos(grupo, 1, conexion);
-            insertarGrupo(alumno, grupo, conexion);
-            grupo.setAlumnosInscritos(grupo.getAlumnosInscritos() + 1);
+            actualizarGruposInscritos(alumno, 1, conexion); // actualizamos el numero de  grupos inscritos
+            actualizarNumeroAlumnos(grupo, 1, conexion); // actualizamos el numero de alumnos inscritos
+            insertarGrupo(alumno, grupo, conexion); // lo insertamos en la tabla de alumnos del grupo
             conexion.commit();
             comando.close();
+            // cambios los respectivos atributos de las clases alumno y grupo
             alumno.setNumeroGrupos(alumno.getNumeroGrupos() + 1);
+            grupo.setAlumnosInscritos(grupo.getAlumnosInscritos() + 1);
         }catch(SQLException sqle){
             System.out.println(sqle.getMessage());
             try {
@@ -351,7 +356,7 @@ public class GruposDao {
         
         administrador.cerrarConexion();
     }
-    
+    // metodo para dar de baja al alumno
     public void darBajaGrupo(Grupo grupo, Alumno alumno){
     	Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
@@ -360,7 +365,7 @@ public class GruposDao {
         try{
             conexion.setAutoCommit(false);
             comando = conexion.prepareStatement(query);
-
+            // llenamos el parametro
             comando.setString(1, alumno.getMatricula());
             resultado = comando.executeQuery();
             int indice = 0;
@@ -376,11 +381,12 @@ public class GruposDao {
                        break;
                     }
                 }
+                // actualizamos todo lo necesario en la base de datos para que el grupo sea dado de baja
                 if(indice > 0){
-                	eliminarGrupoTabla(alumno, grupo, conexion);
-                    recorrerGrupos(alumno, indice, conexion);
-                    actualizarGruposInscritos(alumno, -1, conexion);
-                    actualizarNumeroAlumnos(grupo, -1, conexion);
+                	eliminarGrupoTabla(alumno, grupo, conexion); // lo eliminamos de la tabla
+                    recorrerGrupos(alumno, indice, conexion); // quitamos al grupo inscrito
+                    actualizarGruposInscritos(alumno, -1, conexion); // reducimos el numero de grupos inscritos
+                    actualizarNumeroAlumnos(grupo, -1, conexion); // reducimos el numero de alumnos registrados en el grupo
                     grupo.setAlumnosInscritos(grupo.getAlumnosInscritos() - 1);
                     alumno.setNumeroGrupos(alumno.getNumeroGrupos() -1);
                 }
@@ -398,9 +404,9 @@ public class GruposDao {
             }
         }
         
-        administrador.cerrarConexion();
+        administrador.cerrarConexion(); // cerramos la conexión
     }
-    
+    // metodo para actualizar las calificaciones de un alumno en un grupo
     public void actualizarCalificaciones(Grupo grupo, Alumno alumno) {
     	Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
@@ -413,6 +419,7 @@ public class GruposDao {
         try{
             conexion.setAutoCommit(false);  
             comando = conexion.prepareStatement(query);
+            // llenamos los parametros
             for(int i = 0; i < 3; i ++)
             	comando.setDouble(i + 1, alumno.getPorcentaje(i));
             
@@ -430,9 +437,9 @@ public class GruposDao {
             }
         }
         
-        administrador.cerrarConexion();
+        administrador.cerrarConexion(); // cerramos la conexión
     }
-
+    // metodo para insertar al alumno en un grupo
     private void insertarGrupo(Alumno alumno, Grupo grupo, Connection conexion) throws SQLException {
     	PreparedStatement comando;
         String query = "INSERT INTO G" + grupo.getId()+ "_" + grupo.getGrupo() + " VALUES(?,0,0,0,0);";
@@ -444,7 +451,7 @@ public class GruposDao {
         comando.close();
     	
     }
-    
+    // metodo para recorrer los grupos desde un indice
     private void recorrerGrupos(Alumno alumno, int indice, Connection conexion)throws SQLException{
         PreparedStatement comando;
         String query;
@@ -460,7 +467,7 @@ public class GruposDao {
             comando.close();
         }
     }
-    
+    // metodo para actualizar los grupos inscritos por el alumno
     private void actualizarGruposInscritos(Alumno alumno, int factor, Connection conexion) throws SQLException{
         PreparedStatement comando;
         String query = "UPDATE Alumnos_registrados "
@@ -472,7 +479,7 @@ public class GruposDao {
         comando.executeUpdate();
         comando.close();
     }
-    
+    // metodo para actualizar el numero de alumnos en un grupo
     private void actualizarNumeroAlumnos(Grupo grupo ,int factor, Connection conexion) throws SQLException{
     	PreparedStatement comando;
         String query = "UPDATE Grupos_registrados "
@@ -485,7 +492,7 @@ public class GruposDao {
         comando.executeUpdate();
         comando.close();
     }
-      
+    // metodo para eliminar a un alumno de la tabla del grupo  
     private void eliminarGrupoTabla(Alumno alumno, Grupo grupo, Connection conexion) throws SQLException{
     	PreparedStatement comando;
         String query = "DELETE FROM G" + grupo.getId()+ "_" + grupo.getGrupo() + " WHERE matricula like ?;";           
@@ -495,7 +502,7 @@ public class GruposDao {
         comando.close();
     	
     }
-    
+    // metodo para acutializar el grupo al alumno
     private void actualizarGrupoAlumno(Grupo grupo, Grupo oldGrupo, Alumno alumno, Connection conexion) throws SQLException{
     	String query = "SELECT * FROM Grupos_inscritos_alumnos WHERE matricula like ?;";
     	PreparedStatement comando;

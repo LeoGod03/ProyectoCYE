@@ -167,7 +167,7 @@ public class GrupoProfesorController {
     	lbNombre.setText("Nombre curso: " + (new CursosDao().buscar(new Curso(grupo.getId())).getNombre()));
     	lbIdProfesor.setText("Id profesor: " + grupo.getIdProfesor());
     }
-
+    // botón que manda a la ventana de dar de alta alumno
     @FXML
     void btnAgregar_OnClick(ActionEvent event) {
     	Double[] bounds = {475.0, 390.0};
@@ -179,7 +179,7 @@ public class GrupoProfesorController {
 		Stage stage = (Stage) btnCerrar.getScene().getWindow();
 		stage.close();
     }
-
+    // botón que regresa a la ventana anterior
     @FXML
     void btnCerrar_OnClick(ActionEvent event) {
     	Double[] bounds = {650.0, 450.0};
@@ -191,7 +191,7 @@ public class GrupoProfesorController {
 		Stage stage = (Stage) btnCerrar.getScene().getWindow();
 		stage.close();
     }
-
+    // botón para eliminar a un alumno
     @FXML
     void btnEliminar_OnClick(ActionEvent event) {
     	if(opcion != null) {
@@ -207,7 +207,7 @@ public class GrupoProfesorController {
     	      // para obtener el resultado
     	    Optional<ButtonType> result = alert.showAndWait();
     	    Alert confirmation;  
-    	    if (result.isPresent() && result.get() == ButtonType.OK) {
+    	    if (result.isPresent() && result.get() == ButtonType.OK) { // si acepto se elimina al alumno
     	        new GruposDao().darBajaGrupo(grupo, opcion);
     	        confirmation = new Alert(AlertType.CONFIRMATION, "Dado de baja el alumno: " + opcion.getMatricula(), ButtonType.OK);
     			confirmation.show();
@@ -220,7 +220,7 @@ public class GrupoProfesorController {
     	}
     }
     
-    
+    // metodo para configurar la columna para datos numericos
     private void configurarColumna(TableColumn<Alumno, Double> columna, int index) {
     	columna.setCellFactory(column -> {
     	    TableCell<Alumno, Double> cell = new TableCell<Alumno, Double>() {

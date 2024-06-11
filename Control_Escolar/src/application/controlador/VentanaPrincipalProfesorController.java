@@ -44,6 +44,7 @@ public class VentanaPrincipalProfesorController {
     }
     
     public void loadVentana() {
+    	// llenamos los labels con los datos del profesor
     	lbId.setText("Id: " + profesor.getId());
     	lbNombre.setText("Nombre: " + profesor.getNombre());
     	lbApellidoP.setText("Apellido paterno: " + profesor.getApellidoPaterno());
@@ -53,12 +54,12 @@ public class VentanaPrincipalProfesorController {
     	
     	
     	lvGrupos.getItems().addAll(profesor.getGruposImpartidos());
-    
+    	// listener para saber la selección del curso de la lista
     	lvGrupos.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
     		opcion = (Grupo) newValue;
     		//System.out.println(opcion);
         });
-    	
+    	// evento del mouse para que al dar doble clic sobre un curso habra una ventana del mismo
     	lvGrupos.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
             	Double [] bounds = {650.0, 500.0};

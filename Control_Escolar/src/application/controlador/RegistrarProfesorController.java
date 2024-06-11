@@ -38,18 +38,19 @@ public class RegistrarProfesorController {
 	    private TextField tfNombre;
 	    
 	    private TextField[] campos = new TextField[4];
-
+	    // botón que te regresa a la ventana anterior
 	    @FXML
 	    void btnCancelar_OnClick(ActionEvent event) {
 	    	VentanaController.crearVentana("Opción de registro", new Double[]{500.0, 400.0}, "/application/vistas/SceneOpcionRegistro.fxml");
 			Stage stage = (Stage) btnCancelar.getScene().getWindow();
 			stage.close();
 	    }
-
+	    // botón de insertar 
 	    @FXML
 	    void btnInsertar_OnClick(ActionEvent event) {
 	    	Alert alerta;
 	    	boolean lleno = true;
+	    	// verificamos que todos los campos esten llenos
 	    	for(int i = 0; i < 4; i++) {
 	    		if(campos[i].getText().equals("")) {
 	    			lleno = false;
@@ -57,15 +58,16 @@ public class RegistrarProfesorController {
 	    		}
 	    	}
 	    	if(lleno){
-	    		if(new ProfesorDao().buscar(new Profesor(spnId.getValue())) == null){ 
-	    			if(Profesor.esCubiculoValido(tfCubiculo.getText())) {
+	    		if(new ProfesorDao().buscar(new Profesor(spnId.getValue())) == null){  // verificamos que el ID no haya sido dado de alta antes
+	    			if(Profesor.esCubiculoValido(tfCubiculo.getText())) { // verificamos el formato del cubiculo
 	    				Profesor profesor = new Profesor(spnId.getValue(),
 	    										tfNombre.getText(), tfApellidoP.getText(),
 	    										tfApellidoM.getText(), tfCubiculo.getText(), null);
 	    				
-	    				profesor.setUsuario(Usuario.generaUsuario(profesor));
-	    				new ProfesorDao().insertar(profesor);
+	    				profesor.setUsuario(Usuario.generaUsuario(profesor)); // generamos un usuario
+	    				new ProfesorDao().insertar(profesor); // insertamos al profesor
 	    				
+	    				// abrimos la ventana de confirmación de regsitro
 	    				Double[] bounds = {400.0, 450.0};
 						FXMLLoader loader = VentanaController.crearVentana("Datos", bounds, "/application/vistas/SceneDatosRegistro.fxml");
 						DatosRegistroController controlador = loader.getController();
@@ -89,14 +91,14 @@ public class RegistrarProfesorController {
 	    	
 	    	
 	    }
-	    
+	    // metodo para configurar la ventana
 	    public void loadVentana() {
 	    	
 	    	campos[0] = tfNombre;
 	    	campos[1] = tfApellidoP;
 	    	campos[2] = tfApellidoM;
 	    	campos[3] = tfCubiculo;
-	    	
+	    	// le damos valor minimo y maximo al spinner
 	        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 200);
 	        spnId.setValueFactory(valueFactory);
 	    }

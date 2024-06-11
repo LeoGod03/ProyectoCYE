@@ -40,7 +40,7 @@ public class RegistrarAlumnoController {
     private TextField tfNombre;
     
     private TextField[] campos = new TextField[4];
-    
+     // metodo para confirgurar la ventana
     public void loadVentana() {
     	campos[0] = tfMatricula;
     	campos[1] = tfNombre;
@@ -50,11 +50,12 @@ public class RegistrarAlumnoController {
         for(String lic: nombres)
         	cboxLicenciatura.getItems().add(lic);
     }
-    
+    // botón para insertar el nievo registro
     @FXML
     void btnInsertar_OnClick(ActionEvent event) {
     	Alert alert;
     	boolean lleno = true;
+    	// verificamos que todos los campos esten llenos
     	for(int i = 0; i < 4; i++) {
     		if(campos[i].getText().equals("")) {
     			lleno = false;
@@ -63,21 +64,22 @@ public class RegistrarAlumnoController {
     	}
     	
     	int idLicenciatura = cboxLicenciatura.getSelectionModel().getSelectedIndex(); 
-    	lleno = (lleno == true && idLicenciatura != -1);
+    	lleno = (lleno == true && idLicenciatura != -1); // verificamos que se haya seleccionado una licenciatura
     	
     	
     	if(lleno){
-    		if(Alumno.esMatriculaValida(tfMatricula.getText())){
-	    		if(new AlumnoDao().buscar(new Alumno(tfMatricula.getText())) == null) {
+    		if(Alumno.esMatriculaValida(tfMatricula.getText())){ // verifcamos que la matricula sea valida
+	    		if(new AlumnoDao().buscar(new Alumno(tfMatricula.getText())) == null) { // verificamos que la matricula no este registrada
 	    			Alumno alumno = new Alumno(tfMatricula.getText(),
 	    									   tfNombre.getText(),
 	    									   tfApellidoP.getText(),
 	    									   tfApellidoM.getText(),
 	    									   idLicenciatura + 1,0, null);
 	    			
-	    			alumno.setUsuario(Usuario.generaUsuario(alumno));
-	    			new AlumnoDao().insertar(alumno);   
+	    			alumno.setUsuario(Usuario.generaUsuario(alumno)); // generamos el usuario al nuevo alumno
+	    			new AlumnoDao().insertar(alumno);   // insertamos al alumno
 	    	        
+	    			// abrimos la ventana de confirmación de datos
 	    			Double[] bounds = {400.0, 450.0};
 					FXMLLoader loader = VentanaController.crearVentana("Datos", bounds, "/application/vistas/SceneDatosRegistro.fxml");
 					DatosRegistroController controlador = loader.getController();
@@ -101,7 +103,7 @@ public class RegistrarAlumnoController {
     	}
     	
     }
-
+    // regresamos a la ventana anterior
     @FXML
     void btnCancelar_OnClick(ActionEvent event) {
     	VentanaController.crearVentana("Opción de registro", new Double[]{500.0, 400.0}, "/application/vistas/SceneOpcionRegistro.fxml");

@@ -62,6 +62,7 @@ public class InscribirGrupoController {
     public void setAlumno(Alumno alumno) {
     	this.alumno = alumno;
     }
+    // botón para regresar a la ventana anterior 
     @FXML
     void btnCancelar_OnClick(ActionEvent event) {
     	Double[] bounds = {650.0, 450.0};
@@ -75,11 +76,11 @@ public class InscribirGrupoController {
 		stage.close();
 	    
     }
-
+    // botón para inscribirse a un grupo
     @FXML
     void btnInscribir_OnClick(ActionEvent event) {
     	Alert mensaje;
-    	if(alumno.getGruposInscritos().size() < 7) {
+    	if(alumno.getGruposInscritos().size() < 7) { // verificamos que todavia se pueda inscribir al curso
     		if(opcion != null) {
     			
     			// creamos la alerta
@@ -94,7 +95,7 @@ public class InscribirGrupoController {
     	        // para obtener el resultado
     	        Optional<ButtonType> result = alert.showAndWait();
     	        
-    	        if (result.isPresent() && result.get() == ButtonType.OK) {
+    	        if (result.isPresent() && result.get() == ButtonType.OK) { // en caso de afirmación inscribimos al grupo
     	        	new GruposDao().inscribirGrupo(opcion, alumno);
     	        	alumno.getGruposInscritos().add(opcion);
     	        	lvGrupos.getItems().remove(opcion);
@@ -113,18 +114,20 @@ public class InscribirGrupoController {
     	}
     }
     
-    public void inicializar() {
+    // metodo para configurar la ventana
+    public void loadVentana() {
+    	
     	ArrayList<Grupo> listaGrupos = new GruposDao().obtenerGruposDisponibles();
     	ArrayList<Grupo> gruposRestantes = new ArrayList<>();
-
+    	// agregamos todos los grupos excepto a los que el alumno ya esta inscrito
     	for (Grupo grupo : listaGrupos) {
     	    if (!alumno.getGruposInscritos().contains(grupo)) { // si el grupo no esta en la lista de grupos ya inscritos
     	        gruposRestantes.add(grupo); 
     	    }
     	}
 
-    	lvGrupos.getItems().addAll(gruposRestantes);    	
-    	
+    	lvGrupos.getItems().addAll(gruposRestantes);   // añadimos los grupos	
+    	// cretamos un listener con el cambio de selección y llenamos los label con su información
     	lvGrupos.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
     		opcion = (Grupo) newValue;
     		curso = new CursosDao().buscar(new Curso(opcion.getId()));

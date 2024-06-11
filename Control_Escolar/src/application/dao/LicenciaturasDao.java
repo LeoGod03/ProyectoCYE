@@ -13,7 +13,7 @@ public class LicenciaturasDao {
 	public LicenciaturasDao() {
 		administrador = new Conexion();
 	}
-	
+	// metodo que obtiene los nombres de los licenciaturas ofertadas
 	public ArrayList<String> obtenerLicenciaturas(){
 		ArrayList<String> nombres = new ArrayList<>();
 		Connection conexion = administrador.establecerConexion();
@@ -28,7 +28,7 @@ public class LicenciaturasDao {
             
             resultado = comando.executeQuery();
             
-            while(resultado.next())
+            while(resultado.next()) // llenamos la lista de licenciaturas
             	nombres.add(resultado.getString("nombre"));
             
             conexion.commit();
@@ -43,9 +43,7 @@ public class LicenciaturasDao {
             }
         }
         
-        administrador.cerrarConexion();
-		
-		
-		return nombres;
+        administrador.cerrarConexion(); 
+		return nombres; // regresamos esa lista con los nombres de las lic.
 	}
 }

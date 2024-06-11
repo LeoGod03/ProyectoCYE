@@ -44,21 +44,21 @@ public class GruposSistemaController implements Initializable{
     private TextField tfBusqueda;
     
     private Grupo opcion;
-
+    // botón para abrir la ventana de crear grupo
     @FXML
     void btnAgregar_OnClick(ActionEvent event) {
-    	VentanaController.crearVentana("Alumnos en sistema", new Double[]{600.0, 350.0}, "/application/vistas/SceneAgregarGrupo.fxml");
+    	VentanaController.crearVentana("Agregar grupo", new Double[]{600.0, 350.0}, "/application/vistas/SceneAgregarGrupo.fxml");
     	Stage stage = (Stage) btnAgregar.getScene().getWindow();
     	stage.close();
     }
-
+    // botón que regresa a la ventana anterior
     @FXML
     void btnCerrar_OnClick(ActionEvent event) {
     	VentanaController.crearVentana("Ventana principal", new Double[] {600.0,300.0}, "/application/vistas/SceneVentanaPrincipalAdministradores.fxml");
     	Stage stage = (Stage) btnCerrar.getScene().getWindow();
     	stage.close();
     }
-
+    //botón que elimina a un grupo
     @FXML
     void btnEliminar_OnClick(ActionEvent event) {
     	if(opcion != null) {
@@ -73,7 +73,7 @@ public class GruposSistemaController implements Initializable{
 	        // para obtener el resultado
 	        Optional<ButtonType> result = alert.showAndWait();
 	        Alert mensaje;
-	        if (result.isPresent() && result.get() == ButtonType.OK) {
+	        if (result.isPresent() && result.get() == ButtonType.OK) { // si se confirma la seleciión se elimina al alumno
 	        	new GruposDao().eliminar(opcion);
 	        	tbvGrupos.getItems().remove(opcion);
 	        	mensaje = new Alert(AlertType.CONFIRMATION, "¡Eliminado con exito!", ButtonType.OK);
@@ -85,13 +85,14 @@ public class GruposSistemaController implements Initializable{
 	        }
     	}
     }
-  
+    // metodo de inicializar
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		cboxBusqueda.getItems().add("Id");
 		cboxBusqueda.getItems().add("Grupo");
 		cboxBusqueda.getItems().add("Id de profesor");
 		
+		// listener para hacer la busqueda de grupos por ID, GRUPO O PROFESOR
 		tfBusqueda.textProperty().addListener((observable, viejoValor, nuevoValor) ->{
 			
 			if(cboxBusqueda.getSelectionModel().getSelectedIndex() == -1)
@@ -99,9 +100,11 @@ public class GruposSistemaController implements Initializable{
 			
 			ArrayList<Grupo> lista = new ArrayList<>();		
 			if(!nuevoValor.equals("")) {
+				String idValor = nuevoValor.replaceAll("[a-zA-Z]", ""); // quitamos las letras y dejamos solo los numeros
+	    		System.out.println(idValor);
 				try {
 					int indiceBusqueda = cboxBusqueda.getSelectionModel().getSelectedIndex();
-					int busqueda = Integer.parseInt(nuevoValor);
+					int busqueda = Integer.parseInt(idValor);
 					Grupo grupoBusqueda = new Grupo(busqueda, 0);
 					BUSQUEDA tipoBusqueda;
 					
@@ -126,7 +129,7 @@ public class GruposSistemaController implements Initializable{
 			tbvGrupos.getItems().clear();
 			tbvGrupos.getItems().addAll(lista);
 		});
-		
+		// configuramos las columnas de la tabla
 		TableColumn<Grupo, Integer> colId = new TableColumn<>("Id curso");
 		colId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		//colId.setMaxWidth(75);
@@ -139,17 +142,18 @@ public class GruposSistemaController implements Initializable{
 		
 		TableColumn<Grupo, Integer> colAlumnosInscritos = new TableColumn<>("# de alumnos inscritos");
 		colAlumnosInscritos.setCellValueFactory(new PropertyValueFactory<>("alumnosInscritos"));
-		
+		// asignamos las columnas a la tabla
 		tbvGrupos.getColumns().add(colId);
 		tbvGrupos.getColumns().add(colGrupo);
 		tbvGrupos.getColumns().add(colIdProfesor);
 		tbvGrupos.getColumns().add(colAlumnosInscritos);
-		
+		// llenamos la tabla
 		tbvGrupos.getItems().addAll(new GruposDao().obtenerGruposDisponibles());
-		
+		// listener para saber cual es el grupo eleido desde la tabla
 		tbvGrupos.getSelectionModel().selectedItemProperty().addListener((observable, viejoValor, nuevoValor)->{
 			opcion = (Grupo) nuevoValor;
 		});
+		// acción al dar doble clic y abrir la ventana de dtalles del grupo
 		tbvGrupos.setOnMouseClicked(event->{
 			if (event.getClickCount() == 2){
 				FXMLLoader loader = VentanaController.crearVentana("Grupo",new Double[]{500.0, 450.0}, "/application/vistas/SceneActualizarGrupo.fxml");

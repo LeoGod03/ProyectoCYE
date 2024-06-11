@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package application.dao;
 import java.io.File;
 import java.io.IOException;
@@ -11,11 +6,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import org.ini4j.Ini;
 
-/**
- *
- * @author leopa
- */
 public class Conexion {
+	
+	// atributos necesarios para la conexión
     
     private String base = "";
     private String usuario = "";
@@ -28,6 +21,7 @@ public class Conexion {
     	StringBuilder cadena;
     	String[] cadenas = new String[4];
     	String[] cabeceras =  new String[] {"base", "usuario", "contrasenia", "ip"};
+    	// leemos el ini para obtener los datos de la conexión
     	try {
     		Ini ini =  new Ini(new File(url));
     		for(int i = 0; i < 4; i++) {
@@ -47,7 +41,7 @@ public class Conexion {
     	 
        
     }
-    
+    // metodo para establecer la conexión
     public Connection establecerConexion(){
          String url = "jdbc:sqlserver://localhost:"+ ipConexion +";"
                    + "database ="+ base +";"
@@ -64,6 +58,7 @@ public class Conexion {
         return conexion;
     }
     
+    // metodo para cerrar la conexión
     public void cerrarConexion(){
         try{
             conexion.close();

@@ -22,7 +22,7 @@ public class OpcionRegistroController {
     void btnCancelar_OnClick(ActionEvent event) {
     	VentanaController.crearVentanaLogin(btnAlumno);
     }
-    
+    // botón que manda a la ventana de registro del alumno
     @FXML
     void btnAlumno_OnClick(ActionEvent event) {
 		FXMLLoader loader = VentanaController.crearVentana("Registro alumno", new Double[] {550.0,350.0}, "/application/vistas/SceneRegistrarAlumno.fxml");
@@ -31,7 +31,7 @@ public class OpcionRegistroController {
 		Stage stage = (Stage) btnAlumno.getScene().getWindow();
 		stage.close();
     }
-
+    // botón que manda a la ventana de registro del profesor
     @FXML
     void btnProfesor_OnClcik(ActionEvent event) {
 		FXMLLoader loader = VentanaController.crearVentana("Registro profesor", new Double[] {550.0,350.0}, "/application/vistas/SceneRegistrarProfesor.fxml");

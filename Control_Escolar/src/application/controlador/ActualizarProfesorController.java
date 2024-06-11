@@ -49,20 +49,22 @@ public class ActualizarProfesorController {
     public void setProfesor(Profesor profesor) {
     	this.profesor = profesor;
     }
-
+    // botón para actualizar
     @FXML
     void btnActualizar_OnClick(ActionEvent event) {
     	Alert alerta;
     	boolean lleno = true;
+    	//verificamos que todos los campos esten llenos
     	for(int i = 0; i < 4; i++) {
     		if(campos[i].getText().equals("")) {
     			lleno = false;
     			break;
     		}
     	}
+    	// verificamos si esta lleno
     	if(lleno){
     		 
-    		if(Profesor.esCubiculoValido(tfCubiculo.getText())) {
+    		if(Profesor.esCubiculoValido(tfCubiculo.getText())) { // si el formato del cubiculo es valido
     			Profesor profesorNuevo = new Profesor(spnId.getValue(), tfNombre.getText(),
     												  tfApellidoP.getText(), tfApellidoM.getText(), tfCubiculo.getText(), null);
     			
@@ -74,15 +76,14 @@ public class ActualizarProfesorController {
 						break;
 					}
 				}		
-				cambio = (profesor.getId() != profesorNuevo.getId());
-				
+				cambio = (profesor.getId() != profesorNuevo.getId()); // si se cambio el id generará un nuevo usuario
 				profesorNuevo.setUsuario((cambio)?Usuario.generaUsuario(profesorNuevo): profesor.getUsuario());
 				boolean existe = false;
 				
-				if(profesor.getId() != profesorNuevo.getId())
+				if(cambio) // verificamos que el nuvo profesor exista
 					existe = (new ProfesorDao().buscar(profesorNuevo) != null);
 				
-				if(!existe) {
+				if(!existe) { // si existe llenamos los datos y regresamos a la ventana anterior
 					new ProfesorDao().actualizar(profesorNuevo, profesor);
 					FXMLLoader loader = VentanaController.crearVentana("Datos", new Double[]{400.0, 450.0}, "/application/vistas/SceneDatosRegistro.fxml");
 					DatosRegistroController controlador = loader.getController();
@@ -104,17 +105,17 @@ public class ActualizarProfesorController {
     	}else 
     		alerta = new Alert(AlertType.WARNING, "¡Faltan por llenar datos!", ButtonType.OK);
 			
-    	alerta.show();
+    	alerta.show(); // mostramos la alerta
     	
     }
-
+    // botón que cierra la ventana y vuelve a la anterior
     @FXML
     void btnCancelar_OnClick(ActionEvent event) {
     	VentanaController.crearVentana("Profesores en sistema", new Double[]{750.0, 400.0}, "/application/vistas/SceneProfesoresSistema.fxml");
     	Stage stage = (Stage) btnCancelar.getScene().getWindow();
     	stage.close();
     }
-
+    // botón que habilita los controles para su edición
     @FXML
     void chboxEditar_OnClcik(ActionEvent event) {
     	for(TextField campo: campos)
@@ -123,18 +124,19 @@ public class ActualizarProfesorController {
     	spnId.setDisable(!chboxEditar.isSelected());
     	btnActualizar.setDisable(!chboxEditar.isSelected());
     }
-    
+    // metodo paara configurar la ventana
     public void loadVentana() {
     	campos[0] = tfNombre;
     	campos[1] = tfApellidoP;
         campos[2] = tfApellidoM;
         campos[3] = tfCubiculo;
-        
+        // llenamos los labels con los datos necesarios
     	tfNombre.setText(profesor.getNombre());
     	tfApellidoP.setText(profesor.getApellidoPaterno());
     	tfApellidoM.setText(profesor.getApellidoMaterno());
     	tfCubiculo.setText(profesor.getCubiculo());
     	
+    	// los inicializamos sin poder editarlos
     	for(TextField campo: campos)
     		campo.setEditable(false);;
     	

@@ -65,11 +65,11 @@ public class ActualizarGrupoController {
     public void setGrupo(Grupo grupo) {
     	this.grupo = grupo;
     }
-    
+    // botón para actualizar el grupo
     @FXML
     void btnActualizar_OnClick(ActionEvent event) {
     	Alert alerta = null;
-    	if(curso == null || profesor == null) {
+    	if(curso == null || profesor == null) { // verificar que exista el profesor y el curso
     		alerta = new Alert(AlertType.ERROR, "¡Hay datos incorrectos, revisa por favor!", ButtonType.OK);
     		alerta.show();
     		return;
@@ -77,15 +77,14 @@ public class ActualizarGrupoController {
     	Grupo grupoNuevo = new Grupo(curso.getId(), spnGrupo.getValue(), profesor.getId(), 0);
     	boolean existe = true;
     	boolean profesorValido = true;
-    	if(grupoNuevo.getId() != grupo.getId() || grupoNuevo.getGrupo() != grupo.getGrupo())
+    	if(grupoNuevo.getId() != grupo.getId() || grupoNuevo.getGrupo() != grupo.getGrupo()) // verificar que no exista ya el grupo nuevo
     		existe = (new GruposDao().buscar(grupoNuevo) != null);
     	
-    	if(grupo.getIdProfesor() != grupoNuevo.getIdProfesor())
+    	if(grupo.getIdProfesor() != grupoNuevo.getIdProfesor()) // si se cambio de profesor verifcamos que pueda impartir el curso
     		profesorValido = (new  GruposDao().obtenerGrupos(profesor).size() < 3);
     	
 		if(!existe){
-			if(profesorValido) {
-				System.out.println(grupo);
+			if(profesorValido) { // si el profesor aun puede impartir cursos se actualiza el grupo
 				new GruposDao().actualizar(grupoNuevo, grupo);
 				alerta = new Alert(AlertType.INFORMATION, "¡Grupo actualizado con exito!", ButtonType.OK);
 				alerta.show();
@@ -97,7 +96,7 @@ public class ActualizarGrupoController {
     	
     	alerta.show();
     
-    	datosGrupo();
+    	//datosGrupo();
     }
 
     @FXML
@@ -114,10 +113,10 @@ public class ActualizarGrupoController {
     	spnIdCurso.setDisable(!chboxEditar.isSelected());
     	spnIdProfesor.setDisable(!chboxEditar.isSelected());
     }
-    
+    // metodo para configurar la ventana
     public void loadVentana() {
     	datosGrupo();
-    	
+    	// creamos rangos y paso para los spinners
     	SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 500, grupo.getGrupo());
 		SpinnerValueFactory<Integer> valueFactory2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 200, grupo.getIdProfesor());
 		SpinnerValueFactory<Integer> valueFactory3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 200, grupo.getId());
@@ -130,6 +129,7 @@ public class ActualizarGrupoController {
     	spnIdCurso.setDisable(true);
     	spnIdProfesor.setDisable(true);
     	
+    	// cuando se cambie el valor del spnIdCurso llenará los labels con busquedas en la BD
     	spnIdCurso.valueProperty().addListener((observable, viejoValor, nuevoValor)->{
 			curso = new CursosDao().buscar(new Curso(nuevoValor));
 			if(curso != null) {
@@ -142,7 +142,7 @@ public class ActualizarGrupoController {
 				lbCiclo.setText("Ciclo:");
 			}
 		});
-		
+		// lo mismo que el spnIdCurso pero en este caso con el profesor
 		spnIdProfesor.valueProperty().addListener((observable, viejoValor, nuevoValor)->{
 			profesor = new ProfesorDao().buscar(new Profesor(nuevoValor));
 			if(profesor != null) {
@@ -157,6 +157,7 @@ public class ActualizarGrupoController {
 		});
 		
     }
+    // metodo para llenar los labels con sus datos corresponiedntes
     private void datosGrupo() {
     	profesor = new ProfesorDao().buscar(new Profesor(grupo.getIdProfesor()));
     	curso = new CursosDao().buscar(new Curso(grupo.getId()));

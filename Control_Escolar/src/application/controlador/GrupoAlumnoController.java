@@ -55,7 +55,7 @@ public class GrupoAlumnoController {
 	    public void setAlumno(Alumno alumno) {
 	    	this.alumno = alumno;
 	    }
-	    
+	    // botón que regresa a la ventana anterior
 	    @FXML
 	    void btnCerrar_OnClick(ActionEvent event) {
 	    	Double[] bounds = {650.0, 450.0};
@@ -68,8 +68,9 @@ public class GrupoAlumnoController {
 			stage.close();
 	    }
 	   
-	    
+	    // metodo para configuarar la ventana 
 	    public void loadVentana() {
+	    	// listene para la bisqueda por matricula
 	    	tfBusqueda.textProperty().addListener((observable, valorViejo, nuevoValor) -> {
 	    		ArrayList<Alumno> lista;
 	    		tbvAlumnos.getItems().clear();
@@ -83,7 +84,7 @@ public class GrupoAlumnoController {
 	    	    tbvAlumnos.getItems().addAll(lista);
 	    	   
 	    	});
-	    	
+	    	// creamos las columnas de la tabla
 	    	TableColumn<Alumno, String> colMatricula = new TableColumn<>("Matricula");
 	    	colMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
 	    	colMatricula.setMaxWidth(100);
@@ -116,7 +117,7 @@ public class GrupoAlumnoController {
 	    	colPromedio.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPromedio()).asObject());
 	    	colPromedio.setMaxWidth(75);
 	    	
-	    	
+	    	// las asignamos a la tabla
 	    	tbvAlumnos.getColumns().add(colMatricula);
 	    	tbvAlumnos.getColumns().add(colNombre);
 	    	tbvAlumnos.getColumns().add(colApellidoP);
@@ -127,10 +128,10 @@ public class GrupoAlumnoController {
 	    	tbvAlumnos.getColumns().add(colPromedio);
 	    	
 
-	    
+	    	// llenamos la tabla
 	    	tbvAlumnos.getItems().addAll(new AlumnoDao().obtenerAlumnos(grupo));
 	    	
-	    	
+	    	// llenamos los datos del grupo
 	    	lbGrupo.setText("Grupo: "+grupo.getGrupo());
 	    	lbIdCurso.setText("Id curso: " + grupo.getId());
 	    	lbNombre.setText("Nombre curso: " + (new CursosDao().buscar(new Curso(grupo.getId())).getNombre()));

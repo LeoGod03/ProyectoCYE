@@ -52,6 +52,7 @@ public class DatosRegistroController {
     public void setTitle(String title) {
     	this.title = title;
     }
+    // botón que redirecciona a la ventana del login o a la anterior dependiendo de ventanaResource
     @FXML
     void btnAceptar_OnClick(ActionEvent event) {
     	if(ventanaResource.equals(""))
@@ -66,9 +67,10 @@ public class DatosRegistroController {
     public void setPersona(Persona persona) {
     	this.persona = persona;
     }
-    
+    // metodo para confirgurar la ventana
     public void loadVentana() {
     	
+    	// dependiendo de si es alumno o profesor llenamos los datos
     	if(persona instanceof Alumno) {
     		Alumno alumnoTemp = (Alumno) persona;
     		lbId.setText("Matricula: " + alumnoTemp.getMatricula());
@@ -85,6 +87,7 @@ public class DatosRegistroController {
     		
     		lbRol.setText(lbRol.getText()+ " " + profesorTemp.getUsuario().getRol());
     	}
+    	// mostramos los datos genericos 
     	lbNombre.setText(lbNombre.getText() + " " + persona.getNombre());
     	lbApellidoP.setText(lbApellidoP.getText() + " " + persona.getApellidoPaterno());
     	lbApellidoM.setText(lbApellidoM.getText() + " " + persona.getApellidoMaterno());

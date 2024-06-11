@@ -49,7 +49,7 @@ public class DarAltaAlumnoController {
     	this.grupo = grupo;
     }
     
-
+    // botón que te regresa a la pantalla anterior
     @FXML
     void btnCancelar_OnClick(ActionEvent event) {
     	Double [] bounds = {650.0, 500.0};
@@ -62,13 +62,14 @@ public class DarAltaAlumnoController {
 		stage.close();
 
     }
-
+    
+    // botón para inscribir al nuevo alumno
     @FXML
     void btnInscribir_OnClick(ActionEvent event) {
     	Alert alerta = null;
-    	if(new AlumnoDao().buscarAlumnoEnGrupo(alumno, grupo) == null) {
-    		if(new GruposDao().obtenerGrupos(alumno).size() < 7) {
-	    		new GruposDao().inscribirGrupo(grupo, alumno);
+    	if(new AlumnoDao().buscarAlumnoEnGrupo(alumno, grupo) == null) { // si el alumno no existe en el grupo
+    		if(new GruposDao().obtenerGrupos(alumno).size() < 7) { // verificamos que aún pueda inscribirse
+	    		new GruposDao().inscribirGrupo(grupo, alumno); // damos de alta al alumno
 	    		alerta = new Alert(AlertType.INFORMATION, "Alumno: " + alumno.getMatricula() + " inscrito con exito", ButtonType.OK);
 				tfBusqueda.setText("");
     		}else
@@ -78,17 +79,17 @@ public class DarAltaAlumnoController {
     		alerta = new Alert(AlertType.ERROR, "Alumno: " + alumno.getMatricula() + " ya se encuentra inscrito", ButtonType.OK);
 		
     	
-    	alerta.show();
+    	alerta.show(); // mostramos la alerta
     }
-    
+    // metodo para configurar la ventana
     public void loadVentana() {
     	btnInscribir.setDisable(true);
-    	
+    	// creamos un listener para verificar la matricula ingreseda y buscar al alumno 
     	tfBusqueda.textProperty().addListener((observable, viejoValor, nuevoValor) ->{
     		if(nuevoValor.length() == 11) {
     			if(Alumno.esMatriculaValida(nuevoValor)) {
     				alumno = new AlumnoDao().buscar(new Alumno(nuevoValor));
-    				if(alumno != null) {
+    				if(alumno != null) { // si el alumno existe llenamos los datos
     					lbNombre.setText("Nombre: " + alumno.getNombre());
     					lbApellidoP.setText("Apellido paterno: " + alumno.getApellidoPaterno());
     					lbApellidoM.setText("Apellido materno: " + alumno.getApellidoMaterno());
@@ -104,7 +105,7 @@ public class DarAltaAlumnoController {
 				lbApellidoM.setText("Apellido materno:");
 				lbIdCarrera.setText("Id carrera:");
     		}
-    		btnInscribir.setDisable(alumno == null || nuevoValor.length() != 11);
+    		btnInscribir.setDisable(alumno == null || nuevoValor.length() != 11); // habilitamos / deshabilitamos el botón de dar de alta dependiendo si existe el alumno
     	});
     }
 

@@ -34,7 +34,7 @@ public class LoginController {
 
     @FXML
     private PasswordField tfpPassword;
-
+    // salimos del sistema
     @FXML
     void Salir_OnClick(ActionEvent event) {
     	Stage stage = (Stage) btnSalir.getScene().getWindow();
@@ -47,12 +47,12 @@ public class LoginController {
     	try {
 			Usuario usuario = new UsuarioDao().buscar(new Usuario(tfCorreo.getText()), new Conexion().establecerConexion());
 			if(usuario != null) {
-				if(tfpPassword.getText().equals(Cifrar.cifrar(usuario.getContrasenia().toCharArray(),usuario.getLlave()))) {
+				if(tfpPassword.getText().equals(Cifrar.cifrar(usuario.getContrasenia().toCharArray(),usuario.getLlave()))) { // verificamos que si sea la contraseña
 					alerta = new Alert(AlertType.CONFIRMATION, "¡Has iniciado sesión!", ButtonType.OK);
 					
 					Double[] bounds = {650.0, 450.0};
 					FXMLLoader loader;
-					switch(usuario.getRol()){
+					switch(usuario.getRol()){ // dependiendo del rol del usuario se le mandará a una ventana 
 						case "alumno" : 
 							loader = VentanaController.crearVentana("Ventana principal", bounds, "/application/vistas/SceneVentanaPrincipalAlumno.fxml");
 							VentanaPrincipalAlumnoController controlador = loader.getController();
@@ -73,15 +73,15 @@ public class LoginController {
 					}
 					   
 					Stage stage = (Stage) btnIngresar.getScene().getWindow();
-					stage.close();
-					alerta.show();
+					stage.close(); // cerramos la ventana actual
+					alerta.show(); // mostramos la alerta de inicio de sesión
 			        
 					
-				}else {
+				}else { // caso para contraseña incorrecta
 					alerta = new Alert(AlertType.ERROR, "¡Contraseña incorrecta!", ButtonType.OK);
 					alerta.show();
 				}
-			}else {
+			}else { // caso en que no se encuentre el correo en la BD
 				alerta = new Alert(AlertType.ERROR, "¡Correo no encontrado!", ButtonType.OK);
 				alerta.show();
 			}
@@ -92,7 +92,7 @@ public class LoginController {
 		}
     	
     }
-
+    // creamos la ventana de opciones de registro
     @FXML
     void btnRegistrarse_OnClick(ActionEvent event) {
     	

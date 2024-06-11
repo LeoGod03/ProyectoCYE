@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package application.dao;
 
 import java.sql.Connection;
@@ -9,22 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import application.modelo.Profesor;
 import application.modelo.Usuario;
 
-/**
- *
- * @author Acer Aspire
- */
 public class ProfesorDao {
      private final Conexion administrador;
     
     public ProfesorDao(){
         administrador = new Conexion();
     }
-    
+    // metodo para obtener a los profesores del sistema
     public ArrayList<Profesor> obtenerProfesoresSistema(){
         ArrayList<Profesor> profesores = new ArrayList<>();
         Connection conexion = administrador.establecerConexion();
@@ -38,7 +28,7 @@ public class ProfesorDao {
             comando = conexion.prepareStatement(query);
             resultado = comando.executeQuery();
             Profesor profesor;
-            while(resultado.next()){
+            while(resultado.next()){ // llenamos la lista con los profesores encontrados
                 profesor = new Profesor(resultado.getInt("id"),
                                            resultado.getString("nombre"),
                                            resultado.getString("apellido_paterno"),
@@ -63,9 +53,9 @@ public class ProfesorDao {
         
         administrador.cerrarConexion();
         
-        return profesores;
+        return profesores; // regresamos esa lista de profesores
     }
-    
+    // metodo para insertar alumnos al sistema
     public void insertar(Profesor profesor) {
         Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
@@ -74,6 +64,7 @@ public class ProfesorDao {
             conexion.setAutoCommit(false);
             query = "INSERT INTO Profesores_registrados VALUES (?,?,?,?,?,?);";
             comando = conexion.prepareStatement(query);
+            // llenamos los datos con los datos necesarios del profesor
             comando.setInt(1, profesor.getId());
             comando.setString(2, profesor.getNombre());
             comando.setString(3, profesor.getApellidoPaterno());
@@ -89,13 +80,13 @@ public class ProfesorDao {
             try {
                 conexion.rollback();
             } catch (SQLException ex) {
-                Logger.getLogger(AdministradorDao.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
         }
-        administrador.cerrarConexion();
+        administrador.cerrarConexion(); // cerramos la conexión
     
     }
-    
+    // metodo para buscar a un profesor
     public Profesor buscar(Profesor profesor){
         Profesor profesorBuscado = null;
         Connection conexion = administrador.establecerConexion();
@@ -107,9 +98,9 @@ public class ProfesorDao {
             query = "SELECT * FROM Profesores_registrados WHERE id like ?;";
             
             comando = conexion.prepareStatement(query);
-            comando.setInt(1, profesor.getId());
+            comando.setInt(1, profesor.getId()); // llenamos el parametro
             resultado = comando.executeQuery();
-            if(resultado.next()){
+            if(resultado.next()){ // si hay coincidencia creamos un objeto profesor y lo llenamos con los datos obtenidos
                 profesorBuscado = new Profesor(resultado.getInt("id"),
                                            resultado.getString("nombre"),
                                            resultado.getString("apellido_paterno"),
@@ -134,9 +125,9 @@ public class ProfesorDao {
         
         administrador.cerrarConexion();
         
-        return profesorBuscado;
+        return profesorBuscado; // regresamos el profesor buscado
     }
-    
+    // metodo que hace exactamente lo mismo que el metodo buscar pero hace la busqueda por correo
     public Profesor buscar(Usuario usuario){
         Profesor profesorBuscado = null;
         Connection conexion = administrador.establecerConexion();
@@ -178,7 +169,7 @@ public class ProfesorDao {
         
         return profesorBuscado;
     }
-    
+    // metodo para buscar a profesores por coincidencia 
     public ArrayList<Profesor> buscarCoincidencia(Profesor profesor){
     	ArrayList<Profesor> profesoresBuscados = new ArrayList<>();
         Connection conexion = administrador.establecerConexion();
@@ -191,7 +182,7 @@ public class ProfesorDao {
             query += "nombre like '%' + ? + '%' OR apellido_paterno like '%' + ? + '%' OR apellido_materno like '%' + ? + '%' ";      
             query += "ORDER BY apellido_paterno ASC;";
             comando = conexion.prepareStatement(query);
-                       
+            // llenamos los parametros necesarios           
             comando.setString(1, profesor.getNombre());
             comando.setString(2, profesor.getNombre());
             comando.setString(3, profesor.getNombre());
@@ -199,7 +190,7 @@ public class ProfesorDao {
             
             resultado = comando.executeQuery();
             Profesor profesorIteracion;
-            while(resultado.next()){
+            while(resultado.next()){ // llenamos la lista con los profesores encontrados
                 
             	 profesorIteracion = new Profesor(resultado.getInt("id"),
                          resultado.getString("nombre"),
@@ -225,10 +216,9 @@ public class ProfesorDao {
         
         administrador.cerrarConexion();
         
-        return profesoresBuscados;
+        return profesoresBuscados; // retornamos los profesores encontrados
     }
-    
-     
+    //metodo para actualizar un profesor
     public void actualizar(Profesor profesor, Profesor oldprofesor) {
         Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
@@ -244,6 +234,7 @@ public class ProfesorDao {
                     + "WHERE id = ?";
          
             comando = conexion.prepareStatement(query);
+            // llenamos los parametros necesarios del comando
             comando.setInt(1, profesor.getId());
             comando.setString(2, profesor.getNombre());
             comando.setString(3, profesor.getApellidoPaterno());
@@ -263,9 +254,9 @@ public class ProfesorDao {
             }
         }
         
-        administrador.cerrarConexion();
+        administrador.cerrarConexion(); // cerramos la conexión
        }
-     
+    // metodo para eliminar a un profesor 
     public void eliminar(Profesor profesor) {
          Connection conexion = administrador.establecerConexion();
         PreparedStatement comando;
@@ -275,9 +266,9 @@ public class ProfesorDao {
             query = "DELETE FROM Profesores_registrados WHERE id like ?;";
             
             comando = conexion.prepareStatement(query);
-            comando.setInt(1, profesor.getId());
+            comando.setInt(1, profesor.getId()); // llenamos el paramtro del comando 
             comando.executeUpdate();
-            new UsuarioDao().eliminar(profesor.getUsuario(), conexion);
+            new UsuarioDao().eliminar(profesor.getUsuario(), conexion); // eliminamos el usuario
             conexion.commit();
             comando.close();
         }catch(SQLException sqle){
@@ -289,7 +280,7 @@ public class ProfesorDao {
             }
         }
         
-        administrador.cerrarConexion();
+        administrador.cerrarConexion(); // cerramos la conexión
     }
     
     

@@ -81,9 +81,9 @@ public class AlumnosSistemaController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
     	cboxBusqueda.getItems().add("Matrícula");
     	cboxBusqueda.getItems().add("Nombre/Apellido");
-    	
+    	// creamos un changeText para poder hacer la busqueda dependiendo del combobox
     	tfBusqueda.textProperty().addListener((observable, valorViejo, nuevoValor) -> {
-    		if(cboxBusqueda.getSelectionModel().getSelectedIndex() == -1) 
+    		if(cboxBusqueda.getSelectionModel().getSelectedIndex() == -1) // si no hay elección en el combox se sale y no hace nada
 	    		return;
     		
     		ArrayList<Alumno> lista;
@@ -100,6 +100,7 @@ public class AlumnosSistemaController implements Initializable{
     	    tbvAlumnos.getItems().addAll(lista);
     	   
     	});
+    	// creamos la columnas para la tableview de alumnos
     	TableColumn<Alumno, String> colMatricula = new TableColumn<>("Matricula");
     	colMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
     	colMatricula.setMaxWidth(100);
@@ -129,7 +130,7 @@ public class AlumnosSistemaController implements Initializable{
     	colUsuario.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUsuario().getCorreo()));
     	
     	
-    	
+    	// llenamos la tabala con las columnas
     	tbvAlumnos.getColumns().add(colMatricula);
     	tbvAlumnos.getColumns().add(colNombre);
     	tbvAlumnos.getColumns().add(colApellidoP);
@@ -139,12 +140,13 @@ public class AlumnosSistemaController implements Initializable{
     	tbvAlumnos.getColumns().add(colUsuario);
     	
     	ArrayList<Alumno> lista = new AlumnoDao().obtenerAlumnosSistema();
-    	tbvAlumnos.getItems().addAll(lista);
+    	tbvAlumnos.getItems().addAll(lista); // llenamos la tabla de alumnos
     	
+    	// creamos un changeItem para obtener el alumno seleccionado desde la tabla
     	tbvAlumnos.getSelectionModel().selectedItemProperty().addListener((observable, viejoValor, nuevoValor) -> {
     		opcion = (Alumno) nuevoValor;
         });
-    	tbvAlumnos.setOnMouseClicked(event -> {
+    	tbvAlumnos.setOnMouseClicked(event -> { // cremamos un evento de ratón y cuando de doble clic sobre la tabala se manda a la ventana de detalles del alumno
     		if(event.getClickCount() == 2 && opcion != null) {
     	    	FXMLLoader loader = VentanaController.crearVentana("Alumno", new Double[]{460.0, 350.0}, "/application/vistas/SceneActualizarAlumno.fxml");
     	    	ActualizarAlumnoController controlador = loader.getController();
